@@ -1,0 +1,58 @@
+.contactSection {
+  padding: 1rem 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+.contactTextBox {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 2rem auto 0;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.contactTextBox a {
+  color: #3eaf6f;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contactTextBox a:hover {
+  text-decoration: underline;
+}
+
+.faqSection {
+  background-color: #f0f4f8;
+  padding: 2rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  justify-content: center;
+  text-align: center;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.faqItem {
+  margin-bottom: 1.5rem;
+}
+
+.question {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.answer {
+  margin: 0;
+}
+
+
+
+

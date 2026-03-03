@@ -1,0 +1,317 @@
+/* ===== Card ===== */
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+
+  width: 100%;
+  max-width: 350px;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.1);
+}
+
+/* ===== Thumbnail / carousel-in-card ===== */
+.thumbnailContainer {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background: #f3f3f3;
+}
+
+.noPhoto {
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  color: #6b7280;
+  border-radius: 12px;
+}
+
+.chevron {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: #3eaf6f
+}
+
+.left { left: 10px; }
+.right { right: 10px; }
+
+.dots {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);  /* inactive */
+  opacity: 0.7;
+}
+
+.dotActive {
+  background: #3eaf6f;              /* active stays green */
+  opacity: 1;
+}
+
+
+/* ===== Content ===== */
+.content {
+  padding: 12px 10px 6px;
+  width: 100%;
+}
+
+.title {
+  color: #1f2937;      /* neutral dark (same tone as other headings) */
+  font-weight: 700;
+  text-align: center;
+  cursor: default;     /* avoids looking clickable */
+}
+
+.title:hover { text-decoration: none; }
+
+.divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 0 0 10px;
+}
+
+.features {
+  margin: 0;
+  padding-left: 18px;
+  color: #374151;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+/* ===== Modal ===== */
+
+/* Fullscreen overlay (name matches JSX: modalOverlay) */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  z-index: 1000;
+  padding: 24px;              /* edge breathing room around modalContent */
+  display: block;
+  /* prevent underlying page from scrolling when overlay is present, just in case */
+  overflow: auto;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: overlayFade 180ms ease-out;
+}
+
+/* Centered modal with two rows: image stage (1fr) + caption (auto) */
+.modalContent {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 1100px);
+  height: min(86vh, 800px);
+  background: #111;
+  border-radius: 12px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.45);
+
+  display: grid;
+  grid-template-rows: 1fr auto;  /* row 1 = image | row 2 = caption */
+  padding: 16px 16px 16px;       /* interior padding; caption gets its own row */
+  box-sizing: border-box;
+  overflow: hidden;
+  animation: modalPop 220ms cubic-bezier(.2,.8,.2,1);
+  will-change: transform, opacity;
+}
+
+/* Optional wrapper (use if you add it in JSX).
+   If you don't have this wrapper, it's fine — rules below also target .modalImage directly. */
+.modalStage {
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;                /* allow child to shrink within 1fr */
+}
+
+/* Image stays in row 1 and centers, never overlaps the caption row */
+.modalImage {
+  grid-row: 1 / 2;              /* <- important: keep image in the first row */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+/* Caption always in row 2, visible inside the modal */
+.modalCaption {
+  grid-row: 2 / 3;              /* <- second row */
+  color: #fff;
+  text-align: center;
+  padding: 10px 12px;
+  line-height: 1.25;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.25) 100%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 1;                   /* sit above the image */
+  font-size: 15px;
+}
+
+/* Controls float above content and don't affect the grid */
+.modalClose {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255,255,255,.95);
+  color: #3eaf6f;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,.2);
+  z-index: 2;
+}
+
+.modalArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255,255,255,.95);
+  color: #3eaf6f;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  z-index: 2;
+}
+
+.modalLeft { left: 8px; }
+.modalRight { right: 8px; }
+
+@media (max-width: 640px){
+  .modalCaption{ font-size: 13px; padding: 8px 12px; }
+  .modalArrow{ width: 40px; height: 40px; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .modalOverlay, .modalContent{ animation: none !important; }
+}
+
+/* Friendly focus rings for keyboard users */
+.modalClose:focus-visible,
+.modalArrow:focus-visible{
+  outline: 2px solid #3eaf6f;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(62,175,111,.35);
+}
+
+/* Optional: tiny hover lift on the arrows/close for delight */
+.modalArrow:hover,
+.modalClose:hover{
+  transform: translateY(-50%) scale(1.04);
+}
+.modalClose:hover{ transform: scale(1.04); }
+
+/* Keyframes */
+@keyframes overlayFade{
+  from{ opacity: 0; }
+  to  { opacity: 1; }
+}
+@keyframes modalPop{
+  from{
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(.985);
+  }
+  to{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+
+.ratingText {
+  margin: 6px 0 10px;
+  font-weight: 500;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+
+  /* Center the chips */
+  justify-content: center;   /* centers each wrapped line */
+  align-content: center;     /* keeps multiple lines centered as a block */
+  width: 100%;               /* ensure the container spans the card width */
+  margin-left: auto;         /* optional: helps perfect centering */
+  margin-right: auto;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 9999px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.chipIcon {
+  margin-right: 6px;
+  font-size: 0.95em;
+}
+
+

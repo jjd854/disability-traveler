@@ -1,0 +1,60 @@
+/* app/forhotels/ForHotels.module.css */
+
+/* Put the CSS variable on the local wrapper so it's module-safe */
+.wrap {
+  --brand: #3eaf6f;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.h1 { font-size: 2.25rem; line-height: 1.2; margin: 0 0 12px; }
+.h2 { font-size: 1.5rem; margin: 0 0 16px; }
+.h3 { margin: 0 0 6px; font-size: 1.05rem; }
+
+.hero { text-align: center; padding: 48px 12px 32px; }
+.tagline { color: #444; max-width: 760px; margin: 0 auto 16px; }
+.micro { font-size: 0.85rem; color: #666; }
+
+.ctaRow { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.ctaPrimary, .ctaSecondary { display: inline-block; padding: 12px 18px; border-radius: 10px; text-decoration: none; font-weight: 600; }
+.ctaPrimary { background: var(--brand); color: #fff; }
+.ctaPrimary:hover { opacity: .92; }
+.ctaSecondary { border: 2px solid var(--brand); color: var(--brand); }
+/* If your browser doesn’t support color-mix, you can swap this for a light rgba() */
+.ctaSecondary:hover { background: color-mix(in srgb, var(--brand) 6%, white); }
+
+.section { padding: 28px 0; }
+
+.benefitGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 0; padding: 0; }
+.benefitCard { list-style: none; background: #f9f9f9; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+.benefitCard p { margin: 0; color: #444; }
+
+.steps { display: grid; gap: 10px; margin: 0; padding: 0; }
+.stepItem { list-style: none; display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 12px; }
+.stepNum { display: grid; place-items: center; width: 36px; height: 36px; background: var(--brand); color: #fff; border-radius: 50%; font-weight: 700; }
+
+.checklist { display: grid; gap: 8px; margin: 0; padding: 0; }
+.checkItem { list-style: none; background: #f9fdfb; border: 1px solid #d8f0e2; border-radius: 10px; padding: 10px 12px; }
+.note { margin-top: 10px; background: #fff; border: 1px dashed var(--brand); border-radius: 10px; padding: 12px; color: #333; }
+
+.proofGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.proofCard { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+.quote { margin: 0 0 8px; font-style: italic; color: #333; }
+.attribution { margin: 0; color: #666; font-size: .95rem; }
+
+.ctaSection { text-align: center; background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 6%, transparent), transparent); padding: 28px 12px; border-radius: 12px; border: 1px solid #e6f3eb; }
+.ctaCopy { max-width: 720px; margin: 6px auto 12px; color: #333; }
+
+.faq { margin: 0; padding: 0; }
+.faqItem { background: #f9f9f9; border: 1px solid #eee; border-radius: 12px; padding: 12px; margin: 0 0 10px; }
+.faqQ { font-weight: 700; margin-bottom: 6px; }
+.faqA { margin: 0; color: #444; }
+
+.endNote { text-align: center; margin-top: 10px; }
+
+@media (min-width: 920px) {
+  .h1 { font-size: 2.6rem; }
+  .ctaSection { padding: 36px 24px; }
+}
+

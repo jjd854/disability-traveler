@@ -1,0 +1,219 @@
+.aboutPage {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* Consistent vertical rhythm */
+.hero {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin: 0 0 1rem 0;
+  color: #003366;
+}
+
+.hero p {
+  margin: 0 auto;
+  max-width: 780px;
+}
+
+/* Base section spacing */
+.section {
+  margin: 0 0 3rem 0;
+  padding: 0;
+  text-align: center;
+}
+
+.section h2 {
+  font-size: 1.75rem;
+  margin: 0 0 1.25rem 0;
+  color: #003366;
+}
+
+/* Default paragraph spacing inside sections */
+.section p {
+  margin: 0 auto 1rem auto;
+  max-width: 780px;
+}
+
+.section p:last-child {
+  margin-bottom: 0;
+}
+
+/* Highlight / panel sections */
+.differenceSection {
+  background-color: #f4f7fb;
+  padding: 3rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* My Story layout */
+.myStoryContent {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+/* Keep text block readable */
+.myStoryContent > div:last-child {
+  flex: 1;
+  min-width: 280px;
+  max-width: 520px;
+  text-align: left;
+}
+
+/* Ensure paragraphs inside the right column have good spacing */
+.myStoryContent > div:last-child p {
+  margin: 0 0 1rem 0;
+}
+
+.myStoryContent > div:last-child p:last-child {
+  margin-bottom: 0;
+}
+
+/* Image + caption */
+.imageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.storyImage {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.caption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.ctaSection {
+  margin: 1.5rem 0 3rem 0; /* spacing only */
+  background: none;        /* IMPORTANT: no background here */
+  padding: 0;              /* IMPORTANT */
+}
+
+.ctaInner {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #f4f7fb;  /* background belongs here */
+  padding: 2.5rem 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.ctaInner p {
+  max-width: 620px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  text-align: center !important;
+}
+
+.ctaSection h2 {
+  margin-bottom: 1rem;
+  color: #003366;
+}
+
+.ctaSection p {
+  max-width: 600px;
+  margin: 2rem 0 3rem 0;;
+}
+
+/* Button container */
+.ctaButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Primary button */
+.primaryButton {
+  background-color: #3eaf6f; /* your brand green */
+  color: white;
+  padding: 0.85rem 1.75rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.primaryButton:hover {
+  background-color: #349e62;
+}
+
+/* Secondary button */
+.secondaryButton {
+  background-color: white;
+  color: #003366;
+  padding: 0.85rem 1.75rem;
+  border-radius: 6px;
+  border: 2px solid #003366;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.secondaryButton:hover {
+  background-color: #003366;
+  color: white;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .differenceSection {
+    padding: 2rem 1.25rem;
+  }
+
+  .myStoryContent {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .myStoryContent > div:last-child {
+    max-width: 780px;
+    text-align: left;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .ctaSection {
+    padding: 2rem 1.25rem;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+

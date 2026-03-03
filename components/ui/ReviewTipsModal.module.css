@@ -1,0 +1,152 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal {
+  background: #fff;
+  width: 90%;
+  max-width: 750px;
+  border-radius: 12px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-height: 95vh;        /* prevents full screen height */
+  overflow-y: auto;        /* scroll inside modal if needed */
+  scrollbar-gutter: stable;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.subtitle {
+  color: #555;
+  max-width: 600px;
+  margin: 12px auto 0 auto;
+  line-height: 1.5;
+}
+
+/* STACKED sections */
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  margin-top: 24px;
+  align-items: center; /* ✅ ensures both sections share same center line */
+}
+
+/* ✅ The centered "content column" */
+.section {
+  width: 100%;          /* ✅ both sections take same width */
+  max-width: 520px;     /* ✅ like TripAdvisor-ish */
+  text-align: left;     /* ✅ overrides modal centering */
+}
+
+/* Keep "Do" / "Don't" headings centered */
+.section h3 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+/* ✅ IMPORTANT: force lists to left-align and start at same spot */
+.section ul {
+  margin: 0;
+  padding-left: 22px;
+  text-align: left; /* ✅ prevents weird inherited centering */
+}
+
+/* ✅ IMPORTANT: force list items to left-align too */
+.section li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  text-align: left; /* ✅ prevents weird inherited centering */
+}
+
+.section li::marker {
+  font-size: 1em;
+}
+
+.sectionDivider {
+  height: 1px;
+  background: #eee;
+  margin: 8px 0;
+}
+
+.footer {
+  font-size: 14px;
+  color: #666;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  line-height: 1.4;
+  margin-top: 18px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .modal {
+    width: 100%;
+    max-width: 92vw;
+    padding: 18px;
+    border-radius: 12px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .modal h2 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .columns {
+    gap: 24px;
+    margin-top: 18px;
+  }
+
+  .section {
+    max-width: 100%;
+  }
+
+  .section h3 {
+    font-size: 16px;
+  }
+
+  .section ul {
+    padding-left: 18px;
+  }
+
+  .section li {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .footer {
+    font-size: 12px;
+  }
+
+  .close {
+    top: 10px;
+    right: 12px;
+    font-size: 22px;
+  }
+}

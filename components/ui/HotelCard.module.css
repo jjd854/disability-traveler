@@ -1,0 +1,154 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  overflow: hidden;
+  border: 1px solid #e1e1e1;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background-color: #fff;
+
+  /* Fill the grid cell so all cards in a row share height */
+  width: 350px;
+  height: 100%;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background: #f3f3f3;
+}
+
+/* clickable hotel name */
+.nameLink{
+  color: #3eaf6f;              /* brand green */
+  text-decoration: none;
+}
+.nameLink:hover,
+.nameLink:focus{
+  text-decoration: underline;
+}
+.nameLink:visited{
+  color: #3eaf6f;              /* keep green after visit */
+}
+
+/* if slug is missing we still style the text nicely */
+.nameText{
+  color: #1f2937;              /* neutral dark */
+  text-decoration: none;
+}
+
+/* (optional) keep long names tidy on one line */
+.name{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;     /* remove if you don't center */
+}
+.name a, .name span{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.badge {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #3eaf6f;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* Price row */
+.priceRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;                 /* now works because label is a sibling */
+  margin: 0.15rem 0 0.25rem;
+}
+.dollars { letter-spacing: 2px; font-weight: 700; display: inline-block; }
+.dollarsEmpty { opacity: .28; }
+.priceLabel { font-weight: 600; margin-left: .15rem; }
+
+.ratingText {
+  font-size: 0.9rem;
+  margin: 8px 0 10px 0;
+  font-weight: 500;
+}
+
+.divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 0 0 10px;
+  align-self: stretch;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin: 6px 0 10px 0;
+}
+
+.feature {
+  display: inline-flex;
+  align-items: center;
+  background-color: #f3f4f6;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.featureEmoji {
+  font-size: 1.05rem;
+  margin-right: 6px;
+  line-height: 1;
+}
+
+.button {
+  display: inline-block;
+  margin: 12px auto 0 auto;
+  background-color: #3eaf6f;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+.button:hover { background-color: #34985f; }
+
+/* ---------- Responsive tweaks ---------- */
+
+@media (max-width: 640px) {
+  .thumbnail { height: 180px; }
+  .name { font-size: 1.05rem; }
+  .badge { display: inline-block; margin-left: 0; margin-top: 6px; }
+  .ratingText { font-size: 0.85rem; margin: 6px 0 8px 0; }
+  .feature { padding: 5px 9px; font-size: 0.8rem; }
+}
+
+@media (max-width: 400px) {
+  .thumbnail { height: 160px; }
+  .features { gap: 5px; }
+  .feature { padding: 4px 8px; font-size: 0.78rem; }
+  .button { width: 100%; text-align: center; }
+}
+
+
+
+
+
+
+

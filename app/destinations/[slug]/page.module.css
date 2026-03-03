@@ -1,0 +1,253 @@
+/* =========================
+   Layout / Wrappers
+========================= */
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 18px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.main {
+  padding: 16px 0;
+}
+
+/* Intro / overview block (top text) */
+.overview {
+  margin: 28px auto 0;
+  max-width: 800px;
+  padding: 0;
+  line-height: 1.65;
+}
+
+/* =========================
+   Hero
+========================= */
+
+.heroWrapper {
+  width: 100%;
+  overflow: hidden;
+  margin: 12px auto 18px;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+}
+
+/* Page title under hero */
+.title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  margin: 14px 0 8px;
+}
+
+/* Small meta lines under title (region/country/city etc.) */
+.textBlock {
+  margin: 6px 0;
+  padding: 0;
+  line-height: 1.75;
+  text-align: center;
+}
+
+/* =========================
+   Sections / Typography
+========================= */
+
+.section {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  margin: 0 0 18px; /* ONLY space between title and content */
+  text-align: center;
+}
+
+/* Preserves Xano line breaks */
+.sectionBodyPreLine {
+  white-space: pre-line;
+  line-height: 1.75;
+  font-size: 1rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Bulleted content from Xano (transport/activities/tips) */
+.bulletList {
+  list-style: disc;
+  padding-left: 1.35rem;
+  margin: 8px auto 0;
+  line-height: 1.75;
+  max-width: 800px;
+  text-align: left;
+}
+
+.bulletList li {
+  margin-bottom: 10px;
+}
+
+/* Local services disclaimer (universal) */
+.servicesDisclaimer {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #6b7280;
+  margin: 0 auto 14px;
+  max-width: 800px;
+  text-align: left;
+  padding: 10px 12px;
+  border-left: 3px solid #3eaf6f;
+  background: rgba(62, 175, 111, 0.08);
+  border-radius: 10px;
+}
+
+.providerItem {
+  margin-bottom: 1.25rem;
+}
+
+.providerLink {
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #3eaf6f; /* your brand green */
+  text-decoration: none;
+}
+
+.providerLink:hover {
+  text-decoration: underline;
+}
+
+.providerDescription {
+  margin: 0.25rem 0 0;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+
+/* =========================
+   Hotels grid
+========================= */
+
+.cardGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+/* Optional: if you still use these wrappers, keep them simple */
+.textSection {
+  padding: 0;
+}
+
+.hotelSection {
+  padding: 0;
+}
+
+/* =========================
+   Buttons / UI bits
+========================= */
+
+.reviewButton {
+  display: inline-block;
+  margin: 12px auto 0;
+  background-color: #3eaf6f;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 700;
+  transition: background-color 0.2s ease;
+}
+
+.reviewButton:hover {
+  background-color: #34985f;
+}
+
+.buttonContainer {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
+
+.ratingText {
+  font-size: 1rem;
+  margin: 8px 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.divider {
+  margin: 28px auto;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  width: 85%;
+}
+
+.filtersToolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px 8px 2px;
+}
+
+.providersList {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;         /* ✅ key fix */
+}
+
+.providerItem {
+  padding-left: 10px;
+  border-left: 2px solid rgba(62, 175, 111, 0.35);
+}
+
+
+.providerItem strong {
+  font-weight: 800;
+}
+
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 24px;
+  }
+
+  .section {
+    margin-top: 36px;
+    margin-bottom: 36px;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroImage {
+    height: 260px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .section {
+    margin-top: 28px;
+  }
+}

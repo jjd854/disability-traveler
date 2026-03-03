@@ -1,0 +1,273 @@
+/* ---------- Card ---------- */
+.card {
+  background: #f9f9f9;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.9rem;
+  border: 1px solid #ddd;
+}
+
+/* ---------- Stars ---------- */
+.star {                /* optional utility you add to a star wrapper */
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+}
+.filledStar { color: #f8b400; }
+.emptyStar  { color: #ccc; }
+
+/* ---------- Meta rows ---------- */
+.meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.metaLine {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+.metaItem { font-size: 0.9rem; white-space: normal; }
+.metaDivider { margin: 0 0.25rem; }
+
+/* ---------- Ratings (mobile-first) ---------- */
+/* One definition only; no duplicates below. */
+.ratingsRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;                 /* space between rating rows */
+  margin: 6px 0 10px;
+  text-align: center;
+}
+
+.ratingsItem {
+  display: block;           /* full-width rows on mobile */
+  font-size: 0.9rem;
+}
+
+.ratingLabel {
+  display: block;           /* put stars on the next line (mobile) */
+}
+
+.stars {
+  display: block;           /* stars line */
+  margin-top: 2px;
+  /* no letter-spacing here—avoid double spacing; .star can handle it */
+}
+
+/* Desktop: inline & compact */
+@media (min-width: 900px) {
+  .ratingsRow {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 24px;
+    text-align: left;
+  }
+  .ratingsItem {
+    display: flex;
+    align-items: center;
+  }
+  .ratingLabel {
+    display: inline;        /* label + stars inline on desktop */
+    margin-right: 6px;
+  }
+  .stars {
+    display: inline;
+    margin-top: 0;
+  }
+}
+
+/* ---------- Review text ---------- */
+.reviewText {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-style: italic;
+  text-align: center;
+}
+.reviewParagraph {
+  margin-bottom: 12px;
+}
+.readMore {
+  background: none;
+  border: none;
+  color: #3eaf6f;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+/* ---------- Thumbnails ---------- */
+.thumbnailRow {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 10px;
+  margin-top: 12px;
+  max-width: 100%;
+  justify-content: center;
+  scroll-snap-type: x proximity;
+}
+.thumbnailRow::-webkit-scrollbar { display: none; }
+.thumbnailRow { scrollbar-width: none; }
+
+.thumbBtn {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  flex: 0 0 auto;
+  border-radius: 10px;
+}
+
+.thumbnail {
+  display: block;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  scroll-snap-align: start;
+}
+.thumbnail:hover { transform: scale(1.03); }
+
+.photoScroller {
+  margin-top: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+/* ---------- Modal ---------- */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+}
+.modalContent {
+  position: relative;
+  width: min(92vw, 900px);
+  max-height: 84vh;
+}
+.modalImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 84vh;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #000;
+}
+
+/* nav buttons kept inside bounds */
+.navBtn,
+.leftArrow,
+.rightArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #3eaf6f;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  line-height: 1;
+}
+.leftArrow { left: 8px; }
+.rightArrow { right: 8px; }
+
+.closeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #3eaf6f;
+  border-radius: 999px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* caption as overlay so it never pushes arrows off screen */
+.altText {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  margin: 0 8px;
+  padding: 8px 10px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 6px;
+  font-size: clamp(12px, 2.7vw, 16px);
+  text-align: center;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+/* Brand-green links for inline meta rows */
+.link {
+  color: #3eaf6f;
+  text-decoration: none;
+  font-weight: 500;
+}
+.link:hover,
+.link:focus {
+  text-decoration: underline;
+}
+
+/* ---------- Breakpoints ---------- */
+@media (max-width: 640px) {
+  .thumbnail { width: 90px; height: 90px; }
+  .modalContent { width: 94vw; }
+  .metaLine {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .metaDivider { display: none; }
+}
+@media (max-width: 400px) {
+  .thumbnail { width: 80px; height: 80px; }
+  .modalContent { width: 96vw; }
+  .navBtn, .leftArrow, .rightArrow { width: 40px; height: 40px; }
+  .closeButton { width: 36px; height: 36px; }
+}
+@media (max-width: 320px) {
+  .thumbnail { width: 72px; height: 72px; }
+  .modalContent { width: 97vw; }
+  .altText { margin: 0 6px; padding: 6px 8px; }
+}

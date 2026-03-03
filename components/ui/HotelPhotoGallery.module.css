@@ -1,0 +1,197 @@
+/* --- Trigger button --- */
+.openButton {
+  display: block;
+  margin: 12px auto 0 auto;
+  background-color: #3eaf6f;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+.reviewButton:hover { background-color: #34985f; }
+
+/* --- Modal shell --- */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  position: relative;
+  width: min(100%, 1000px);
+  max-height: 90vh;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.captionLink {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #3eaf6f;          /* brand green */
+  cursor: pointer;
+  text-decoration: none;   /* not always underlined */
+}
+
+/* Show underline when user interacts */
+.captionLink:hover,
+.captionLink:focus-visible {
+  text-decoration: underline;
+  outline: none;           /* let underline be the indicator */
+}
+
+
+
+/* --- Close button --- */
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 28px;
+  background: transparent;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 6px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+/* --- Toggle buttons row --- */
+.toggleRow {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px; /* space between toggles and photo */
+}
+
+.activeToggle {
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* --- Swiper / image --- */
+.photoSwiper {
+  width: 100%;
+  /* keep a little room for dots before caption */
+  padding-bottom: 8px;
+  /* optional theme for controls */
+  --swiper-navigation-color: #333;
+  --swiper-pagination-color: #3eaf6f;
+}
+
+.photo {
+  max-height: 68vh;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* center slide contents vertically */
+.photoSwiper :global(.swiper-wrapper) {
+  align-items: center;
+}
+
+/* make slides flex so image centers nicely */
+.photoSwiper :global(.swiper-slide) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Put the dots in normal flow, below the image (not overlapping) */
+.photoSwiper :global(.swiper-pagination) {
+  position: static !important;
+  margin-top: 10px; /* gap between image and dots */
+}
+
+/* Optional: tweak nav buttons */
+.photoSwiper :global(.swiper-button-next),
+.photoSwiper :global(.swiper-button-prev) {
+  color: #3eaf6f;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+
+/* --- Caption under dots --- */
+.captionContainer {
+  margin-top: 12px;  /* gap between dots and caption */
+  text-align: center;
+}
+
+.caption {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #333;
+  text-align: center;
+}
+
+/* --- Small screens --- */
+@media (max-width: 640px) {
+  .modalContent {
+    width: 94vw;
+    padding: 0.75rem;
+  }
+  .photo {
+    max-height: 60vh;
+  }
+}
+
+/* ✅ Keep your existing working styles and 640px query */
+
+/* Extra small screens (tiny phones) */
+@media (max-width: 400px) {
+  .photo-gallery {
+    padding: 0.25rem; /* give a little breathing room inside modal */
+  }
+
+  .photo-gallery img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.5rem;
+    border-radius: 6px; /* slightly softer corners */
+  }
+
+  /* If using a modal backdrop/content wrapper */
+  .modalContent {
+    max-width: 95%;  /* ensures it doesn’t feel cut off */
+    padding: 0.5rem;
+  }
+
+  /* Optional: make modal close button easier to tap */
+  .closeButton {
+    top: 0.4rem;
+    right: 0.4rem;
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .photo-gallery img {
+    margin-bottom: 0.4rem;
+  }
+
+  .modalContent {
+    padding: 0.4rem;
+  }
+
+  .closeButton {
+    font-size: 1.3rem;
+  }
+}

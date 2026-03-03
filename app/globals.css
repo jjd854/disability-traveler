@@ -1,0 +1,327 @@
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* ---------- Base ---------- */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: white;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 0rem 1rem;
+  min-height: 50vh;
+  background: linear-gradient(to right, #3eaf6f, #147d94);
+  color: white;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero-buttons button {
+  background: white;
+  color: #147d94;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px; /* was 6px */
+  cursor: pointer;
+  min-width: 180px;
+  flex-grow: 1;
+  text-align: center;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.hero-buttons button:hover {
+  background-color: #147d94;
+  color: white;
+}
+
+.hero-buttons button:active {
+  transform: scale(0.98);
+}
+
+/* ---------- How it works ---------- */
+.how-it-works {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px; /* was 10px */
+  padding: 2rem;
+  width: 280px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  background: #fff;
+  color:black;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Newsletter section */
+.newsletterSection {
+  text-align: center;
+  padding: 3rem 1rem;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.sectionTitle {
+  font-size: 1.9rem;           /* slightly larger */
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.sectionSubtitle {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1.5rem;       /* was 2rem */
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.emailSignupForm {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;   /* stack by default (mobile) */
+  align-items: stretch;     /* children fill width */
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 520px;
+}
+
+/* Ensure input and button match width on mobile */
+.emailInput,
+.subscribeButton { width: 100%; }
+
+.emailInput {
+  padding: 0.75rem 1rem;
+  font-size: 16px;          /* prevent iOS zoom */
+  border: 1px solid #d1d5db;
+  border-radius: 10px;      /* match button */
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.emailInput:focus {
+  outline: none;
+  border-color: #3eaf6f;
+  box-shadow: 0 0 0 3px rgba(62, 175, 111, 0.18);
+}
+
+.subscribeButton {
+  background-color: #3eaf6f;
+  color: #fff;
+  padding: 0.9rem 1.25rem;   /* same height feel as input */
+  border: 0;
+  border-radius: 8px;       /* match input */
+  font-size: 16px;           /* prevent iOS zoom */
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  transition: background-color .2s ease, transform .1s ease;
+}
+.subscribeButton:hover { background-color: #36975f; }
+.subscribeButton:active { transform: scale(.98); }
+
+
+.signupMessage {
+  font-size: 0.95rem;
+  color: #333;
+  margin-top: 0.25rem;
+}
+
+/* Visually hide but keep in DOM so bots see it */
+.visuallyHidden {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* your pages already use <main>, so this will let it stretch */
+main {
+  flex: 1;
+}
+
+/* Side-by-side only on wider screens */
+@media (min-width: 640px) {
+  .emailSignupForm {
+    flex-direction: row;
+    align-items: center;
+  }
+  .emailInput {
+    width: auto;            /* let flex size it */
+    flex: 1 1 auto;
+    margin-right: .5rem;
+  }
+  .subscribeButton {
+    width: auto;            /* button hugs content */
+    flex: 0 0 auto;
+    min-width: 140px;
+  }
+}
+
+/* ---------- Utilities ---------- */
+/* For accessible, visually hidden labels (used by your email field) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Sticky footer baseline for Next.js app router */
+html, body { height: 100%; }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The main content area on pages */
+.page-content {
+  flex: 1 0 auto; /* grows to fill available space */
+}
+
+/* Optional: if you want an explicit helper on the footer */
+.site-footer {
+  margin-top: auto;
+}
+
+/* shared compact rating style used by RatingBadge */
+.rating-compact {
+  font-size: 0.9rem;   /* tweak to 0.9rem if you need even smaller */
+  line-height: 1.2;
+}
+
+/* ===== Minimal globals (KEEP) ===== */
+:root{
+  --brand:#3eaf6f;
+  --brand-700:#2c8e56;
+  --muted:#6b7280;
+  --card-radius:14px;
+  --card-shadow:0 6px 16px rgba(0,0,0,.08);
+  --card-shadow-hover:0 10px 24px rgba(0,0,0,.12);
+}
+
+/* Card */
+.u-card{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:var(--card-radius);
+  box-shadow:var(--card-shadow);
+  padding:16px;
+}
+.u-card[data-hoverable="true"]:hover{ box-shadow:var(--card-shadow-hover); }
+
+/* Brand link */
+.u-link{ color:var(--brand); text-decoration:none; font-weight:500; }
+.u-link:hover{ text-decoration:underline; }
+.u-link:visited{ color:var(--brand); }
+
+/* Button */
+.u-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:8px 16px; border-radius:999px; font-weight:600;
+  border:1px solid transparent; cursor:pointer; text-decoration:none;
+}
+.u-btn--primary{ background:var(--brand); color:#fff; border-color:var(--brand); }
+.u-btn--primary:hover{ background:var(--brand-700); border-color:var(--brand-700); }
+
+/* (optional, used on the destinations grid to center rows) */
+.u-grid-center{ justify-content:center; }
+
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .u-card[data-hoverable="true"]:hover{ transform:none; }
+}
+
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 600px) {
+  .hero {
+    min-height: 65vh;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-buttons button {
+    width: 80%; /* or 100% for full width */
+  }
+}
+
+
+
+
+
+
+  

@@ -1,0 +1,64 @@
+.footer {
+  /* make the var local to this component */
+  --brand-green: #3eaf6f;
+
+  border-top: 1px solid #e5e5e5;
+  background: #fafafa;
+  padding: 20px 14px;
+  margin-top: 48px;
+}
+
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.left {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.navRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sep {
+  color: #888;
+  font-weight: normal;
+}
+
+
+.nav a {
+  text-decoration: none;
+  color: var(--brand-green);
+  font-weight: 500;
+}
+
+.nav a:hover,
+.nav a:focus-visible {
+  text-decoration: underline;
+}
+
+/* optional breathing room for reCAPTCHA badge */
+.footer { padding-bottom: 28px; }
+
+@media (max-width: 520px) {
+ 
+  .footer { padding-bottom: 56px; }
+}

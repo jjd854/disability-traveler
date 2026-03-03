@@ -1,0 +1,212 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem; /* Increased spacing */
+  text-align: left;
+}
+
+.formField {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.reviewTipsLink {
+  background: none;
+  border: none;
+  color: #3eaf6f; /* your brand green */
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 14px;
+  padding-bottom: 16px;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submitButton {
+  background-color: #3eaf6f;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.submitButton:hover {
+  background-color: #36995f;
+  margin-top: 12 px;
+}
+
+/* ✨ Add matching style for Upload Photos */
+.uploadButton {
+  background-color: #3eaf6f;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.uploadButton:hover {
+  background-color: #d5d5d5;
+}
+
+/* submit-review/page.module.css */
+
+.previewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.previewImageWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 150px;
+  margin: 12px;
+}
+
+.previewImage {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  position: relative;
+}
+
+.altTextInput {
+  width: 150px;
+  margin-top: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.removeButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.previewImageWrapper:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+}
+
+.previewImageWrapper {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem; /* or whatever spacing you like */
+  justify-content: center;
+  margin-top: 1rem; /* optional spacing above */
+  margin-bottom: 1rem; /* optional spacing below */
+}
+
+/* Center the checkbox captcha */
+.captchaRow {
+  display: grid;
+  place-items: center;
+  margin-top: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+/* The captcha renders inside a div; keep it from overflowing on tiny screens */
+.captchaRow > div {
+  width:304px;
+  max-width: 100%;
+  margin: 0;
+}
+
+.certifyText {
+  font-size: 12px;
+  color: #666;
+  margin-top: 16px;
+  max-width: 560px; /* slight increase for breathing room */
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5; /* slightly more readable */
+  text-align: center; /* optional — keeps it clean under buttons */
+  opacity: 0.85;
+}
+
+
+
+@media (max-width: 480px) {
+  .formWrapper {
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .buttonGroup > * {
+    width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
