@@ -1,6 +1,6 @@
 // app/about/page.tsx
 /* eslint-disable react/no-unescaped-entities */
-import styles from './About.module.css';
+import styles from './about.module.css';
 import Footer from '../../components/ui/Footer'; 
 import Link from "next/link"; 
 import { Suspense } from 'react';
