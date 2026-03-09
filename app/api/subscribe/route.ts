@@ -1,15 +1,29 @@
 import { NextResponse } from "next/server";
 
-async function safeJson(res: Response) {
+type SubscribeBody = {
+  email?: unknown;
+  token?: unknown;
+};
+
+type RecaptchaVerifyResponse = {
+  success: boolean;
+  score?: number;
+  "error-codes"?: string[];
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+async function safeJson(res: Response): Promise<unknown> {
   const ct = res.headers.get("content-type") || "";
   if (ct.includes("application/json")) {
     try {
-      return await res.json();
+      return (await res.json()) as unknown;
     } catch {
       return null;
     }
   }
-  // try text fallback
   try {
     const text = await res.text();
     return text ? { raw: text } : null;
@@ -18,18 +32,34 @@ async function safeJson(res: Response) {
   }
 }
 
+function toRecaptchaResponse(value: unknown): RecaptchaVerifyResponse | null {
+  if (!isRecord(value)) return null;
+  if (typeof value.success !== "boolean") return null;
+
+  const out: RecaptchaVerifyResponse = { success: value.success };
+
+  if (typeof value.score === "number") out.score = value.score;
+  if (Array.isArray(value["error-codes"]) && value["error-codes"].every((x) => typeof x === "string")) {
+    out["error-codes"] = value["error-codes"];
+  }
+
+  return out;
+}
+
 export async function POST(req: Request) {
   try {
     // 0) Parse body safely
-    let body: any = null;
+    let rawBody: unknown;
     try {
-      body = await req.json();
+      rawBody = (await req.json()) as unknown;
     } catch {
       return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
     }
 
-    const email = String(body?.email || "").trim().toLowerCase();
-    const token = String(body?.token || "").trim();
+    const body: SubscribeBody = isRecord(rawBody) ? (rawBody as SubscribeBody) : {};
+
+    const email = String(body.email ?? "").trim().toLowerCase();
+    const token = String(body.token ?? "").trim();
 
     if (!email || !token) {
       return NextResponse.json({ error: "Missing email or captcha token." }, { status: 400 });
@@ -51,25 +81,26 @@ export async function POST(req: Request) {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ secret: SECRET, response: token }).toString(),
       });
-    } catch (e: any) {
+    } catch {
       return NextResponse.json(
         { error: "Captcha verification request failed." },
         { status: 502 }
       );
     }
 
-    const verifyJson: any = await safeJson(verifyRes);
+    const verifyRaw = await safeJson(verifyRes);
+    const verifyJson = toRecaptchaResponse(verifyRaw);
 
     if (!verifyRes.ok) {
       return NextResponse.json(
-        { error: "Captcha verification error.", details: verifyJson },
+        { error: "Captcha verification error.", details: verifyRaw },
         { status: 502 }
       );
     }
 
     if (!verifyJson?.success) {
       return NextResponse.json(
-        { error: "Captcha verification failed.", details: verifyJson?.["error-codes"] || null },
+        { error: "Captcha verification failed.", details: verifyJson?.["error-codes"] ?? null },
         { status: 400 }
       );
     }
@@ -92,10 +123,7 @@ export async function POST(req: Request) {
 
     const listId = Number(BREVO_LIST_ID_RAW);
     if (!Number.isFinite(listId)) {
-      return NextResponse.json(
-        { error: "BREVO_LIST_ID must be a number." },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "BREVO_LIST_ID must be a number." }, { status: 500 });
     }
 
     let brevoRes: Response;
@@ -120,7 +148,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const brevoJson: any = await safeJson(brevoRes);
+    const brevoJson = await safeJson(brevoRes);
 
     if (!brevoRes.ok) {
       return NextResponse.json(
@@ -130,8 +158,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ ok: true });
-  } catch (err: any) {
-    // Keep this generic for users; log details server-side
+  } catch (err: unknown) {
     console.error("Subscribe API error:", err);
     return NextResponse.json({ error: "Server error." }, { status: 500 });
   }

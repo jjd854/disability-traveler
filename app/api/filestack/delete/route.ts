@@ -3,7 +3,20 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 
-function signFilestackPolicy(policyObj: any, secret: string) {
+type FilestackPolicy = {
+  expiry: number;
+  call: Array<"remove">;
+};
+
+type DeleteRequestBody = {
+  handle: string;
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function signFilestackPolicy(policyObj: FilestackPolicy, secret: string) {
   const policy = Buffer.from(JSON.stringify(policyObj)).toString("base64");
   const signature = crypto
     .createHmac("sha256", secret)
@@ -14,11 +27,13 @@ function signFilestackPolicy(policyObj: any, secret: string) {
 
 export async function POST(req: Request) {
   try {
-    const { handle } = await req.json();
+    const raw = (await req.json()) as unknown;
 
-    if (!handle || typeof handle !== "string") {
+    if (!isRecord(raw) || typeof raw.handle !== "string" || raw.handle.trim() === "") {
       return NextResponse.json({ ok: false, message: "Missing handle" }, { status: 400 });
     }
+
+    const { handle } = raw as DeleteRequestBody;
 
     const apiKey = process.env.NEXT_PUBLIC_FILESTACK_API_KEY;
     const secret = process.env.FILESTACK_SECRET_KEY;
@@ -49,11 +64,9 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ ok: true });
-  } catch (err: any) {
-    return NextResponse.json(
-      { ok: false, message: err?.message || "Unexpected error" },
-      { status: 500 }
-    );
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unexpected error";
+    return NextResponse.json({ ok: false, message }, { status: 500 });
   }
 }
 

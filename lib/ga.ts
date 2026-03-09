@@ -1,6 +1,9 @@
 // app/lib/ga.ts
-export function gaEvent(name: string, params: Record<string, any> = {}) {
+export function gaEvent(name: string, params: Record<string, unknown> = {}) {
   if (typeof window === 'undefined') return;
-  if (!window.gtag) return;
-  window.gtag('event', name, params);
+
+  const gtag = window.gtag;
+  if (typeof gtag !== 'function') return;
+
+  gtag('event', name, params);
 }

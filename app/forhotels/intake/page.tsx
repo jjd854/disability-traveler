@@ -1,7 +1,7 @@
-// Rewritten intake.page.tsx with alt text previews for both general and room photos
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import Image from 'next/image';
 import styles from './IntakeForm.module.css';
 import FilestackUpload from '@/components/ui/FilestackUpload';
 import Navbar from '@/components/ui/Navbar';
@@ -17,7 +17,7 @@ const PROPERTY_AMENITIES = [
   { key: 'beach_wheelchair', label: 'Beach Wheelchair' },
   { key: 'service_dogs_welcome', label: 'Service Dogs Welcome' },
   { key: 'all_inclusive', label: 'All-Inclusive' },
-];
+] as const;
 
 const ROOM_AMENITIES = [
   { key: 'door_32_in', label: '32" Door' },
@@ -31,135 +31,202 @@ const ROOM_AMENITIES = [
   { key: 'turning_radius_60_in', label: 'Turning Radius ≥ 60"' },
   { key: 'visual_alarm', label: 'Visual Alarm' },
   { key: 'hearing_kit_available', label: 'Hearing Kit Available' },
-];
+] as const;
+
+type PropertyAmenityKey = (typeof PROPERTY_AMENITIES)[number]['key'];
+type RoomAmenityKey = (typeof ROOM_AMENITIES)[number]['key'];
+
+type UploadPhoto = FileInfo & {
+  alt?: string;
+  // some uploads may include a "handle" — keep it optional for stable React keys
+  handle?: string;
+};
+
+type PhotoPayload = {
+  url: string;
+  alt_text: string;
+  width?: number;
+  height?: number;
+};
+
+type RoomCategoryPayload = {
+  name: string;
+  room_category_photos: PhotoPayload[];
+} & Record<RoomAmenityKey, boolean>;
+
+type IntakePayload = {
+  hotel_name: string | null;
+  brand_name: string | null;
+  website: string | null;
+  street_address: string | null;
+  contact_name: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  hotel_phone: string | null;
+  hotel_description: string | null;
+  additional_notes: string | null;
+  submitter_agreement: boolean;
+  property_amenities: Record<PropertyAmenityKey, boolean>;
+  property_photos: PhotoPayload[];
+  room_categories: RoomCategoryPayload[];
+};
+
+type RoomBlock = { id: number };
+
+const toText = (v: FormDataEntryValue | null): string | null => {
+  if (typeof v === 'string') {
+    const t = v.trim();
+    return t ? t : null;
+  }
+  return null;
+};
+
+const makeId = () => Date.now() + Math.floor(Math.random() * 1000);
 
 export default function HotelIntakeForm() {
-  const [roomBlocks, setRoomBlocks] = useState([{ id: 1 }]);
+  const [roomBlocks, setRoomBlocks] = useState<RoomBlock[]>([{ id: 1 }]);
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-  const [propertyPhotos, setPropertyPhotos] = useState<FileInfo[]>([]);
-  const [roomPhotos, setRoomPhotos] = useState<{ [roomId: number]: any[] }>({});
+  const [propertyPhotos, setPropertyPhotos] = useState<UploadPhoto[]>([]);
+  const [roomPhotos, setRoomPhotos] = useState<Record<number, UploadPhoto[]>>({});
 
-  const addRoomBlock = () => setRoomBlocks([...roomBlocks, { id: Date.now() }]);
-  const removeRoomBlock = (id: number) => setRoomBlocks((prev) => prev.filter((block) => block.id !== id));
+  const introText = useMemo(
+    () => "Please complete the form below. Listings are free. We'll follow up by email once reviewed.",
+    []
+  );
 
-  const handleAltChange = (index: number, alt: string) => {
-    const updated = [...propertyPhotos];
-    updated[index].alt = alt;
-    setPropertyPhotos(updated);
-  };
+  const addRoomBlock = useCallback(() => {
+    setRoomBlocks((prev) => [...prev, { id: makeId() }]);
+  }, []);
 
-  const handleRoomAltChange = (
-    roomId: number,
-    index: number,
-    alt: string,
-    setRoomPhotos: React.Dispatch<React.SetStateAction<{ [roomId: number]: any[] }>>
-  ) => {
+  const removeRoomBlock = useCallback((id: number) => {
+    setRoomBlocks((prev) => prev.filter((b) => b.id !== id));
     setRoomPhotos((prev) => {
-      const updated = { ...prev };
-      const files = [...(updated[roomId] || [])];
-      if (files[index]) {
-        files[index].alt = alt;
-      }
-      updated[roomId] = files;
-      return updated;
+      const next = { ...prev };
+      delete next[id];
+      return next;
     });
-  };
+  }, []);
 
-  const handleRemovePropertyPhoto = (url: string) => {
-  setPropertyPhotos((prev) => prev.filter((file) => file.url !== url));
- };
+  const handleRemovePropertyPhoto = useCallback((url: string) => {
+    setPropertyPhotos((prev) => prev.filter((file) => file.url !== url));
+  }, []);
 
-
-  const handleRemoveRoomImage = (roomId: number, url: string) => {
-  setRoomPhotos((prev) => {
-    const updated = { ...prev };
-    updated[roomId] = (updated[roomId] || []).filter((file) => file.url !== url);
-    return updated;
-  });
- };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setFormStatus('submitting');
-  const form = e.target as HTMLFormElement;
-  const formData = new FormData(form);
-
-  try {
-    const payload: any = {
-      hotel_name: formData.get('hotel_name'),
-      brand_name: formData.get('brand'),
-      website: formData.get('website'),
-      street_address: formData.get('address'),
-      contact_name: formData.get('contact_name'),
-      contact_email: formData.get('contact_email'),
-      contact_phone: formData.get('contact_phone'),
-      hotel_phone: formData.get('phone_number'),
-      hotel_description: formData.get('description'),
-      additional_notes: formData.get('notes'),
-      submitter_agreement: formData.get('permission_granted') === 'on',
-      property_amenities: {},
-      property_photos: propertyPhotos.map((photo) => ({
-        url: photo.url,
-        alt_text: photo.alt || '',
-        width: photo.width,
-        height: photo.height,
-      })),
-      room_categories: [],
-    };
-
-    PROPERTY_AMENITIES.forEach(({ key }) => {
-      payload.property_amenities[key] = formData.get(`property_${key}`) === 'on';
+  const handleRemoveRoomImage = useCallback((roomId: number, url: string) => {
+    setRoomPhotos((prev) => {
+      const next = { ...prev };
+      next[roomId] = (next[roomId] || []).filter((file) => file.url !== url);
+      return next;
     });
+  }, []);
 
-    roomBlocks.forEach(({ id }) => {
-      const features: { [key: string]: boolean } = {};
-      ROOM_AMENITIES.forEach(({ key }) => {
-        features[key] = formData.get(`room_${id}_feature_${key}`) === 'on';
+  const updatePropertyAlt = useCallback((index: number, alt: string) => {
+    setPropertyPhotos((prev) => {
+      const next = [...prev];
+      const item = next[index];
+      if (!item) return prev;
+      next[index] = { ...item, alt };
+      return next;
+    });
+  }, []);
+
+  const updateRoomAlt = useCallback((roomId: number, index: number, alt: string) => {
+    setRoomPhotos((prev) => {
+      const next = { ...prev };
+      const files = [...(next[roomId] || [])];
+      const f = files[index];
+      if (!f) return prev;
+      files[index] = { ...f, alt };
+      next[roomId] = files;
+      return next;
+    });
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormStatus('submitting');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const propertyAmenityState = {} as Record<PropertyAmenityKey, boolean>;
+      PROPERTY_AMENITIES.forEach(({ key }) => {
+        propertyAmenityState[key] = formData.get(`property_${key}`) === 'on';
       });
 
-      payload.room_categories.push({
-        name: formData.get(`room_name_${id}`),
-        ...features,
-        room_category_photos: (roomPhotos[id] || []).map((file) => ({
-          url: file.url,
-          alt_text: file.alt || '',
-          width: file.width,
-          height: file.height,
+      const payload: IntakePayload = {
+        hotel_name: toText(formData.get('hotel_name')),
+        brand_name: toText(formData.get('brand')),
+        website: toText(formData.get('website')),
+        street_address: toText(formData.get('address')),
+        contact_name: toText(formData.get('contact_name')),
+        contact_email: toText(formData.get('contact_email')),
+        contact_phone: toText(formData.get('contact_phone')),
+        hotel_phone: toText(formData.get('phone_number')),
+        hotel_description: toText(formData.get('description')),
+        additional_notes: toText(formData.get('notes')),
+        submitter_agreement: formData.get('permission_granted') === 'on',
+        property_amenities: propertyAmenityState,
+        property_photos: propertyPhotos.map((p) => ({
+          url: p.url,
+          alt_text: p.alt || '',
+          width: p.width,
+          height: p.height,
         })),
+        room_categories: [],
+      };
+
+      roomBlocks.forEach(({ id }) => {
+        const features = {} as Record<RoomAmenityKey, boolean>;
+        ROOM_AMENITIES.forEach(({ key }) => {
+          features[key] = formData.get(`room_${id}_feature_${key}`) === 'on';
+        });
+
+        const roomPayload: RoomCategoryPayload = {
+          name: String(formData.get(`room_name_${id}`) ?? ''),
+          room_category_photos: (roomPhotos[id] || []).map((f) => ({
+            url: f.url,
+            alt_text: f.alt || '',
+            width: f.width,
+            height: f.height,
+          })),
+          ...features,
+        };
+
+        payload.room_categories.push(roomPayload);
       });
-    });
 
-    console.log('Payload being submitted:', payload);
+      const res = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:3jVxSIOz/submit-intake', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    const res = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:3jVxSIOz/submit-intake', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+      if (!res.ok) {
+        throw new Error(`Submission failed (${res.status})`);
+      }
 
-    if (!res.ok) throw new Error('Submission failed');
-    setFormStatus('success');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+      setFormStatus('success');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Reset form fields
-    form.reset();
-
-    // Clear component state
-    setPropertyPhotos([]);
-    setRoomPhotos({});
-    setRoomBlocks([{ id: Date.now() }]);
-
-  } catch (err) {
-    setFormStatus('error');
-  }
-};
+      // Reset everything
+      form.reset();
+      setPropertyPhotos([]);
+      setRoomPhotos({});
+      setRoomBlocks([{ id: makeId() }]);
+    } catch (err: unknown) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      setFormStatus('error');
+    }
+  };
 
   return (
     <>
       <Navbar />
       <main className={styles.wrap}>
         <h1 className={styles.title}>Submit Your Hotel for Listing</h1>
-        <p className={styles.intro}>Please complete the form below. Listings are free. We'll follow up by email once reviewed.</p>
+        <p className={styles.intro}>{introText}</p>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <fieldset>
@@ -176,7 +243,12 @@ export default function HotelIntakeForm() {
 
           <fieldset>
             <legend>Hotel Description</legend>
-            <textarea name="description" placeholder="Please provide a 100–200 word description of your property" rows={4} className={styles.notesBox} />
+            <textarea
+              name="description"
+              placeholder="Please provide a 100–200 word description of your property"
+              rows={4}
+              className={styles.notesBox}
+            />
           </fieldset>
 
           <fieldset>
@@ -196,91 +268,87 @@ export default function HotelIntakeForm() {
                   name="general_photos"
                   label="Upload property photos"
                   maxFiles={10}
-                  onUploadDone={(files) => setPropertyPhotos(files.filesUploaded)}
-               />
-             </div>
+                  onUploadDone={(files) => setPropertyPhotos(files.filesUploaded as UploadPhoto[])}
+                />
+              </div>
 
-             {propertyPhotos.map((file, index) => (
-               <div
-                 key={index}
-                 style={{
-                   display: 'inline-flex',
-                   flexDirection: 'column',
-                   alignItems: 'center',
-                   marginRight: '8px',
-                   marginBottom: '1.5rem',
-                 }}
-               >
-               <div
-                 style={{
-                   position: 'relative',
-                   display: 'inline-block',
-                   maxWidth: '200px',
+              {propertyPhotos.map((file, index) => (
+                <div
+                  key={file.handle || file.url || index}
+                  style={{
+                    display: 'inline-flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    marginRight: '8px',
+                    marginBottom: '1.5rem',
                   }}
-               >
-               <img
-                 src={file.url}
-                 alt={file.alt || 'Uploaded photo'}
-                 style={{
-                   width: '100%',
-                   display: 'block',
-                   borderRadius: '4px',
-                 }}
-               />
-               <button
-                 type="button"
-                 onClick={() => handleRemovePropertyPhoto(file.url)}
-                 style={{
-                   position: 'absolute',
-                   top: '6px',
-                   right: '6px',
-                   backgroundColor: '#d00',
-                   color: 'white',
-                   border: 'none',
-                   borderRadius: '4px',
-                   padding: '2px 6px',
-                   fontSize: '0.75rem',
-                   cursor: 'pointer',
-                 }}
-               >
-                 Remove
-               </button>
-             </div>
+                >
+                  <div style={{ position: 'relative', display: 'inline-block', width: 200 }}>
+                    <Image
+                      src={file.url}
+                      alt={file.alt || 'Uploaded property photo'}
+                      width={200}
+                      height={140}
+                      style={{ width: '100%', height: 'auto', borderRadius: 4, display: 'block' }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemovePropertyPhoto(file.url)}
+                      style={{
+                        position: 'absolute',
+                        top: 6,
+                        right: 6,
+                        backgroundColor: '#d00',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: 4,
+                        padding: '2px 6px',
+                        fontSize: '0.75rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
 
-             <input
-               type="text"
-               placeholder="Alt text for accessibility"
-               value={file.alt || ''}
-               onChange={(e) => {
-                 const updated = [...propertyPhotos];
-                 updated[index].alt = e.target.value;
-                 setPropertyPhotos(updated);
-               }}
-               style={{
-                 width: '200px',
-                 padding: '4px',
-                 border: '1px solid #ccc',
-                 borderRadius: '4px',
-                 marginTop: '6px',
-                 fontSize: '0.875rem',
-               }}
-             />
-           </div>
-         ))}
-             <p className={styles.uploadNote}>
-                If you have photos of your property's accessible features, please include them — they are encouraged but not required.
-                You're also welcome to upload any professional photos that best represent your property overall.
-             </p>
-           </div>
-         </fieldset>
+                  <input
+                    type="text"
+                    placeholder="Alt text for accessibility"
+                    value={file.alt || ''}
+                    onChange={(e) => updatePropertyAlt(index, e.target.value)}
+                    style={{
+                      width: 200,
+                      padding: 4,
+                      border: '1px solid #ccc',
+                      borderRadius: 4,
+                      marginTop: 6,
+                      fontSize: '0.875rem',
+                    }}
+                  />
+                </div>
+              ))}
 
+              <p className={styles.uploadNote}>
+                If you have photos of your property&apos;s accessible features, please include them — they are encouraged but not required.
+                You&apos;re also welcome to upload any professional photos that best represent your property overall.
+              </p>
+            </div>
+          </fieldset>
 
           <fieldset>
             <legend>Accessible Room Categories</legend>
+
             {roomBlocks.map((block, index) => (
               <div key={block.id} className={styles.roomBlock}>
                 <h4>Room Category #{index + 1}</h4>
-                <input name={`room_name_${block.id}`} placeholder="Room Category Name" required className={styles.roomNameInput} />
+
+                <input
+                  name={`room_name_${block.id}`}
+                  placeholder="Room Category Name"
+                  required
+                  className={styles.roomNameInput}
+                />
+
                 <div className={styles.roomFeatures}>
                   {ROOM_AMENITIES.map(({ key, label }) => (
                     <label key={key}>
@@ -288,102 +356,92 @@ export default function HotelIntakeForm() {
                     </label>
                   ))}
                 </div>
+
                 <div className={styles.uploadGroup}>
                   <div style={{ isolation: 'isolate', position: 'relative', zIndex: 1 }}>
                     <FilestackUpload
                       name={`room_photos_${block.id}`}
-                      label="Upload room_photos"
+                      label="Upload room photos"
                       maxFiles={4}
                       onUploadDone={(files) =>
-                      setRoomPhotos((prev) => ({ ...prev, [block.id]: files.filesUploaded }))
-                   }
-                 />
-               </div>
+                        setRoomPhotos((prev) => ({
+                          ...prev,
+                          [block.id]: files.filesUploaded as UploadPhoto[],
+                        }))
+                      }
+                    />
+                  </div>
 
-               {(roomPhotos[block.id] || []).map((file, index) => (
-                 <div
-                   key={file.handle || index}
-                   style={{
-                     display: 'inline-flex',
-                     flexDirection: 'column',
-                     alignItems: 'center',
-                     marginRight: '8px',
-                     marginBottom: '1.5rem',
-                   }}
-                  >
-                   <div
-                     style={{
-                       position: 'relative',
-                       display: 'inline-block',
-                       maxWidth: '200px',
-                     }}
-                   >
-                     <img
-                       src={file.url}
-                       alt={file.alt || 'Room photo'}
-                       style={{
-                         width: '100%',
-                         display: 'block',
-                         borderRadius: '4px',
-                       }}
-                     />
-                       <button
-                         type="button"
-                         onClick={() => handleRemoveRoomImage(block.id, file.url)}
-                         style={{
-                           position: 'absolute',
-                           top: '6px',
-                           right: '6px',
-                           backgroundColor: '#d00',
-                           color: 'white',
-                           border: 'none',
-                           borderRadius: '4px',
-                           padding: '2px 6px',
-                           fontSize: '0.75rem',
-                           cursor: 'pointer',
-                         }}
-                       >
-                         Remove
-                       </button>
-                     </div>
+                  {(roomPhotos[block.id] || []).map((file, i) => (
+                    <div
+                      key={file.handle || file.url || i}
+                      style={{
+                        display: 'inline-flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginRight: '8px',
+                        marginBottom: '1.5rem',
+                      }}
+                    >
+                      <div style={{ position: 'relative', display: 'inline-block', width: 200 }}>
+                        <Image
+                          src={file.url}
+                          alt={file.alt || 'Room photo'}
+                          width={200}
+                          height={140}
+                          style={{ width: '100%', height: 'auto', borderRadius: 4, display: 'block' }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveRoomImage(block.id, file.url)}
+                          style={{
+                            position: 'absolute',
+                            top: 6,
+                            right: 6,
+                            backgroundColor: '#d00',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: 4,
+                            padding: '2px 6px',
+                            fontSize: '0.75rem',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </div>
 
-                     <input
-                       type="text"
-                       placeholder="Alt text for accessibility"
-                       value={file.alt || ''}
-                       onChange={(e) => {
-                         setRoomPhotos((prev) => {
-                           const updated = { ...prev };
-                           const files = [...(updated[block.id] || [])];
-                           if (files[index]) files[index].alt = e.target.value;
-                           updated[block.id] = files;
-                           return updated;
-                         });
-                       }}
-                       style={{
-                         width: '200px',
-                         padding: '4px',
-                         border: '1px solid #ccc',
-                         borderRadius: '4px',
-                         marginTop: '6px',
-                         fontSize: '0.875rem',
-                       }}
-                     />
-                   </div>
-                 ))}
+                      <input
+                        type="text"
+                        placeholder="Alt text for accessibility"
+                        value={file.alt || ''}
+                        onChange={(e) => updateRoomAlt(block.id, i, e.target.value)}
+                        style={{
+                          width: 200,
+                          padding: 4,
+                          border: '1px solid #ccc',
+                          borderRadius: 4,
+                          marginTop: 6,
+                          fontSize: '0.875rem',
+                        }}
+                      />
+                    </div>
+                  ))}
 
+                  <p className={styles.uploadNote}>
+                    Please provide 1–4 photos of the room category. If you have professional photos of the accessible version of this room
+                    category, that is preferred. If not available, feel free to upload photos of the standard version as an example.
+                  </p>
+                </div>
 
-                <p className={styles.uploadNote}>
-                  Please provide 1–4 photos of the room category. If you have professional photos of the accessible version of this room category, that is preferred.
-                  However, if not available, feel free to upload photos of the standard version as an example.
-               </p>
-             </div>
-
-                <button type="button" onClick={() => removeRoomBlock(block.id)}>
-                  Delete This Room Category
-                </button>
+                {roomBlocks.length > 1 && (
+                  <button type="button" onClick={() => removeRoomBlock(block.id)}>
+                    Delete This Room Category
+                  </button>
+                )}
               </div>
             ))}
+
             <button type="button" onClick={addRoomBlock} className={styles.addBtn}>
               + Add Another Room Category
             </button>
@@ -401,7 +459,7 @@ export default function HotelIntakeForm() {
             {formStatus === 'submitting' ? 'Submitting…' : 'Submit Listing'}
           </button>
 
-          {formStatus === 'success' && <p className={styles.success}>Thanks! We'll be in touch via email soon.</p>}
+          {formStatus === 'success' && <p className={styles.success}>Thanks! We&apos;ll be in touch via email soon.</p>}
           {formStatus === 'error' && <p className={styles.error}>Something went wrong. Please try again.</p>}
         </form>
       </main>
@@ -409,4 +467,3 @@ export default function HotelIntakeForm() {
     </>
   );
 }
-

@@ -9,7 +9,6 @@ import type { Review, RoomCategory } from '@/lib/types';
 import Link from 'next/link';
 import { getHotelAvg, getHotelCount } from '@/lib/utils';
 import RoomAmenitiesSection from '@/components/ui/RoomAmenitiesSection';
-import RoomAmenityStyles from '@/components/ui/RoomAmenityFilters.module.css';
 import OutboundLink from '@/components/ui/analytics/OutboundLink';
 
 interface Props {
@@ -24,49 +23,64 @@ type PhotoItem = {
   review_id?: number | null;
 };
 
+type ReviewPhotoChild = {
+  id?: number;
+  url?: string;
+  photo_url?: string;
+  photo_urls?: string;
+  alt_text?: string | null;
+  sort_order?: number | null;
+};
+
+type ReviewLike = Review & {
+  id?: number;
+  review_photos?: ReviewPhotoChild[];
+  review_photos_by_review?: ReviewPhotoChild[];
+  photo_urls?: string[];
+  photo_alt_texts?: Array<string | null | undefined>;
+};
+
 function collectReviewerPhotos(reviews: Review[]): PhotoItem[] {
   const rows: PhotoItem[] = [];
-  for (const r of reviews ?? []) {
-    const anyReview: any = r as any;
 
-    const child =
-      (anyReview.review_photos ?? anyReview.review_photos_by_review) as
-        | Array<{
-            id?: number;
-            url?: string;
-            photo_url?: string;
-            photo_urls?: string;
-            alt_text?: string | null;
-            sort_order?: number | null;
-          }>
-        | undefined;
+  for (const r of reviews ?? []) {
+    const review = r as ReviewLike;
+
+    const child = review.review_photos ?? review.review_photos_by_review;
 
     if (Array.isArray(child) && child.length) {
       for (let i = 0; i < child.length; i++) {
         const p = child[i] ?? {};
         const url = String(p.url || p.photo_url || p.photo_urls || '');
         if (!url || url.trim() === '') continue;
+
         rows.push({
-          id: typeof p.id === 'number' ? p.id : Number(`${anyReview.id}${i}`),
+          id: typeof p.id === 'number' ? p.id : Number(`${review.id ?? 0}${i}`),
           photo_url: url,
           alt_text:
             p.alt_text ?? (r.reviewer_name ? `Photo from ${r.reviewer_name}` : 'Guest photo'),
           sort_order: p.sort_order ?? i,
-          review_id: anyReview.id ?? null, 
+          review_id: review.id ?? null,
         });
       }
       continue;
     }
 
-    const urls: string[] = Array.isArray(anyReview.photo_urls) ? anyReview.photo_urls : [];
-    const alts: (string | null | undefined)[] = Array.isArray(anyReview.photo_alt_texts)
-      ? anyReview.photo_alt_texts
+    const urls: string[] = Array.isArray(review.photo_urls) ? review.photo_urls : [];
+    const alts: Array<string | null | undefined> = Array.isArray(review.photo_alt_texts)
+      ? review.photo_alt_texts
       : [];
 
     for (let i = 0; i < urls.length; i++) {
       const raw = urls[i];
-      const url = raw?.startsWith('http') ? raw : raw ? `https://cdn.filestackcontent.com/${raw}` : '';
+      const url = raw?.startsWith('http')
+        ? raw
+        : raw
+          ? `https://cdn.filestackcontent.com/${raw}`
+          : '';
+
       if (!url || url.trim() === '') continue;
+
       rows.push({
         id: Number(`${r.id}${i}`),
         photo_url: url,
@@ -99,30 +113,46 @@ export default async function HotelDetailPage({ params }: Props) {
   const avg = getHotelAvg(hotel);
   const count = getHotelCount(hotel);
 
-  const priceLevel = Number((hotel as any).price_level ?? 0);
+  const priceLevel = Number(hotel.price_level ?? 0);
   const PRICE_LABELS = ['', 'Budget', 'Economy', 'Mid-range', 'Upscale', 'Luxury'];
 
-  function normalizeRoomCategory(rc: any): RoomCategory {
-    const addon = rc?.avg_room_category_rating;
-    const avg =
-      typeof addon === 'object'
-        ? addon?.avg_room_category_rating
-        : rc?.avg_room_category_rating;
-    const cnt =
-      typeof addon === 'object'
-        ? addon?.room_category_rating_count
-        : rc?.room_category_rating_count;
+type RoomCategoryAddon = {
+  avg_room_category_rating?: number | string | null;
+  room_category_rating_count?: number | string | null;
+};
 
-    return {
-      ...rc,
-      id: rc.id ?? rc.room_category_id,
-      name: rc.name ?? rc.title ?? 'Unnamed Room Category',
-      avg_room_category_rating:
-        avg === undefined || avg === null || avg === '' ? null : Number(avg),
-      room_category_rating_count:
-        cnt === undefined || cnt === null || cnt === '' ? 0 : Number(cnt),
-    } as RoomCategory;
-  }
+type RoomCategoryLike = Partial<RoomCategory> & {
+  room_category_id?: number;
+  title?: string;
+  avg_room_category_rating?: number | string | null | RoomCategoryAddon;
+  room_category_rating_count?: number | string | null;
+};
+
+function isRoomCategoryAddon(value: unknown): value is RoomCategoryAddon {
+  return typeof value === 'object' && value !== null;
+}
+
+function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
+  const addon = rc.avg_room_category_rating;
+
+  const avg = isRoomCategoryAddon(addon)
+    ? addon.avg_room_category_rating
+    : rc.avg_room_category_rating;
+
+  const cnt = isRoomCategoryAddon(addon)
+    ? addon.room_category_rating_count
+    : rc.room_category_rating_count;
+
+  return {
+    ...rc,
+    id: rc.id ?? rc.room_category_id ?? 0,
+    name: rc.name ?? rc.title ?? 'Unnamed Room Category',
+    avg_room_category_rating:
+      avg === undefined || avg === null || avg === '' ? null : Number(avg),
+    room_category_rating_count:
+      cnt === undefined || cnt === null || cnt === '' ? 0 : Number(cnt),
+  } as RoomCategory;
+}
 
   const roomCategories: RoomCategory[] = Array.isArray(hotel.room_categories)
     ? hotel.room_categories.map(normalizeRoomCategory)

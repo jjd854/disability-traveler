@@ -19,6 +19,10 @@ type Grecaptcha = {
   };
 };
 
+type WindowWithGrecaptcha = Window & {
+  grecaptcha?: Grecaptcha;
+};
+
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
     if (document.querySelector(`script[src="${src}"]`)) return resolve();
@@ -40,7 +44,7 @@ async function ensureGrecaptcha(siteKey: string): Promise<Grecaptcha> {
     /* ignore; we’ll try enterprise next */
   }
 
-  let g: Grecaptcha | undefined = (window as any).grecaptcha;
+  let g: Grecaptcha | undefined = (window as WindowWithGrecaptcha).grecaptcha;
   let hasClient =
     !!g &&
     (typeof g.execute === 'function' ||
@@ -49,7 +53,7 @@ async function ensureGrecaptcha(siteKey: string): Promise<Grecaptcha> {
   if (!hasClient) {
     // Some keys/pages only work with enterprise shim; load it if needed
     await loadScript(`https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`);
-    g = (window as any).grecaptcha;
+    g = (window as WindowWithGrecaptcha).grecaptcha;
     hasClient =
       !!g &&
       (typeof g.execute === 'function' ||
@@ -95,7 +99,7 @@ export default function HomePage() {
     });
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
   // Human timing check — minimum 2.5 seconds from form render
@@ -106,7 +110,7 @@ export default function HomePage() {
   }
 
   // Honeypot check
-  const formData = new FormData(e.currentTarget as HTMLFormElement);
+  const formData = new FormData(e.currentTarget);
   const hp = (formData.get('website') || '').toString().trim();
   if (hp.length > 0) {
     // Bot detected — pretend success and stop
@@ -154,13 +158,14 @@ export default function HomePage() {
     gaEvent('newsletter_subscribe_success', {
       location: 'homepage',
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
 
     gaEvent('newsletter_subscribe_failed', {
       location: 'homepage',
     });
     
-    const msg = String(err?.message || '').toLowerCase();
+    const msg =
+      err instanceof Error ? err.message.toLowerCase() : String(err || '').toLowerCase();
 
     if (
       msg.includes('failed to fetch') ||

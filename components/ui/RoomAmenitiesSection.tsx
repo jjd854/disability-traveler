@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import RoomCategoryCard from '@/components/ui/RoomCategoryCard';
 import type { RoomCategory } from '@/lib/types';
 import pageStyles from '@/app/hotels/[slug]/page.module.css';
@@ -35,6 +35,14 @@ const ROOM_FEATURES: Array<{ key: FeatureKey; label: string }> = [
   { key: 'bed_clearance_underframe', label: 'Bed Clearance Underframe' },
 ];
 
+type RoomCategoryLike = RoomCategory & {
+  features_json?: Partial<Record<FeatureKey, unknown>> | null;
+} & Partial<Record<FeatureKey, unknown>>;
+
+function asBool(v: unknown): boolean {
+  return v === true || v === 'true';
+}
+
 export default function RoomAmenitiesSection({
   roomCategories,
 }: {
@@ -43,89 +51,90 @@ export default function RoomAmenitiesSection({
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Set<FeatureKey>>(new Set());
 
-  const toggle = (key: FeatureKey) =>
-    setSelected(prev => {
+  const toggleSelected = useCallback((key: FeatureKey) => {
+    setSelected((prev) => {
       const next = new Set(prev);
-      next.has(key) ? next.delete(key) : next.add(key);
+
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+
       return next;
     });
+  }, []);
 
-  const clearAll = () => setSelected(new Set());
+  const clearAll = useCallback(() => {
+    setSelected(new Set());
+  }, []);
 
-  const asBool = (v: any) => v === true || v === 'true';
-  const hasFlag = (rc: any, k: FeatureKey) =>
-    asBool(rc?.features_json?.[k]) || asBool((rc as any)?.[k]);
-
+  const hasFlag = useCallback((rc: RoomCategoryLike, k: FeatureKey) => {
+    return asBool(rc.features_json?.[k]) || asBool(rc[k]);
+  }, []);
 
   const filtered = useMemo(() => {
     if (selected.size === 0) return roomCategories;
-    const keys = Array.from(selected) as FeatureKey[];
-    return roomCategories.filter((rc: any) => keys.every(k => hasFlag(rc, k)));
-  }, [roomCategories, selected]);
+
+    const keys = Array.from(selected);
+    return roomCategories.filter((rc) =>
+      keys.every((k) => hasFlag(rc as RoomCategoryLike, k))
+    );
+  }, [roomCategories, selected, hasFlag]);
 
   return (
     <section>
-      {/* Toggle button */}
       <div className={filterStyles.center}>
         <button
           type="button"
           className={`${filterStyles.toggleBtnGreen} ${open ? filterStyles.toggleBtnGreenOpen : ''}`}
-          onClick={() => setOpen(o => !o)}
+          onClick={() => setOpen((o) => !o)}
           aria-pressed={open}
         >
           {open ? 'Hide Filters' : 'Show Filters'}
         </button>
       </div>
 
-      {/* Filter panel */}
       {open && (
-  <div className={filterStyles.filtersPanel}>
-    
+        <div className={filterStyles.filtersPanel}>
+          <fieldset className={filterStyles.filterFieldset}>
+            <legend className={filterStyles.filterLegend}>Room Amenities</legend>
 
-    {/* Room Amenities — same markup/classes as /hotels */}
-    <fieldset className={filterStyles.filterFieldset}>
-      <legend className={filterStyles.filterLegend}>Room Amenities</legend>
+            <div className={`${filterStyles.fieldsetRow} ${filterStyles.stackOnMobile}`}>
+              {ROOM_FEATURES.map(({ key, label }) => {
+                const checked = selected.has(key);
 
-      <div className={`${filterStyles.fieldsetRow} ${filterStyles.stackOnMobile}`}>
-        {ROOM_FEATURES.map(({ key, label }) => {
-          const checked = selected.has(key);
-          return (
-            <label key={key} className={filterStyles.chip}>
-              <input
-                type="checkbox"
-                checked={checked}
-                onChange={() =>
-                  setSelected(prev => {
-                    const next = new Set(prev);
-                    next.has(key) ? next.delete(key) : next.add(key);
-                    return next;
-                  })
-                }
-              />
-              {label}
-            </label>
-          );
-        })}
+                return (
+                  <label key={key} className={filterStyles.chip}>
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => toggleSelected(key)}
+                    />
+                    {label}
+                  </label>
+                );
+              })}
 
-        {selected.size > 0 && (
-          <button type="button" className={filterStyles.clearLink} onClick={clearAll}>
-            Clear
-          </button>
-        )}
-      </div>
-    </fieldset>
-  </div>
-)}
+              {selected.size > 0 && (
+                <button
+                  type="button"
+                  className={filterStyles.clearLink}
+                  onClick={clearAll}
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          </fieldset>
+        </div>
+      )}
 
-
-      {/* Cards grid (authoritative layout lives in page.module.css) */}
       <div className={pageStyles.roomCategoriesGrid}>
-        {filtered.map(rc => (
+        {filtered.map((rc) => (
           <RoomCategoryCard key={rc.id} category={rc} />
         ))}
       </div>
     </section>
   );
 }
-
-

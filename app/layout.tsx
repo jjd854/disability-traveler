@@ -1,4 +1,5 @@
 // app/layout.tsx
+import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Script from 'next/script';
@@ -69,7 +70,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="app-shell">
           {children}
         </div>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === 'production' && (
+          <Suspense fallback={null}>
+            <Analytics />
+          </Suspense>
+        )}
       </body>
     </html>
   );

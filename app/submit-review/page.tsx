@@ -1,7 +1,7 @@
 // app/submit-review/page.tsx
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import Navbar from '../../components/ui/Navbar';
 import Footer from '../../components/ui/Footer';
 import styles from './page.module.css';
@@ -31,10 +31,59 @@ type Hotel = { id: string; name: string; destinations_id?: number };
 type RoomCategory = { id: string; name: string; hotels_id?: number };
 type Photo = { url: string; alt?: string; handle: string };
 type PhotoPayload = { url: string; alt?: string; order: number };
+type GrecaptchaV2 = {
+  render: (
+    container: string,
+    options: {
+      sitekey: string;
+      callback: (token: string) => void;
+      'expired-callback': () => void;
+      'error-callback': () => void;
+      theme: 'light' | 'dark';
+      size: 'normal' | 'compact';
+    }
+  ) => number;
+  getResponse: (widgetId?: number) => string;
+  reset: (widgetId?: number) => void;
+};
+
+type WindowWithGrecaptcha = Window & {
+  grecaptcha?: GrecaptchaV2;
+};
+type JsonRecord = Record<string, unknown>;
+
+type HotelLike = {
+  id?: string | number;
+  hotel_id?: string | number;
+  name?: string;
+  hotel_name?: string;
+  title?: string;
+  destinations_id?: number;
+  destination_id?: number;
+};
+
+type RoomCategoryLike = {
+  id?: string | number;
+  room_category_id?: string | number;
+  name?: string;
+  title?: string;
+  hotels_id?: number;
+};
+
+type FilestackUploadedFile = {
+  handle: string;
+  url: string;
+};
+
+type XanoReviewResponse = {
+  ok?: boolean;
+  inserted?: number;
+  message?: string;
+};
 
 // ---------------- component --------------
 
-export default function SubmitReviewPage() {
+function SubmitReviewPageContent() {
   const [formRenderAt] = useState<number>(() => Date.now());
   const [idempotencyKey] = useState<string>(() => genIdemKey());
 
@@ -72,24 +121,30 @@ export default function SubmitReviewPage() {
   const redirectPath = searchParams.get('redirect') || '/';
 
   // ---------- utils to normalize lists ----------
-  function toArray(json: any): any[] {
-    if (Array.isArray(json)) return json;
-    if (Array.isArray(json?.items)) return json.items;
-    if (Array.isArray(json?.data)) return json.data;
-    if (Array.isArray(json?.records)) return json.records;
-    if (json && typeof json === 'object') {
-      // filter to object-ish entries
-      return Object.values(json).filter((v) => typeof v === 'object');
-    }
-    return [];
-  }
+  function toArray(json: unknown): unknown[] {
+     if (Array.isArray(json)) return json;
 
+     if (json && typeof json === 'object') {
+       const obj = json as JsonRecord;
+
+       if (Array.isArray(obj.items)) return obj.items;
+       if (Array.isArray(obj.data)) return obj.data;
+       if (Array.isArray(obj.records)) return obj.records;
+
+       return Object.values(obj).filter((v) => typeof v === 'object');
+     }
+
+     return [];
+   }
   // ---------- reCAPTCHA load ----------
   useEffect(() => {
+    const win = window as unknown as WindowWithGrecaptcha & Record<string, unknown>;
+
     const renderWidget = () => {
-      if (!(window as any).grecaptcha) return;
+      if (!win.grecaptcha) return;
       if (widgetIdRef.current !== null) return;
-      widgetIdRef.current = (window as any).grecaptcha.render(recaptchaContainerId, {
+
+      widgetIdRef.current = win.grecaptcha.render(recaptchaContainerId, {
         sitekey: siteKey,
         callback: (token: string) => setRecaptchaToken(token),
         'expired-callback': () => setRecaptchaToken(''),
@@ -99,21 +154,22 @@ export default function SubmitReviewPage() {
       });
     };
 
-    if ((window as any).grecaptcha?.render) {
+    if (win.grecaptcha?.render) {
       renderWidget();
       return;
     }
 
-    const onloadName = 'recaptchaOnload_' + Math.random().toString(36).slice(2);
-    (window as any)[onloadName] = () => renderWidget();
+    const onloadName = `recaptchaOnload_${Math.random().toString(36).slice(2)}`;
+    win[onloadName] = renderWidget;
 
     const s = document.createElement('script');
     s.src = `https://www.google.com/recaptcha/api.js?onload=${onloadName}&render=explicit`;
     s.async = true;
     s.defer = true;
     document.body.appendChild(s);
+
     return () => {
-      delete (window as any)[onloadName];
+      delete win[onloadName];
     };
   }, [siteKey]);
 
@@ -144,11 +200,15 @@ export default function SubmitReviewPage() {
   }, []);
 
   // ---------- fetch Hotels by Destination ----------
-  const normalizeHotel = (h: any): Hotel => ({
-  id: String(h.id ?? h.hotel_id),
-  name: h.name ?? h.hotel_name ?? h.title ?? 'Unnamed Hotel',
-  destinations_id: h.destinations_id ?? h.destination_id ?? undefined,
-});
+  const normalizeHotel = (h: unknown): Hotel => {
+    const hotel = h as HotelLike;
+
+    return {
+      id: String(hotel.id ?? hotel.hotel_id ?? ''),
+      name: hotel.name ?? hotel.hotel_name ?? hotel.title ?? 'Unnamed Hotel',
+      destinations_id: hotel.destinations_id ?? hotel.destination_id ?? undefined,
+    };
+  };
 
 const fetchHotels = async (destinationsId: number | string) => {
   const base = 'https://x8ki-letl-twmt.n7.xano.io/api:3jVxSIOz/hotels';
@@ -168,7 +228,7 @@ const fetchHotels = async (destinationsId: number | string) => {
       console.log('[fetchHotels] payload shape:', json && typeof json, json?.length);
       const raw = toArray(json);
       const list = raw
-        .filter((h: any) => h && (h.id != null || h.hotel_id != null))
+        .filter((h) => h && typeof h === 'object')
         .map(normalizeHotel);
 
       if (list.length > 0) {
@@ -185,7 +245,7 @@ const fetchHotels = async (destinationsId: number | string) => {
     const jsonAll = await resAll.json();
     const rawAll = toArray(jsonAll);
     const listAll = rawAll
-      .filter((h: any) => h && (h.id != null || h.hotel_id != null))
+      .filter((h) => h && typeof h === 'object')
       .map(normalizeHotel)
       .filter((h) => String(h.destinations_id) === String(destinationsId));
 
@@ -211,12 +271,16 @@ const fetchHotels = async (destinationsId: number | string) => {
       const json = await res.json();
       const raw = toArray(json);
       const list: RoomCategory[] = raw
-        .filter((rc: any) => rc && (rc.id != null || rc.room_category_id != null))
-        .map((rc: any) => ({
-          id: String(rc.id ?? rc.room_category_id),
-          name: rc.name ?? rc.title ?? 'Unnamed Room Category',
-          hotels_id: rc.hotels_id,
-        }));
+        .filter((rc) => rc && typeof rc === 'object')
+        .map((rc) => {
+          const room = rc as RoomCategoryLike;
+
+          return {
+            id: String(room.id ?? room.room_category_id ?? ''),
+            name: room.name ?? room.title ?? 'Unnamed Room Category',
+            hotels_id: room.hotels_id,
+          };
+        });
       setRoomCategories(list);
     } catch (e) {
       console.error('Failed to fetch room categories:', e);
@@ -267,16 +331,17 @@ const fetchHotels = async (destinationsId: number | string) => {
         setIsUploadingPhotos(true);
         try {
           const enrichedImages = await Promise.all(
-            (result.filesUploaded || []).map(async (file: any) => {
-              const handle = file.handle;
+            (result.filesUploaded || []).map(async (file: unknown) => {
+              const f = file as FilestackUploadedFile;
+              const handle = f.handle;
               const metadataUrl = `https://cdn.filestackcontent.com/metadata/${handle}`;
 
               try {
                 const response = await fetch(metadataUrl);
                 const metadata = await response.json();
-                return { url: file.url, alt: metadata?.alt || "", handle };
+                return { url: f.url, alt: metadata?.alt || "", handle };
               } catch {
-                return { url: file.url, alt: "", handle };
+                return { url: f.url, alt: "", handle };
               }
             })
           );
@@ -331,9 +396,9 @@ const canSubmit = useMemo(() => {
 
   // ---------------- submit ----------------
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
+    const form = e.currentTarget;
 
     // Honeypot
     const hp = (form.website?.value || '').toString().trim();
@@ -402,8 +467,8 @@ const canSubmit = useMemo(() => {
 
     // Ensure reCAPTCHA v2 is checked
     let token = recaptchaToken;
-    if (!token && (window as any).grecaptcha && widgetIdRef.current !== null) {
-      token = (window as any).grecaptcha.getResponse(widgetIdRef.current);
+    if ((window as WindowWithGrecaptcha).grecaptcha && widgetIdRef.current !== null) {
+      token = (window as WindowWithGrecaptcha).grecaptcha?.getResponse(widgetIdRef.current) || '';
       setRecaptchaToken(token || '');
     }
     if (!token) {
@@ -428,10 +493,10 @@ const canSubmit = useMemo(() => {
       .map((p, i) => {
         const url = (p.url || '').trim();
         const alt = (p.alt || '').trim();
-        if (!url) return null as any;
+        if (!url) return null;
         return alt ? { url, alt, order: i } : { url, order: i };
       })
-      .filter(Boolean) as PhotoPayload[];
+      .filter((p): p is PhotoPayload => p !== null);
 
     try {
       setSubmitting(true);
@@ -481,7 +546,7 @@ const canSubmit = useMemo(() => {
         }
       );
 
-      const data = await response.json().catch(() => ({} as any));
+      const data: XanoReviewResponse = await response.json().catch(() => ({}));
       if (!response.ok || data?.ok === false) {
         gaEvent('review_submit_failed', {
         destination_id: destinationId,
@@ -509,7 +574,7 @@ const canSubmit = useMemo(() => {
       // ✅ If they opted in, sync to Brevo (do NOT block the review if this fails)
       if (payload?.marketing_opt_in === true) {
         try {
-          const brevoRes = await fetch(
+          await fetch(
             'https://x8ki-letl-twmt.n7.xano.io/api:3jVxSIOz/sync_brevo_contact',
             {
               method: 'POST',
@@ -521,7 +586,7 @@ const canSubmit = useMemo(() => {
               }),
             }
           );
-        } catch (brevoError) {
+        } catch (brevoError: unknown) {
           console.warn('Brevo sync failed:', brevoError);
         }
       }
@@ -537,12 +602,12 @@ const canSubmit = useMemo(() => {
       setPhotoGroupUrls([]);
       setRecaptchaToken('');
 
-      if ((window as any).grecaptcha && widgetIdRef.current !== null) {
-        (window as any).grecaptcha.reset(widgetIdRef.current);
-      }
+      if ((window as WindowWithGrecaptcha).grecaptcha && widgetIdRef.current !== null) {
+        (window as WindowWithGrecaptcha).grecaptcha?.reset(widgetIdRef.current);
+     }
 
       router.replace(redirectPath);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Submission error:', error);
       alert('An unexpected error occurred.');
     } finally {
@@ -803,6 +868,14 @@ const canSubmit = useMemo(() => {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function SubmitReviewPage() {
+  return (
+    <Suspense fallback={null}>
+      <SubmitReviewPageContent />
+    </Suspense>
   );
 }
 

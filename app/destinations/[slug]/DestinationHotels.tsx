@@ -4,9 +4,9 @@ import { useMemo, useState } from 'react';
 import HotelCard from '@/components/ui/HotelCard';
 import hotelStyles from '../../hotels/hotels.module.css'; // reuse your hotels CSS
 import hotelCardStyles from '@/components/ui/HotelCard.module.css';
-import { hasCustomGetInitialProps } from 'next/dist/build/utils';
 
-type Hotel = any;
+
+type Hotel = unknown;
 
 const PRICE_LABELS: Record<number, string> = {
   1: 'Budget',
@@ -58,7 +58,7 @@ const ROOM_AMENITIES: { key: RoomAmenKey; label: string }[] = [
 ];
 
 /** Robust truthiness for 1/0/"true"/true */
-function boolLike(v: any): boolean {
+function boolLike(v: unknown): boolean {
   if (v === true || v === 1) return true;
   if (typeof v === 'string') {
     const s = v.trim().toLowerCase();
@@ -68,23 +68,28 @@ function boolLike(v: any): boolean {
 }
 
 /** A hotel passes if ANY category has ALL selected room features true */
-function hotelHasSelectedRoomFeatures(hotel: any, selected: Set<string>): boolean {
+function hotelHasSelectedRoomFeatures(
+  hotel: unknown,
+  selected: Set<string>
+): boolean {
   if (!selected.size) return true;
 
-  // Flatten all room categories
-  const cats =
-    (Array.isArray(hotel?.room_categories) ? hotel.room_categories : [])
-      .concat(Array.isArray(hotel?._room_categories) ? hotel._room_categories : [])
-      .concat(Array.isArray(hotel?.room_categories_addon) ? hotel.room_categories_addon : []);
-
+  // Narrow the unknown into a record so you can index by string keys
+  const h = hotel as Record<string, unknown>;
+  const cats: unknown[] = [
+    ...(Array.isArray(h.room_categories) ? (h.room_categories as unknown[]) : []),
+    ...(Array.isArray(h._room_categories) ? (h._room_categories as unknown[]) : []),
+    ...(Array.isArray(h.room_categories_addon) ? (h.room_categories_addon as unknown[]) : []),
+  ];
   if (!cats.length) return false;
 
-  return cats.some((cat: any) =>
-    Array.from(selected).every((key) => {
-      const value = cat?.[key];
+  return cats.some(cat => {
+    const record = cat as Record<string, unknown>;
+    return Array.from(selected).every(key => {
+      const value = record[key];
       return value === true || value === 'true';
-    })
-  );
+    });
+  });
 }
 
 interface Props {
@@ -103,19 +108,32 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
 
   // Price filters
   const [priceLevels, setPriceLevels] = useState<Set<number>>(new Set());
-  const togglePrice = (lvl: number) =>
+  const togglePrice = (lvl: number) => {
     setPriceLevels((prev) => {
-      const next = new Set(prev);
-      next.has(lvl) ? next.delete(lvl) : next.add(lvl);
+       const next = new Set(prev);
+
+      if (next.has(lvl)) {
+        next.delete(lvl);
+      } else {
+        next.add(lvl);
+      }
+
       return next;
     });
+  };
 
   // Room amenities (as a Set of keys)
   const [roomAmens, setRoomAmens] = useState<Set<RoomAmenKey>>(new Set());
   const toggleRoomAmen = (key: RoomAmenKey) =>
     setRoomAmens((prev) => {
       const next = new Set(prev);
-      next.has(key) ? next.delete(key) : next.add(key);
+
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+
       return next;
     });
   const clearRoomAmens = () => setRoomAmens(new Set());
@@ -128,17 +146,60 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
     setPriceLevels(new Set());
     setRoomAmens(new Set());
   };
+  
+  type HotelLike = {
+  id: number | string;
 
+  name?: string | null;
+  Name?: string | null; // some records have capitalized keys
+  slug?: string | null;
+
+  featured_image_url?: string | null;
+  alt_text?: string | null;
+
+  price_level?: number | string | null;
+
+  avg_hotel_rating?: number | null;
+  hotel_review_count?: number | null;
+  hotel_avgreview_and_count?: unknown; // keep loose for now
+  _hotel_avg_rating?: number | null;
+  _reviews?: unknown; // keep loose for now
+
+  // Property amenities / booleans
+  has_accessible_pathways?: boolean | null;
+  has_accessible_restaurant?: boolean | null;
+  has_pool_lift?: boolean | null;
+  has_beach_wheelchair?: boolean | null;
+  has_elevator?: boolean | null;
+  has_accessible_fitness_center?: boolean | null;
+  is_all_inclusive?: boolean | null;
+  has_service_dog_policy?: boolean | null;
+
+  // Room-related filters you had earlier
+  has_roll_in_shower?: boolean | null;
+  has_lowered_bed?: boolean | null;
+  has_32_doorway?: boolean | null;
+  has_tub_with_bench?: boolean | null;
+};
+
+const hotelsList = useMemo<HotelLike[]>(
+  () => (Array.isArray(hotels) ? (hotels as HotelLike[]) : []),
+  [hotels]
+);
   const filteredHotels = useMemo(() => {
-    return (hotels ?? []).filter((h: any) => {
+    return hotelsList.filter((h) => {
       // Search by name
       const nm = (h.name ?? h.Name ?? '').toString().toLowerCase();
       const matchesQuery = !searchQuery || nm.includes(searchQuery.toLowerCase());
 
       // Property amenities: all selected must be true on the hotel
-      const matchesProps = Object.entries(propFilters).every(
-        ([k, want]) => !want || boolLike((h as any)[k])
-      );
+      type PropKey = keyof HotelLike;
+
+      const matchesProps = Object.entries(propFilters).every(([k, want]) => {
+        if (!want) return true;
+        const key = k as PropKey;
+        return boolLike(h[key]);
+      });
 
       // Price
       const lvlRaw = h.price_level == null ? null : Number(h.price_level);
@@ -149,7 +210,7 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
 
       return matchesQuery && matchesProps && matchesPrice && matchesRoom;
     });
-  }, [hotels, searchQuery, propFilters, priceLevels, roomAmens]);
+  }, [hotelsList, searchQuery, propFilters, priceLevels, roomAmens]);
 
   return (
     <>
@@ -276,33 +337,30 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
         </div>
       )}
 
-      <div className={hotelStyles.hotelGrid}>
-        {filteredHotels.map((hotel: any) => (
-          <div key={hotel.id} className={hotelCardStyles.hotelcardWrapper}>
-            <HotelCard
-              id={hotel.id}
-              name={hotel.name}
-              slug={hotel.slug}
-              featured_image_url={hotel.featured_image_url ?? '/placeholder.jpg'}
-              alt_text={hotel.alt_text ?? undefined}
-              price_level={hotel.price_level ?? null}
-              avg_hotel_rating={hotel.avg_hotel_rating}
-              hotel_review_count={hotel.hotel_review_count}
-              hotel_avgreview_and_count={hotel.hotel_avgreview_and_count}
-              _hotel_avg_rating={hotel._hotel_avg_rating}
-              __reviews={hotel._reviews}
-              has_accessible_pathways={hotel.has_accessible_pathways}
-              has_accessible_restaurant={hotel.has_accessible_restaurant}
-              has_pool_lift={hotel.has_pool_lift}
-              has_beach_wheelchair={hotel.has_beach_wheelchair}
-              has_elevator={hotel.has_elevator}
-              has_accessible_fitness_center={hotel.has_accessible_fitness_center}
-              is_all_inclusive={hotel.is_all_inclusive}
-              has_service_dog_policy={hotel.has_service_dog_policy}
-            />
-          </div>
-        ))}
-      </div>
+    <div className={hotelStyles.hotelGrid}>
+      {filteredHotels.map((hotel) => (
+        <div key={hotel.id} className={hotelCardStyles.hotelcardWrapper}>
+          <HotelCard
+            id={Number(hotel.id)}
+            name={hotel.name ?? ''}
+            slug={hotel.slug ?? ''}
+            featured_image_url={hotel.featured_image_url ?? '/placeholder.jpg'}
+            alt_text={hotel.alt_text ?? undefined}
+            price_level={hotel.price_level ?? null}
+            avg_hotel_rating={hotel.avg_hotel_rating}
+            hotel_review_count={hotel.hotel_review_count}
+            has_accessible_pathways={hotel.has_accessible_pathways}
+            has_accessible_restaurant={hotel.has_accessible_restaurant}
+            has_pool_lift={hotel.has_pool_lift}
+            has_beach_wheelchair={hotel.has_beach_wheelchair}
+            has_elevator={hotel.has_elevator}
+            has_accessible_fitness_center={hotel.has_accessible_fitness_center}
+            is_all_inclusive={hotel.is_all_inclusive}
+            has_service_dog_policy={hotel.has_service_dog_policy}
+          />
+        </div>
+      ))}
+    </div>
     </>
   );
 }

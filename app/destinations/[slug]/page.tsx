@@ -8,15 +8,14 @@ import { getDestAvg, getDestCount } from '@/lib/utils';
 import Link from 'next/link';
 import styles from './page.module.css';
 import DestinationHotels from './DestinationHotels'; // <-- default import of client child
-import hotelCardStyles from '@/components/ui/HotelCard.module.css';
 import OutboundLink from '@/components/ui/analytics/OutboundLink';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default async function DestinationDetailPage({ params }: Props) {
-  const { slug } = params;
+export default async function DestinationPage({ params }: Props) {
+  const { slug } = await params;
   const destination = await fetchDestinationById(slug);
   if (!destination) notFound();
 
@@ -167,7 +166,7 @@ export default async function DestinationDetailPage({ params }: Props) {
              event="outbound_click"
              params={{
                type: 'accessibility_provider',
-               destination_slug: params.slug,
+               destination_slug: slug,
                provider_name: name,
                provider_url: url,
              }}

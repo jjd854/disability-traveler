@@ -5,7 +5,7 @@ import { gaEvent } from '@/lib/ga';
 
 type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   event: string;
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
 };
 
 export default function OutboundLink({ event, params, onClick, ...rest }: Props) {

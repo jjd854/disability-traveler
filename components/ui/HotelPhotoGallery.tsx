@@ -54,7 +54,6 @@ function normalize(items: PhotoItem[]): NormalizedPhoto[] {
 export default function HotelPhotoGallery({
   photos,
   reviewerPhotos = [],
-  hotelId, // eslint pacifier
 }: HotelPhotoGalleryProps) {
   const hotelNorm = useMemo(() => normalize(photos), [photos]);
   const reviewerNorm = useMemo(() => normalize(reviewerPhotos), [reviewerPhotos]);

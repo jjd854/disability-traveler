@@ -17,7 +17,7 @@ export const fetchDestinationById = async (slug: string): Promise<Destination | 
 
     });
     return response.data; // ✅ now TypeScript knows this is a single Destination
-  } catch (err: any) {
+  } catch (err: unknown) {
     // If Xano returns 404 (not found or not published), treat as "no destination"
     if (axios.isAxiosError(err) && err.response?.status === 404) {
       return null;

@@ -1,12 +1,17 @@
 // app/about/page.tsx
+/* eslint-disable react/no-unescaped-entities */
 import styles from './About.module.css';
+import Footer from '../../components/ui/Footer'; 
+import Link from "next/link"; 
+import { Suspense } from 'react';
 import Navbar from '../../components/ui/Navbar';
-import Footer from '../../components/ui/Footer';  
 
 export default function AboutPage() {
   return (
-   <>
-    <Navbar /> 
+   <> 
+    <Suspense fallback={null}>
+    <Navbar />
+    </Suspense>
     <div className={styles.aboutPage}>
       <section className={styles.hero}>
         <h1>Disability Traveler isn't just another travel site, it's a community</h1>
@@ -69,12 +74,12 @@ export default function AboutPage() {
          Browse destinations or share your experience to help build a clearer picture of accessibility around the world.
        </p>
        <div className={styles.ctaButtons}>
-         <a href="/destinations" className={styles.primaryButton}>
+         <Link href="/destinations" className={styles.primaryButton}>
            Explore Destinations
-         </a>
-         <a href="/submitreview" className={styles.secondaryButton}>
+         </Link>
+         <Link href="/submitreview" className={styles.secondaryButton}>
            Submit a Review
-         </a>
+         </Link>
        </div>
      </div>
    </section> 

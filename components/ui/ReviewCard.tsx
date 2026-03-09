@@ -5,20 +5,34 @@ import styles from './ReviewCard.module.css';
 import { ReviewCardProps } from '@/lib/types';
 import Link from 'next/link';
 
-// Normalize photos from either the new child table (review_photos)
-// or the legacy arrays (photo_urls + photo_alt_texts)
-function normalizePhotos(review: any): { url: string; alt: string }[] {
+type ReviewPhotoLike = {
+  id?: number | string | null;
+  url?: string | null;
+  alt_text?: string | null;
+  sort_order?: number | string | null;
+};
+
+type ReviewLikeForPhotos = {
+  review_photos?: ReviewPhotoLike[] | null;
+  photo_urls?: string[] | null;
+  photo_alt_texts?: Array<string | null | undefined> | null;
+};
+
+function normalizePhotos(review: ReviewLikeForPhotos): { url: string; alt: string }[] {
   if (Array.isArray(review?.review_photos) && review.review_photos.length) {
     return review.review_photos
-      .filter((p: any) => p && p.url)
+      .filter((p) => p && p.url)
       .slice()
-      .sort((a: any, b: any) => {
+      .sort((a, b) => {
         const ao = Number(a.sort_order ?? 0);
         const bo = Number(b.sort_order ?? 0);
         if (ao !== bo) return ao - bo;
         return Number(a.id ?? 0) - Number(b.id ?? 0);
       })
-      .map((p: any) => ({ url: String(p.url), alt: String(p.alt_text ?? '') }));
+      .map((p) => ({
+        url: String(p.url),
+        alt: String(p.alt_text ?? ''),
+      }));
   }
 
   if (Array.isArray(review?.photo_urls) && review.photo_urls.length) {
@@ -27,48 +41,45 @@ function normalizePhotos(review: any): { url: string; alt: string }[] {
         url,
         alt: review.photo_alt_texts?.[i] ?? '',
       }))
-      .filter((p: any) => p.url && String(p.url).trim() !== '');
+      .filter((p) => p.url && String(p.url).trim() !== '');
   }
 
   return [];
 }
 
 export default function ReviewCard({ review }: ReviewCardProps) {
-  const photos = useMemo(() => normalizePhotos(review), [review]);
+  const photos = useMemo(
+    () => normalizePhotos(review as ReviewLikeForPhotos),
+    [review]
+  );
 
   const [modalIndex, setModalIndex] = useState<number | null>(null);
   const currentPhoto = modalIndex !== null ? photos[modalIndex] : null;
   const [expanded, setExpanded] = useState(false);
 
-  // safe star rendering
   const rd = Math.max(0, Math.min(5, Number(review.rating_destination ?? 0)));
   const rh = Math.max(0, Math.min(5, Number(review.rating_hotel ?? 0)));
-  const rrc = Math.max(0, Math.min(5, Number(review.room_category_rating ?? 0)));
-  // NEW: room category name (works with several response shapes)
+
   const roomCategoryName: string | null =
-    review?.review_room_category?.name ||   // preferred (addon)
-    review?.room_category?.name ||          // alt shape
-    review?.room_category_name ||           // plain field
+    review?.review_room_category?.name ||
+    review?.room_category?.name ||
+    review?.room_category_name ||
     null;
 
-  // NEW: room category rating (optional)
-  const hasRcr = review?.room_category_rating != null && review?.room_category_rating !== '';
+  const hasRcr =
+    review?.room_category_rating != null && review?.room_category_rating !== '';
   const rcrRaw = Number(review?.room_category_rating ?? 0);
-  const rcr = Math.max(0, Math.min(5, rcrRaw)); // clamp 0–5
+  const rcr = Math.max(0, Math.min(5, rcrRaw));
 
-    // ---- Hotel state logic ----
   const hotelWriteIn = (review?.hotel_write_in ?? '').toString().trim();
   const didntStay = !!review?.didnt_stay_overnight;
 
   const listedHotelName = (review?.review_hotels?.name ?? '').toString().trim();
   const listedHotelSlug = (review?.review_hotels?.slug ?? '').toString().trim();
 
-  // treat "Not Listed" as not a real listed hotel
-  const hasListedHotel = !!listedHotelSlug && listedHotelName.toLowerCase() !== 'not listed';
+  const hasListedHotel =
+    !!listedHotelSlug && listedHotelName.toLowerCase() !== 'not listed';
 
-  const hasWriteInHotel = !didntStay && !hasListedHotel && hotelWriteIn.length > 0;
-
-  // Only show hotel rating if it's a listed hotel AND a real rating exists
   const hotelRatingNum =
     review?.rating_hotel == null ? null : Number(review.rating_hotel);
 
@@ -81,10 +92,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
   const hasDestinationRating =
     review?.rating_destination != null &&
     Number(review.rating_destination) > 0;
- 
 
-
-  // Only show room category info for listed hotels (not for write-in or no-stay)
   const showRoomCategory = hasListedHotel && !didntStay;
 
 

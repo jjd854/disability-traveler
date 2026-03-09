@@ -1,10 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './HotelCard.module.css';
-import RatingBadge from "../ui/RatingBadge";
+import RatingBadge from '../ui/RatingBadge';
 
 type MaybeNum = number | string | null | undefined;
 type MaybeBool = boolean | number | string | null | undefined;
+
+type ReviewLike = {
+  rating_hotel?: MaybeNum;
+};
 
 interface HotelCardProps {
   id: number;
@@ -33,9 +37,9 @@ interface HotelCardProps {
     hotel_review_count?: MaybeNum;
   } | null;
 
-  _reviews?: any[] | null;
-  __reviews?: any[] | null;
-  reviews?: any[] | null;
+  _reviews?: ReviewLike[] | null;
+  __reviews?: ReviewLike[] | null;
+  reviews?: ReviewLike[] | null;
 }
 
 function N(v: MaybeNum): number | null {
@@ -44,7 +48,6 @@ function N(v: MaybeNum): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-// robust boolean coercion for true/1/"1"/"true"/"t"
 function B(v: MaybeBool): boolean {
   if (v === true) return true;
   if (v === 1) return true;
@@ -73,15 +76,19 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
     p.hotel_avg_rating?.average_hotel_rating ??
     null;
 
-  const embedded = [
+  const embedded: ReviewLike[] = [
     Array.isArray(p._reviews) ? p._reviews : [],
     Array.isArray(p.__reviews) ? p.__reviews : [],
     Array.isArray(p.reviews) ? p.reviews : [],
   ].flat();
 
   const computed = (() => {
-    const nums = embedded.map((r: any) => N(r?.rating_hotel)).filter((n): n is number => n !== null);
+    const nums = embedded
+      .map((r) => N(r?.rating_hotel))
+      .filter((n): n is number => n !== null);
+
     if (!nums.length) return { avg: null as number | null, count: 0 };
+
     const sum = nums.reduce((a, b) => a + b, 0);
     return { avg: sum / nums.length, count: nums.length };
   })();
@@ -94,7 +101,6 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
 
   const priceLevel = Math.max(0, Math.min(5, N(p.price_level) ?? 0));
 
-  // Coerced flags
   const f_pathways = B(p.has_accessible_pathways);
   const f_restaurant = B(p.has_accessible_restaurant);
   const f_poolLift = B(p.has_pool_lift);
@@ -105,14 +111,14 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
   const f_serviceDog = B(p.has_service_dog_policy);
 
   const features = [
-    { ok: f_pathways,  label: 'Accessible Pathways',      emoji: '🛣️' },
-    { ok: f_restaurant,label: 'Accessible Restaurant',    emoji: '🍽️' },
-    { ok: f_fitness,   label: 'Accessible Fitness Center',emoji: '🏋️' },
-    { ok: f_poolLift,  label: 'Pool Lift',                emoji: '🏊' },
-    { ok: f_beachWc,   label: 'Beach Wheelchair',         emoji: '🏖️' },
-    { ok: f_elevator,  label: 'Elevator',                 emoji: '🛗' },
-    { ok: f_serviceDog, label: 'Service dog Welcome',     emoji: '🦮' },
-  ].filter(f => f.ok);
+    { ok: f_pathways, label: 'Accessible Pathways', emoji: '🛣️' },
+    { ok: f_restaurant, label: 'Accessible Restaurant', emoji: '🍽️' },
+    { ok: f_fitness, label: 'Accessible Fitness Center', emoji: '🏋️' },
+    { ok: f_poolLift, label: 'Pool Lift', emoji: '🏊' },
+    { ok: f_beachWc, label: 'Beach Wheelchair', emoji: '🏖️' },
+    { ok: f_elevator, label: 'Elevator', emoji: '🛗' },
+    { ok: f_serviceDog, label: 'Service dog Welcome', emoji: '🦮' },
+  ].filter((f) => f.ok);
 
   return (
     <div className={styles.card}>
