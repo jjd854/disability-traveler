@@ -157,10 +157,64 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
   const roomCategories: RoomCategory[] = Array.isArray(hotel.room_categories)
     ? hotel.room_categories.map(normalizeRoomCategory)
     : [];
-
+  
+  const hotelSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Hotel',
+    name: hotel.name,
+    url: `https://disabilitytraveler.com/hotels/${slug}`,
+    image:
+      Array.isArray(photos) && photos.length > 0
+        ? photos
+            .map((p) => p.photo_url)
+            .filter((url): url is string => typeof url === 'string' && url.trim() !== '')
+        : hotel.featured_image_url
+        ? [hotel.featured_image_url]
+        : [],
+    telephone: hotel.phone_number || hotel.phone || undefined,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: hotel.address || hotel.street_address || undefined,
+      addressLocality: hotel.city || undefined,
+      addressRegion: hotel.region || undefined,
+      addressCountry: hotel.country || undefined,
+    },
+    aggregateRating:
+      avg && count
+        ? {
+            '@type': 'AggregateRating',
+            ratingValue: avg,
+            reviewCount: count,
+            bestRating: 5,
+            worstRating: 1,
+          }
+        : undefined,
+    review: reviews.slice(0, 5).map((review) => ({
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: review.reviewer_name || 'Anonymous',
+      },
+      reviewBody: review.review_text || '',
+      reviewRating:
+        review.rating_hotel != null
+          ? {
+              '@type': 'Rating',
+              ratingValue: Number(review.rating_hotel),
+              bestRating: 5,
+              worstRating: 1,
+            }
+          : undefined,
+    })),
+  };
+    
   return (
     <>
       <Navbar />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelSchema) }}
+      />
       <main className={styles.hotelPageRoot}>
       <div className={styles.hotelPage}>
         {hotel.featured_image_url && (
