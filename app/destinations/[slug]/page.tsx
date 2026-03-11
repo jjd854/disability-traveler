@@ -38,12 +38,41 @@ export default async function DestinationPage({ params }: Props) {
     }   
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://disabilitytraveler.com"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Destinations",
+        item: "https://disabilitytraveler.com/destinations"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: destinationName,
+        item: `https://disabilitytraveler.com/destinations/${slug}`
+      }
+    ]
+  };
+
   return (
     <>
       <Navbar />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(destinationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main>
         <div className={styles.container}>
