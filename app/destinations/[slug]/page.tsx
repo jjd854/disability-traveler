@@ -23,43 +23,15 @@ export default async function DestinationPage({ params }: Props) {
   const dAvg = getDestAvg(destination);
   const dCount = getDestCount(destination);
 
-  const destinationName = destination.Name || 'Destination';
+  const destinationName = destination.Name || destination.Name || 'Destination';
 
   const destinationSchema = {
     '@context': 'https://schema.org',
-    '@type': 'TouristDestination',
+    '@type': 'Thing',
     name: destinationName,
     url: `https://disabilitytraveler.com/destinations/${slug}`,
     description: destination.Description || undefined,
-    image: destination.featured_image_url || destination.featured_image_url || undefined,
-    touristType: 'Travelers with disabilities',
-    aggregateRating:
-      dAvg && dCount
-        ? {
-            '@type': 'AggregateRating',
-            ratingValue: dAvg,
-            reviewCount: dCount,
-            bestRating: 5,
-            worstRating: 1,
-          }
-        : undefined,
-    review: reviews.slice(0, 5).map((review) => ({
-      '@type': 'Review',
-      author: {
-        '@type': 'Person',
-        name: review.reviewer_name || 'Anonymous',
-      },
-      reviewBody: review.review_text || '',
-      reviewRating:
-        review.rating_destination != null
-          ? {
-              '@type': 'Rating',
-              ratingValue: Number(review.rating_destination),
-              bestRating: 5,
-              worstRating: 1,
-            }
-          : undefined,
-    })),
+    image: destination.featured_image_url || destination.featured_image_url || undefined,    
   };
 
   return (
