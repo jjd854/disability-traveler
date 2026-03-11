@@ -207,6 +207,37 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
           : undefined,
     })),
   };
+
+  const hotelBreadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://disabilitytraveler.com',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Destinations',
+        item: 'https://disabilitytraveler.com/destinations',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: hotel.Name || 'Destination',
+        item: `https://disabilitytraveler.com/destinations/${hotel.destination_slug}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: hotel.name,
+        item: `https://disabilitytraveler.com/hotels/${slug}`,
+      },
+    ],
+  };
     
   return (
     <>
@@ -214,6 +245,10 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(hotelBreadcrumbSchema) }}
       />
       <main className={styles.hotelPageRoot}>
       <div className={styles.hotelPage}>
