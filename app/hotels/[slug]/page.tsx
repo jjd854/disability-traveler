@@ -228,7 +228,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
         '@type': 'ListItem',
         position: 3,
         name: hotel.Name || 'Destination',
-        item: `https://disabilitytraveler.com/destinations/${hotel.destination_slug}`,
+        item: `https://disabilitytraveler.com/destinations/${hotel.slug}`,
       },
       {
         '@type': 'ListItem',
