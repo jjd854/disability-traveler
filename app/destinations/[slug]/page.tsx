@@ -31,7 +31,11 @@ export default async function DestinationPage({ params }: Props) {
     name: destinationName,
     url: `https://disabilitytraveler.com/destinations/${slug}`,
     description: destination.Description || undefined,
-    image: destination.featured_image_url || destination.featured_image_url || undefined,    
+    image: destination.featured_image_url || destination.featured_image_url || undefined, 
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://disabilitytraveler.com/destinations/${slug}`
+    }   
   };
 
   return (
