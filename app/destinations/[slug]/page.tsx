@@ -136,10 +136,12 @@ export default async function DestinationPage({ params }: Props) {
               <h2 className={styles.sectionTitle}>
                 Accessible Hotels in {destination.Name}
               </h2>
-
+              <p className={styles.sectionBodyPreLine}>
+                Disability Traveler helps travelers with disabilities find accessible hotels in {destinationName} including properties that offer features such as roll-in showers, step-free pathways, elevators, pool lifts, and other accessibility amenities designed for wheelchair users, travelers with limited mobility, and those with sensory impairments.
+              </p>
               {/* Client-side filters + cards */}
               <DestinationHotels
-                destinationName={destination.Name}
+                destinationName={destinationName}
                 hotels={destination.hotels}
               />
             </>
