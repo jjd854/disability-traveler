@@ -16,7 +16,7 @@ export default function Page() {
       <article>
         <h1 style={{ fontSize: '2rem', marginBottom: 16 }}>Disclaimer</h1>
         <p style={{ color: '#666', marginBottom: 24 }}>
-          <em>Effective Date: [Insert date before launch]</em>
+          <em>Effective Date: March 13, 2026</em>
         </p>
         <p style={{ marginBottom: 16 }}>
           The information on <strong>Disability Traveler</strong> is provided for general
