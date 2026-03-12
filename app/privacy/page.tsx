@@ -16,7 +16,7 @@ export default function Page() {
       <article>
         <h1 style={{ fontSize: '2rem', marginBottom: 16 }}>Privacy Policy</h1>
         <p style={{ color: '#666', marginBottom: 24 }}>
-          <em>Effective Date: [Insert Date Before Launch]</em>
+          <em>Effective Date: March 13, 2026</em>
         </p>
 
         <p>
