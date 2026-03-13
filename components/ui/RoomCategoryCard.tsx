@@ -113,7 +113,7 @@ export default function RoomCategoryCard({ category }: Props) {
   if (isTruthyFlag(cat.lowered_bed)) chips.push('Lowered bed');
   if (isTruthyFlag(cat.turning_radius_60_in)) chips.push('60" turning radius');
   if (isTruthyFlag(cat.visual_alarm)) chips.push('Visual alarm');
-  if (isTruthyFlag(cat.hearing_kit_available)) chips.push('Hearing accessibility kit');
+  if (isTruthyFlag(cat.hearing_kit_available)) chips.push('Hearing accessible or kit');
 
   if (cat.bed_clearance_underframe !== undefined && cat.bed_clearance_underframe !== null) {
     chips.push(`Bed clearance: ${cat.bed_clearance_underframe}"`);

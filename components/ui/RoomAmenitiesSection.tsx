@@ -31,7 +31,7 @@ const ROOM_FEATURES: Array<{ key: FeatureKey; label: string }> = [
   { key: 'bathroom_grab_bars', label: 'Bathroom Grab Bars' },
   { key: 'turning_radius_60_in', label: '60" Turning Radius' },
   { key: 'visual_alarm', label: 'Visual Alarm' },
-  { key: 'hearing_kit_available', label: 'Hearing Kit' },
+  { key: 'hearing_kit_available', label: 'Hearing Accessible or Kit' },
   { key: 'bed_clearance_underframe', label: 'Bed Clearance Underframe' },
 ];
 
