@@ -623,7 +623,9 @@ const canSubmit = useMemo(() => {
       <main className={styles.container}>
         <div className={styles.pageWrapper}>
           <h1 className={styles.title}>Submit a Review</h1>
-
+          <p className={styles.description}>
+            Your review may appear on both the destination and hotel pages to help other travelers find accessible travel information more easily. 
+          </p>
           <form onSubmit={handleSubmit} className={styles.form}>
             <input
               name="reviewer_name"
