@@ -25,6 +25,7 @@ interface HotelCardProps {
   has_accessible_restaurant?: MaybeBool;
   has_accessible_fitness_center?: MaybeBool;
   has_service_dog_policy?: MaybeBool;
+  has_accessible_meeting_spaces?: MaybeBool;
   is_all_inclusive?: MaybeBool;
 
   avg_hotel_rating?: MaybeNum;
@@ -107,6 +108,7 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
   const f_beachWc = B(p.has_beach_wheelchair);
   const f_elevator = B(p.has_elevator);
   const f_fitness = B(p.has_accessible_fitness_center);
+  const f_meeting = B(p.has_accessible_meeting_spaces);
   const isAllInc = B(p.is_all_inclusive);
   const f_serviceDog = B(p.has_service_dog_policy);
 
@@ -114,6 +116,7 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
     { ok: f_pathways, label: 'Accessible Pathways', emoji: '🛣️' },
     { ok: f_restaurant, label: 'Accessible Restaurant', emoji: '🍽️' },
     { ok: f_fitness, label: 'Accessible Fitness Center', emoji: '🏋️' },
+    { ok: f_meeting, label: 'Accessible Meeting & Event Spaces', emoji: '🏢' },
     { ok: f_poolLift, label: 'Pool Lift', emoji: '🏊' },
     { ok: f_beachWc, label: 'Beach Wheelchair', emoji: '🏖️' },
     { ok: f_elevator, label: 'Elevator', emoji: '🛗' },

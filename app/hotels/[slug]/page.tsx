@@ -40,6 +40,84 @@ type ReviewLike = Review & {
   photo_alt_texts?: Array<string | null | undefined>;
 };
 
+const PROPERTY_FEATURE_ORDER = [
+  'has_accessible_pathways',
+  'has_elevator',
+  'has_pool_lift',
+  'has_beach_wheelchair',
+  'has_accessible_restaurant',
+  'has_accessible_fitness_center',
+  'has_accessible_meeting_spaces',
+  'has_service_dog_policy',
+] as const;
+
+const PROPERTY_FEATURE_CHIP_LABELS: Record<string, string> = {
+  has_accessible_pathways: 'Accessible Pathways',
+  has_accessible_restaurant: 'Accessible Restaurant',
+  has_pool_lift: 'Pool Lift',
+  has_beach_wheelchair: 'Beach Wheelchair',
+  has_elevator: 'Elevator',
+  has_accessible_fitness_center: 'Accessible Fitness Center',
+  has_accessible_meeting_spaces: 'Accessible Meeting & Event Spaces',
+  has_service_dog_policy: 'Service Dogs Welcome',
+};
+
+const PROPERTY_FEATURE_SENTENCE_LABELS: Record<string, string> = {
+  has_accessible_pathways: 'accessible pathways',
+  has_accessible_restaurant: 'accessible restaurants',
+  has_pool_lift: 'pool lifts',
+  has_beach_wheelchair: 'beach wheelchairs',
+  has_elevator: 'elevators',
+  has_accessible_fitness_center: 'accessible fitness center',
+  has_accessible_meeting_spaces: 'accessible meeting and event spaces',
+  has_service_dog_policy: 'service dog accommodations',
+};
+
+const ROOM_FEATURE_ORDER = [
+  'door_32_in',
+  'roll_in_shower',
+  'tub_with_bench',
+  'fixed_shower_seat',
+  'handheld_shower',
+  'bathroom_grab_bars',
+  'roll_under_vanity',
+  'turning_radius_60_in',
+  'lowered_bed',
+  'bed_clearance_underframe',
+  'visual_alarm',
+  'hearing_kit_available',
+] as const;
+
+const ROOM_FEATURE_CHIP_LABELS: Record<string, string> = {
+  door_32_in: '32" Door',
+  roll_in_shower: "Roll-In Shower",
+  tub_with_bench: "Tub with Bench",
+  bathroom_grab_bars: "Bathroom Grab Bars",
+  fixed_shower_seat: "Fixed Shower Seat",
+  handheld_shower: "Handheld Shower",
+  roll_under_vanity: "Roll-Under Vanity",
+  turning_radius_60: '60" Turning Radius',
+  lowered_bed: "Lowered Bed",
+  bed_clearance_underframe: "Bed Clearance Under Bed",
+  visual_alarm: "Visual Alarm",
+  hearing_kit_available: "Hearing Accessibile or Kit",
+};
+
+const ROOM_FEATURE_SENTENCE_LABELS: Record<string, string> = {
+  door_32_in: '32-inch doorways',
+  roll_in_shower: "roll-in showers",
+  tub_with_bench: "bathtubs with benches",
+  bathroom_grab_bars: "bathroom grab bars",
+  fixed_shower_seat: "fixed shower seats",
+  handheld_shower: "handheld shower heads",
+  roll_under_vanity: "roll-under vanities",
+  turning_radius_60: '60-inch turning radius space',  
+  lowered_bed: "lowered beds",
+  bed_clearance_underframe: "bed clearance for lifts",
+  visual_alarm: "visual alarm systems",
+  hearing_kit_available: "hearing accessibile rooms or kits",
+};
+
 function collectReviewerPhotos(reviews: Review[]): PhotoItem[] {
   const rows: PhotoItem[] = [];
 
@@ -115,6 +193,27 @@ export default async function HotelDetailPage({ params }: Props) {
 
   const priceLevel = Number(hotel.price_level ?? 0);
   const PRICE_LABELS = ['', 'Budget', 'Economy', 'Mid-range', 'Upscale', 'Luxury'];
+
+  const propertyFeatures = Object.entries(hotel)
+    .filter(
+      ([key, value]) =>
+        PROPERTY_FEATURE_CHIP_LABELS[key] && value === true
+    )
+    .map(([key]) => key);
+
+  const orderedPropertyFeatures = PROPERTY_FEATURE_ORDER.filter((feature) =>
+    propertyFeatures.includes(feature)
+  );
+
+  const propertyFeatureList = orderedPropertyFeatures
+    .map((feature) => PROPERTY_FEATURE_CHIP_LABELS[feature])
+    .filter(Boolean);
+
+  const propertySentenceFeatureList = orderedPropertyFeatures
+    .map((feature) => PROPERTY_FEATURE_SENTENCE_LABELS[feature])
+    .filter(Boolean);
+
+  const propertyFeatureSentence = formatFeatureList(propertySentenceFeatureList);
 
 type RoomCategoryAddon = {
   avg_room_category_rating?: number | string | null;
@@ -208,6 +307,37 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
     })),
   };
 
+  const roomFeatures = Array.from(
+    new Set(
+      roomCategories.flatMap((room) =>
+        Object.entries(room)
+          .filter(([key, value]) => ROOM_FEATURE_CHIP_LABELS[key] && value === true)
+          .map(([key]) => key)
+      )
+    )
+  );
+
+  const orderedRoomFeatures = ROOM_FEATURE_ORDER.filter((feature) =>
+    roomFeatures.includes(feature)
+  );
+
+  const featureList = orderedRoomFeatures
+    .map((feature) => ROOM_FEATURE_CHIP_LABELS[feature])
+    .filter(Boolean);
+
+  const sentenceFeatureList = orderedRoomFeatures
+    .map((feature) => ROOM_FEATURE_SENTENCE_LABELS[feature])
+    .filter(Boolean);
+
+  const featureSentence = formatFeatureList(sentenceFeatureList);
+
+  function formatFeatureList(list: string[]) {
+    if (list.length === 0) return "";
+    if (list.length === 1) return list[0];
+    if (list.length === 2) return `${list[0]} and ${list[1]}`;
+    return `${list.slice(0, -1).join(", ")}, and ${list[list.length - 1]}`;
+  } 
+
   const hotelBreadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -297,7 +427,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
               'No reviews yet'
             )}
           </p>
-
+          <h2 className={styles.propertyaccessibilityText}>Accessible Features at This Hotel</h2>
           <div className={styles.features}>
             {hotel.has_accessible_pathways && <span className={styles.feature}>🛣️ Accessible Pathways</span>}
             {hotel.has_accessible_restaurant && <span className={styles.feature}>🍽️ Accessible Restaurant</span>}
@@ -305,8 +435,14 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
             {hotel.has_beach_wheelchair && <span className={styles.feature}>🏖️ Beach Wheelchair</span>}
             {hotel.has_elevator && <span className={styles.feature}>🛗 Elevator</span>}
             {hotel.has_accessible_fitness_center && <span className={styles.feature}> 🏋️ Accessible Fitness Center</span>}
+            {hotel.has_accessible_meeting_spaces && <span className={styles.feature}>🏢 Accessible Meeting & Event Spaces</span>}
             {hotel.has_service_dog_policy && <span className={styles.feature}>🦮 Service Dogs Welcome</span>}
           </div>
+          {propertyFeatureSentence && (
+            <p className={styles.featureSummary}>
+              The {hotel.name} offers several property accessibility features including {propertyFeatureSentence}.
+            </p>
+          )}
 
           <div className={styles.reviewButtonContainer}>
             <Link
@@ -369,6 +505,21 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
           <hr className={styles.divider} />
 
           <p className={styles.hotelDescription}>{hotel.description}</p>
+
+          <h2 className={styles.roomaccessibilityText}>Accessible Room Features Available at This Hotel</h2>
+          <div className={styles.chipContainer}>
+            {featureList.map((feature) => (
+              <span key={feature} className={styles.chip}>
+                {feature}
+              </span>
+            ))}
+          </div>
+          <p className={styles.featureSummary}>
+            Accessible rooms at the {hotel.name} include features such as {featureSentence}.
+          </p>
+          <p className={styles.featureSummary}>
+            Travelers looking for wheelchair accessible hotels in {hotel.city || hotel.Destinations?.name} will find that the {hotel.name} offers accessible guest rooms and multiple accessibility features.
+          </p>
 
           {/* ==== Room categories (filters + cards) ==== */}
           <section className={styles.roomCategoriesSection}>

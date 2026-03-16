@@ -63,6 +63,7 @@ type RawHotel = {
   has_accessible_pathways?: boolean | string | number | null;
   has_accessible_restaurant?: boolean | string | number | null;
   has_accessible_fitness_center?: boolean | string | number | null;
+  has_accessible_meeting_spaces?: boolean | string | number | null;
   has_pool_lift?: boolean | string | number | null;
   has_beach_wheelchair?: boolean | string | number | null;
   is_all_inclusive?: boolean | string | number | null;
@@ -100,6 +101,7 @@ type NormalizedHotel = {
   has_accessible_fitness_center?: boolean;
   has_pool_lift?: boolean;
   has_beach_wheelchair?: boolean;
+  has_accessible_meeting_spaces?: boolean;
   is_all_inclusive?: boolean;
   has_service_dog_policy?: boolean;
 
@@ -121,6 +123,7 @@ const INITIAL_PROP_FILTERS = {
   has_elevator: false,
   has_accessible_pathways: false,
   has_accessible_fitness_center: false,
+  has_accessible_meeting_spaces: false,
   has_accessible_restaurant: false,
   has_pool_lift: false,
   has_beach_wheelchair: false,
@@ -129,6 +132,11 @@ const INITIAL_PROP_FILTERS = {
 } as const;
 
 type PropFilters = typeof INITIAL_PROP_FILTERS;
+
+const PROP_FILTER_LABEL_OVERRIDES: Partial<Record<keyof PropFilters, string>> = {
+  has_accessible_meeting_spaces: 'Accessible Meeting & Event Spaces',
+  has_service_dog_policy: 'Service Dogs Welcome',
+};
 
 // -------- Room amenities --------
 type RoomAmenKey =
@@ -397,6 +405,7 @@ export default function HotelsPage() {
             has_elevator: boolLike(h.has_elevator),
             has_accessible_pathways: boolLike(h.has_accessible_pathways),
             has_accessible_fitness_center: boolLike(h.has_accessible_fitness_center),
+            has_accessible_meeting_spaces: boolLike(h.has_accessible_meeting_spaces),
             has_accessible_restaurant: boolLike(h.has_accessible_restaurant),
             has_pool_lift: boolLike(h.has_pool_lift),
             has_beach_wheelchair: boolLike(h.has_beach_wheelchair),
@@ -501,12 +510,14 @@ export default function HotelsPage() {
               <div className={`${styles.fieldsetRow} ${styles.stackOnMobile}`}>
                 {Object.entries(INITIAL_PROP_FILTERS).map(([key]) => {
                   const checked = propFilters[key as keyof PropFilters];
-                  const label = key
-                    .replace(/^has_/, '')
-                    .replace(/^is_/, '')
-                    .replace(/_/g, ' ')
-                    .replace('all inclusive', 'all-inclusive')
-                    .replace(/\b\w/g, (l) => l.toUpperCase());
+                  const label =
+                    PROP_FILTER_LABEL_OVERRIDES[key as keyof PropFilters] ??
+                    key
+                      .replace(/^has_/, '')
+                      .replace(/^is_/, '')
+                      .replace(/_/g, ' ')
+                      .replace('all inclusive', 'all-inclusive')
+                      .replace(/\b\w/g, (l) => l.toUpperCase());
 
                   return (
                     <label key={key} className={styles.chip}>
@@ -614,6 +625,7 @@ export default function HotelsPage() {
                     has_beach_wheelchair={hotel.has_beach_wheelchair}
                     has_elevator={hotel.has_elevator}
                     has_accessible_fitness_center={hotel.has_accessible_fitness_center}
+                    has_accessible_meeting_spaces={hotel.has_accessible_meeting_spaces}
                     has_service_dog_policy={hotel.has_service_dog_policy}
                     is_all_inclusive={hotel.is_all_inclusive}
                   />

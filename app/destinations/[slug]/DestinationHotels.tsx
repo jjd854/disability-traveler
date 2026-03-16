@@ -20,6 +20,7 @@ const PRICE_LABELS: Record<number, string> = {
 const INITIAL_PROP_FILTERS = {
   has_elevator: false,
   has_accessible_pathways: false,
+  has_accessible_meeting_spaces: false,
   has_accessible_fitness_center: false,
   has_accessible_restaurant: false,
   has_pool_lift: false,
@@ -28,6 +29,11 @@ const INITIAL_PROP_FILTERS = {
   has_service_dog_policy: false,
 } as const;
 type PropFilters = typeof INITIAL_PROP_FILTERS;
+
+const PROP_FILTER_LABEL_OVERRIDES: Record<string, string> = {
+  has_accessible_meeting_spaces: 'Accessible Meeting & Event Spaces',
+  has_service_dog_policy: 'Service Dogs Welcome',
+};
 
 /** ---------- Room amenities (JSON on room_categories.features_json) ---------- */
 type RoomAmenKey =
@@ -172,6 +178,7 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
   has_beach_wheelchair?: boolean | null;
   has_elevator?: boolean | null;
   has_accessible_fitness_center?: boolean | null;
+  has_accessible_meeting_spaces?: boolean | null;
   is_all_inclusive?: boolean | null;
   has_service_dog_policy?: boolean | null;
 
@@ -256,12 +263,13 @@ const hotelsList = useMemo<HotelLike[]>(
                       }))
                     }
                   />
-                  {key
-                    .replace(/^has_/, '')
-                    .replace(/^is_/, '')
-                    .replace(/_/g, ' ')
-                    .replace('all inclusive', 'all-inclusive')
-                    .replace(/\b\w/g, (l) => l.toUpperCase())}
+                  {PROP_FILTER_LABEL_OVERRIDES[key] ??
+                    key
+                      .replace(/^has_/, '')
+                      .replace(/^is_/, '')
+                      .replace(/_/g, ' ')
+                      .replace('all inclusive', 'all-inclusive')
+                      .replace(/\b\w/g, (l) => l.toUpperCase())}
                 </label>
               ))}
               {hasAnyPropAmenity && (
@@ -355,6 +363,7 @@ const hotelsList = useMemo<HotelLike[]>(
             has_beach_wheelchair={hotel.has_beach_wheelchair}
             has_elevator={hotel.has_elevator}
             has_accessible_fitness_center={hotel.has_accessible_fitness_center}
+            has_accessible_meeting_spaces={hotel.has_accessible_meeting_spaces}
             is_all_inclusive={hotel.is_all_inclusive}
             has_service_dog_policy={hotel.has_service_dog_policy}
           />

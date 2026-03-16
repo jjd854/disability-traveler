@@ -19,6 +19,7 @@ export type Hotel = {
   has_accessible_restaurant?: boolean;
   has_accessible_fitness_center?: boolean;
   has_service_dog_policy?: boolean;
+  has_accessible_meeting_spaces?: boolean;
 
   alt_text?: string;
 
