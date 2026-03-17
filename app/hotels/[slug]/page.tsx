@@ -515,10 +515,10 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
             ))}
           </div>
           <p className={styles.featureSummary}>
-            Accessible rooms at the {hotel.name} include features such as {featureSentence}.
+            Travelers looking for wheelchair accessible hotels in {hotel.city || hotel.Destinations?.name} will find that the {hotel.name} offers accessible guest rooms and multiple accessibility features.
           </p>
           <p className={styles.featureSummary}>
-            Travelers looking for wheelchair accessible hotels in {hotel.city || hotel.Destinations?.name} will find that the {hotel.name} offers accessible guest rooms and multiple accessibility features.
+            Accessible rooms at the {hotel.name} include features such as {featureSentence}.
           </p>
 
           {/* ==== Room categories (filters + cards) ==== */}
