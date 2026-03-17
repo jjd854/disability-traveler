@@ -162,6 +162,8 @@ export type RoomCategory = {
     turning_radius_60_in?: boolean;
     visual_alarm?: boolean;
     hearing_kit_available?: boolean;
+    accessible_balcony?: boolean;
+    rollout_patio?: boolean;
     bed_clearance_underframe?: number | null;
   };
 

@@ -37,6 +37,8 @@ type RoomCategoryLike = RoomCategory & {
   handheld_shower?: boolean | number | string | null;
   lowered_bed?: boolean | number | string | null;
   turning_radius_60_in?: boolean | number | string | null;
+  accessible_balcony?: boolean | number | string | null;
+  rollout_patio?: boolean | number | string | null;
   visual_alarm?: boolean | number | string | null;
   hearing_kit_available?: boolean | number | string | null;
   bed_clearance_underframe?: number | string | null;
@@ -112,6 +114,8 @@ export default function RoomCategoryCard({ category }: Props) {
   if (isTruthyFlag(cat.handheld_shower)) chips.push('Handheld shower');
   if (isTruthyFlag(cat.lowered_bed)) chips.push('Lowered bed');
   if (isTruthyFlag(cat.turning_radius_60_in)) chips.push('60" turning radius');
+  if (isTruthyFlag(cat.accessible_balcony)) chips.push('Accessible balcony');
+  if (isTruthyFlag(cat.rollout_patio)) chips.push('Ground floor patio');
   if (isTruthyFlag(cat.visual_alarm)) chips.push('Visual alarm');
   if (isTruthyFlag(cat.hearing_kit_available)) chips.push('Hearing accessible or kit');
 

@@ -13,6 +13,7 @@ const PROPERTY_AMENITIES = [
   { key: 'accessible_pathways', label: 'Accessible Pathways' },
   { key: 'accessible_fitness_center', label: 'Accessible Fitness Center' },
   { key: 'accessible_restaurant', label: 'Accessible Restaurant' },
+  { key: 'accessible_meeting_spaces', label: 'Accessible Meeting & Event Spaces' },
   { key: 'pool_lift', label: 'Pool Lift' },
   { key: 'beach_wheelchair', label: 'Beach Wheelchair' },
   { key: 'service_dogs_welcome', label: 'Service Dogs Welcome' },
@@ -29,6 +30,8 @@ const ROOM_AMENITIES = [
   { key: 'handheld_shower', label: 'Handheld Shower' },
   { key: 'bathroom_grab_bars', label: 'Bathroom Grab Bars' },
   { key: 'turning_radius_60_in', label: 'Turning Radius ≥ 60"' },
+  { key: 'accessible_balcony', label: 'Accessible Balcony' },
+  { key: 'rollout_patio', label: 'Ground Floor Patio' },
   { key: 'visual_alarm', label: 'Visual Alarm' },
   { key: 'hearing_kit_available', label: 'Hearing Kit Available' },
 ] as const;

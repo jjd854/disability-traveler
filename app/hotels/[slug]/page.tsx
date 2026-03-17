@@ -70,7 +70,7 @@ const PROPERTY_FEATURE_SENTENCE_LABELS: Record<string, string> = {
   has_elevator: 'elevators',
   has_accessible_fitness_center: 'accessible fitness center',
   has_accessible_meeting_spaces: 'accessible meeting and event spaces',
-  has_service_dog_policy: 'service dog accommodations',
+  has_service_dog_policy: 'service dogs are welcome',
 };
 
 const ROOM_FEATURE_ORDER = [
@@ -84,6 +84,8 @@ const ROOM_FEATURE_ORDER = [
   'turning_radius_60_in',
   'lowered_bed',
   'bed_clearance_underframe',
+  'accessible_balcony',
+  'rollout_patio',
   'visual_alarm',
   'hearing_kit_available',
 ] as const;
@@ -99,6 +101,8 @@ const ROOM_FEATURE_CHIP_LABELS: Record<string, string> = {
   turning_radius_60: '60" Turning Radius',
   lowered_bed: "Lowered Bed",
   bed_clearance_underframe: "Bed Clearance Under Bed",
+  accessible_balcony: "Accessible Balcony",
+  rollout_patio: "Ground Floor Patio",
   visual_alarm: "Visual Alarm",
   hearing_kit_available: "Hearing Accessibile or Kit",
 };
@@ -114,6 +118,8 @@ const ROOM_FEATURE_SENTENCE_LABELS: Record<string, string> = {
   turning_radius_60: '60-inch turning radius space',  
   lowered_bed: "lowered beds",
   bed_clearance_underframe: "bed clearance for lifts",
+  accessible_balcony: "accessible balconies",
+  rollout_patio: "ground floor patios",
   visual_alarm: "visual alarm systems",
   hearing_kit_available: "hearing accessibile rooms or kits",
 };
