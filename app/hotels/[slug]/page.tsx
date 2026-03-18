@@ -418,6 +418,11 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
                   </span>
                 </span>
                 <span className={styles.priceLabel}>{PRICE_LABELS[priceLevel]}</span>
+                {hotel.is_all_inclusive && (
+                  <span className={styles.allInclusive}>
+                    •  All-Inclusive
+                  </span>
+                )}   
               </div>
               <div className={styles.priceNote}>(Price level relative to location)</div>
             </div>
