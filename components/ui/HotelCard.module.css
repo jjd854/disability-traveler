@@ -44,17 +44,17 @@
 }
 
 /* (optional) keep long names tidy on one line */
-.name{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: center;     /* remove if you don't center */
-}
-.name a, .name span{
-  white-space: nowrap;
+.name {
+  text-align: center;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+
   overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+
+  min-height: 44px; /* keeps cards aligned */
 }
 
 .badge {
