@@ -554,7 +554,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
           {/* ===== Hotel features (bullets) ===== */}
           {hotel.accessibility_features && (
             <section>
-              <h2 className={styles.sectionTitle}>Additional Accessibility Information</h2>
+              <h2 className={styles.sectionTitle}>Accessibility Notes & Considerations</h2>
               <ul className={styles.bulletList}>
                 {hotel.accessibility_features
                   .split('\n')
