@@ -515,7 +515,14 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
 
           <hr className={styles.divider} />
 
-          <p className={styles.hotelDescription}>{hotel.description}</p>
+          <div className={styles.hotelDescription}>
+            {hotel.description
+              ?.split('\n')
+              .filter((p: string) => p.trim() !== '')
+              .map((paragraph: string, index: number) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+          </div>
 
           <h2 className={styles.roomaccessibilityText}>Accessible Room Features Available at This Hotel</h2>
           <div className={styles.chipContainer}>
