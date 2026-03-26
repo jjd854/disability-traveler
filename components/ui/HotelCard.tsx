@@ -134,15 +134,21 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
 
       <h3 className={styles.name}>
         {slug ? (
-          <Link href={`/hotels/${slug}`} className={styles.nameLink} aria-label={`View ${name}`}>
+          <Link
+            href={`/hotels/${slug}`}
+            className={styles.nameLink}
+            aria-label={`View ${name}`}
+            title={name}
+          >
             {name}
-         </Link>
-       ) : (
-         <span className={styles.nameText}>{name}</span>
-       )}
-
-       {isAllInc && <span className={styles.badge}>All-Inclusive</span>}
-     </h3>
+          </Link>
+        ) : (
+          <span className={styles.nameText} title={name}>
+            {name}
+          </span>
+        )}
+        {isAllInc && <span className={styles.badge}>All-Inclusive</span>}
+      </h3>
 
       {priceLevel > 0 && (
         <p className={styles.priceRow} title="Price level is relative to this destination">
