@@ -800,10 +800,21 @@ const canSubmit = useMemo(() => {
               aria-hidden="true"
             />
 
-            {/* reCAPTCHA v2 checkbox */}
-            <div className={styles.captchaRow}>
-              <div id={recaptchaContainerId} />
+            <div className={styles.buttonGroup}>
+              <button
+                type="button"
+                onClick={handleFilestackUpload}
+                disabled={submitting}
+                className={styles.uploadButton}
+              >
+                Upload Photos
+              </button>
             </div>
+            <div className={styles.certifyText}>
+              Upload up to 5 photos from your trip. Photos showing accessibility features, barriers, or room layouts are especially helpful for other travelers. General travel photos are welcome too. 
+           </div>
+
+            
 
             {/* Photo previews */}
             {photoGroupUrls.length > 0 && (
@@ -839,16 +850,12 @@ const canSubmit = useMemo(() => {
               </div>
             )}
 
-            <div className={styles.buttonGroup}>
-              <button
-                type="button"
-                onClick={handleFilestackUpload}
-                disabled={submitting}
-                className={styles.uploadButton}
-              >
-                Upload Photos
-              </button>
+            {/* reCAPTCHA v2 checkbox */}
+            <div className={styles.captchaRow}>
+              <div id={recaptchaContainerId} />
+            </div>
 
+            <div className={styles.buttonGroup}>              
               <button
                 type="submit"
                 disabled={!canSubmit}
