@@ -2,7 +2,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   text-align: center;
 
   overflow: hidden;
@@ -99,13 +99,21 @@
 .content {
   padding: 12px 10px 6px;
   width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .title {
-  color: #1f2937;      /* neutral dark (same tone as other headings) */
+  color: #1f2937;
   font-weight: 700;
   text-align: center;
-  cursor: default;     /* avoids looking clickable */
+  cursor: default;
+  min-height: 64px; /* adjust if needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title:hover { text-decoration: none; }
@@ -282,20 +290,22 @@
 .ratingText {
   margin: 6px 0 10px;
   font-weight: 500;
+  min-height: 24px;
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: auto;
 
-  /* Center the chips */
-  justify-content: center;   /* centers each wrapped line */
-  align-content: center;     /* keeps multiple lines centered as a block */
-  width: 100%;               /* ensure the container spans the card width */
-  margin-left: auto;         /* optional: helps perfect centering */
+  justify-content: center;
+  align-content: flex-start;
+  width: 100%;
+  margin-left: auto;
   margin-right: auto;
+
+  min-height: 134px; /* adjust as needed */
 }
 
 .chip {

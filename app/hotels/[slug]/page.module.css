@@ -224,6 +224,7 @@
 .roomCategoriesGrid > * {
   width: auto;
   max-width: 540px;
+  display: flex;
 }
 
 /* One column on small screens */
