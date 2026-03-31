@@ -400,6 +400,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
           photos={photos ?? []}
           hotelId={hotel.id}
           reviewerPhotos={reviewerPhotoBlobs}
+          hotelName={hotel.name}
         />
 
         <div className={styles.content}>

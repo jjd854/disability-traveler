@@ -36,6 +36,13 @@
   align-items: center;
 }
 
+.photoCredit {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #777;
+}
+
 .captionLink {
   background: none;
   border: none;
