@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { getHotelAvg, getHotelCount } from '@/lib/utils';
 import RoomAmenitiesSection from '@/components/ui/RoomAmenitiesSection';
 import OutboundLink from '@/components/ui/analytics/OutboundLink';
+import AccessibilityConfidenceBadge from '@/components/ui/AccessibilityConfidenceBadge';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -405,7 +406,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
 
         <div className={styles.content}>
           <h1 className={styles.hotelName}>🏨 {hotel.name}</h1>
-
+          <AccessibilityConfidenceBadge confidence={hotel.accessibility_confidence} />
           {priceLevel > 0 && (
             <div
               className={styles.priceBlock}
