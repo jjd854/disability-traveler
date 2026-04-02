@@ -45,6 +45,7 @@ type RawHotel = {
   featured_image_url?: string | null;
   alt_text?: string | null;
   price_level?: number | string | null;
+  accessibility_confidence?: string | null;
 
   avg_hotel_rating?: number | string | null;
   hotel_review_count?: number | string | null;
@@ -83,6 +84,7 @@ type NormalizedHotel = {
   featured_image_url?: string;
   alt_text?: string | null;
   price_level?: number | null;
+  accessibility_confidence?: string | null;
 
   avg_hotel_rating?: number | string | null;
   hotel_review_count?: number | string | null;
@@ -391,6 +393,7 @@ export default function HotelsPage() {
             featured_image_url: h.featured_image_url ?? '/placeholder.jpg',
             alt_text: asOptionalString(h.alt_text),
             price_level: asNumberOrNull(h.price_level),
+            accessibility_confidence: asOptionalString(h.accessibility_confidence),
 
             avg_hotel_rating:
               h.avg_hotel_rating ??
@@ -617,6 +620,7 @@ export default function HotelsPage() {
                     id={hotel.id}
                     name={hotel.name}
                     slug={hotel.slug}
+                    accessibility_confidence={hotel.accessibility_confidence}
                     featured_image_url={hotel.featured_image_url ?? '/placeholder.jpg'}
                     alt_text={hotel.alt_text ?? undefined}
                     price_level={hotel.price_level ?? null}

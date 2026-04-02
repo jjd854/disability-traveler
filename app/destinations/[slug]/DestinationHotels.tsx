@@ -168,6 +168,7 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
   alt_text?: string | null;
 
   price_level?: number | string | null;
+  accessibility_confidence?: string | null;
 
   avg_hotel_rating?: number | null;
   hotel_review_count?: number | null;
@@ -358,6 +359,7 @@ const hotelsList = useMemo<HotelLike[]>(
             slug={hotel.slug ?? ''}
             featured_image_url={hotel.featured_image_url ?? '/placeholder.jpg'}
             alt_text={hotel.alt_text ?? undefined}
+            accessibility_confidence={hotel.accessibility_confidence}
             price_level={hotel.price_level ?? null}
             avg_hotel_rating={hotel.avg_hotel_rating}
             hotel_review_count={hotel.hotel_review_count}

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import styles from './HotelCard.module.css';
 import RatingBadge from '../ui/RatingBadge';
+import AccessibilityConfidenceBadge from './AccessibilityConfidenceBadge';
 
 type MaybeNum = number | string | null | undefined;
 type MaybeBool = boolean | number | string | null | undefined;
@@ -17,6 +18,7 @@ interface HotelCardProps {
   featured_image_url: string;
   alt_text?: string;
   price_level?: number | string | null;
+  accessibility_confidence?: string | null;
 
   has_pool_lift?: MaybeBool;
   has_beach_wheelchair?: MaybeBool;
@@ -149,6 +151,11 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
         )}
         {isAllInc && <span className={styles.badge}>All-Inclusive</span>}
       </h3>
+
+      <AccessibilityConfidenceBadge
+        confidence={p.accessibility_confidence}
+        size="small"
+      />
 
       {priceLevel > 0 && (
         <p className={styles.priceRow} title="Price level is relative to this destination">
