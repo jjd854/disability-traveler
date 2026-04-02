@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import styles from './RoomCategoryCard.module.css';
 import type { RoomCategory, RoomCategoryPhoto } from '@/lib/types';
 import RatingBadge from '../ui/RatingBadge';
+import AccessibilityConfidenceBadge from './AccessibilityConfidenceBadge';
 
 interface Props {
   category: RoomCategory;
@@ -25,6 +26,7 @@ type RoomCategoryPhotoLike = {
 type RoomCategoryLike = RoomCategory & {
   avg_room_category_rating?: number | string | null | RoomCategoryAddon;
   room_category_rating_count?: number | string | null;
+  accessibility_confidence?: string | null;
 
   photos_example?: RoomCategoryPhotoLike[] | null;
 
@@ -227,6 +229,10 @@ export default function RoomCategoryCard({ category }: Props) {
         {/* CONTENT */}
         <div className={styles.content}>
           <h4 className={styles.title}>{category.name}</h4>
+          <AccessibilityConfidenceBadge
+            confidence={category.accessibility_confidence}
+            size="small"
+          />
           <RatingBadge
             avg={avg}
             count={count}
