@@ -22,6 +22,37 @@
   margin: 0px auto 6px;
 }
 
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+
+  min-width: 220px;
+  max-width: 260px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #1f2937;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+  pointer-events: none;
+}
+
 /* Variants */
 
 .confidenceBadge.verified {
@@ -46,4 +77,23 @@
   background: #fff8e1;
   color: #975a16;
   border-color: #f6e05e;
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #1f2937;
+  transition: opacity 0.12s ease, visibility 0.12s ease;
+  max-width: 280px;
+}
+
+.wrapper:hover .tooltip,
+.wrapper:focus-within .tooltip {
+  opacity: 1;
+  visibility: visible;
 }

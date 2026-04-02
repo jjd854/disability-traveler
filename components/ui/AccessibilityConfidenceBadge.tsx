@@ -45,11 +45,22 @@ export default function AccessibilityConfidenceBadge({
   }
 
   return (
-    <div
-      className={`${styles.confidenceBadge} ${styles[className]} ${size === 'small' ? styles.small : ''}`}
-      title={description}
-    >
-      {label}
+    <div className={styles.wrapper}>
+      <div
+        className={`${styles.confidenceBadge} ${styles[className]} ${size === 'small' ? styles.small : ''}`}
+        tabIndex={0}
+        aria-describedby={`confidence-tooltip-${label.replace(/\s+/g, '-').toLowerCase()}`}
+      >
+        {label}
+      </div>
+
+      <div
+        id={`confidence-tooltip-${label.replace(/\s+/g, '-').toLowerCase()}`}
+        role="tooltip"
+        className={styles.tooltip}
+      >
+        {description}
+      </div>
     </div>
   );
 }
