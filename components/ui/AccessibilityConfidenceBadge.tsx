@@ -24,19 +24,19 @@ export default function AccessibilityConfidenceBadge({
 
     case 'dt_verified':
       label = 'Disability Traveler Verified';
-      description = 'Accessibility details informed by firsthand experience at the property.';
+      description = 'Accessibility details informed by firsthand experience from the Disability Traveler Team at this hotel. Specific room features may vary.';
       className = 'dt';
       break;
 
     case 'detailed':
       label = 'Detailed Accessibility Info';
-      description = 'Based on strong publicly available information, but not confirmed directly with the hotel.';
+      description = 'Accessibility details based on publicly available information, but not verified directly with the hotel.';
       className = 'detailed';
       break;
 
     case 'limited':
       label = 'Limited Accessibility Info';
-      description = 'The hotel reports accessible features, but detailed room-level information is limited.';
+      description = 'The hotel states it has accessible features, but detailed room-level information is not shared publicly. Contacting the hotel directly is required.';
       className = 'limited';
       break;
 

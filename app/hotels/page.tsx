@@ -484,7 +484,7 @@ export default function HotelsPage() {
           <div className={styles.confidenceItem}>
             <span className={`${styles.confidencePill} ${styles.dtPill}`}>Disability Traveler Verified</span>
             <p className={styles.confidenceText}>
-              Accessibility details informed by firsthand experience from the Disability Traveler Team.
+              Accessibility details informed by firsthand experience from the Disability Traveler Team at this hotel. Specific room features may vary.
             </p>
           </div>
 
