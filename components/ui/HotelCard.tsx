@@ -127,71 +127,72 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
 
   return (
     <div className={styles.card}>
-      <img
-        src={featured_image_url}
-        alt={alt_text || `${name} feature image`}
-        className={styles.thumbnail}
-        loading="lazy"
-      />
+      <div className={styles.cardContent}>
+       <img
+         src={featured_image_url}
+         alt={alt_text || `${name} feature image`}
+         className={styles.thumbnail}
+         loading="lazy"
+        />
 
-      <h3 className={styles.name}>
-        {slug ? (
-          <Link
-            href={`/hotels/${slug}`}
-            className={styles.nameLink}
-            aria-label={`View ${name}`}
-            title={name}
-          >
-            {name}
-          </Link>
-        ) : (
-          <span className={styles.nameText} title={name}>
-            {name}
-          </span>
-        )}
-        {isAllInc && <span className={styles.badge}>All-Inclusive</span>}
-      </h3>
+       <h3 className={styles.name}>
+         {slug ? (
+           <Link
+             href={`/hotels/${slug}`}
+             className={styles.nameLink}
+             aria-label={`View ${name}`}
+             title={name}
+           >
+             {name}
+           </Link>
+         ) : (
+           <span className={styles.nameText} title={name}>
+             {name}
+           </span>
+         )}
+         {isAllInc && <span className={styles.badge}>All-Inclusive</span>}
+       </h3>
 
-      <AccessibilityConfidenceBadge
-        confidence={p.accessibility_confidence}
-        size="small"
-      />
+       <AccessibilityConfidenceBadge
+         confidence={p.accessibility_confidence}
+         size="small"
+       />
 
-      {priceLevel > 0 && (
-        <p className={styles.priceRow} title="Price level is relative to this destination">
-          <span
-            className={styles.dollars}
-            aria-label={`Price level ${priceLevel} of 5`}
-          >
-            {'$'.repeat(priceLevel)}
-            <span className={styles.dollarsEmpty}>
-              {'$'.repeat(Math.max(0, 5 - priceLevel))}
-            </span>
-          </span>
-          <span className={styles.priceLabel}>
-            {PRICE_LABELS[priceLevel] ?? ''}
-          </span>
-        </p>
-      )}
+       {priceLevel > 0 && (
+         <p className={styles.priceRow} title="Price level is relative to this destination">
+           <span
+             className={styles.dollars}
+             aria-label={`Price level ${priceLevel} of 5`}
+           >
+             {'$'.repeat(priceLevel)}
+             <span className={styles.dollarsEmpty}>
+               {'$'.repeat(Math.max(0, 5 - priceLevel))}
+             </span>
+           </span>
+           <span className={styles.priceLabel}>
+             {PRICE_LABELS[priceLevel] ?? ''}
+           </span>
+         </p>
+       )}
 
-      <RatingBadge
-        avg={avg}         // your existing computed avg
-        count={count}     // your existing count
-        className={styles.ratingText}
-      />
-      <div className={styles.divider} />
+       <RatingBadge
+         avg={avg}         // your existing computed avg
+         count={count}     // your existing count
+         className={styles.ratingText}
+       />
+       <div className={styles.divider} />
 
-      {!!features.length && (
-        <div className={styles.features}>
-          {features.map((f, i) => (
-            <span key={i} className={styles.feature}>
-              <span aria-hidden="true" className={styles.featureEmoji}>{f.emoji}</span>
-              {f.label}
-            </span>
-          ))}
-        </div>
-      )}
-
+       {!!features.length && (
+         <div className={styles.features}>
+           {features.map((f, i) => (
+             <span key={i} className={styles.feature}>
+               <span aria-hidden="true" className={styles.featureEmoji}>{f.emoji}</span>
+               {f.label}
+             </span>
+           ))}
+         </div>
+       )}
+      </div>
       <Link href={`/hotels/${slug}`} className={styles.button}>
         View Hotel
       </Link>

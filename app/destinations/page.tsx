@@ -109,26 +109,26 @@ export default function DestinationsPage() {
 
               return (
                 <article key={dest.id} className={styles['destination-card']}>
-                  <img
-                    src={dest.featured_image_url || '/placeholder.jpg'}
-                    alt={dest.alt_text || `${dest.Name} cover image`}
-                    className={styles['destination-image']}
-                    loading="lazy"
-                  />
+                  <div className={styles.cardContent}>
+                    <img
+                      src={dest.featured_image_url || '/placeholder.jpg'}
+                      alt={dest.alt_text || `${dest.Name} cover image`}
+                      className={styles['destination-image']}
+                      loading="lazy"
+                    />
 
-                  {/* Title as green link */}
-                  <h2 className={styles.cardTitle}>
-                    <Link href={`/destinations/${dest.slug}`} className={styles.titleLink}>
-                      {dest.Name}
-                    </Link>
-                  </h2>
+                    <h2 className={styles.cardTitle}>
+                      <Link href={`/destinations/${dest.slug}`} className={styles.titleLink}>
+                        {dest.Name}
+                      </Link>
+                    </h2>
 
-                  <RatingBadge avg={avg} count={count} className={styles.ratingText} />
-                  <div className={styles.divider} />
+                    <RatingBadge avg={avg} count={count} className={styles.ratingText} />
+                    <div className={styles.divider} />
 
-                  {/* Compact two-line meta */}
-                  {line1 && <p className={styles.metaCompact}>{line1}</p>}
-                  {line2 && <p className={styles.metaCompact}>{line2}</p>}
+                    {line1 && <p className={styles.metaCompact}>{line1}</p>}
+                    {line2 && <p className={styles.metaCompact}>{line2}</p>}
+                  </div>
 
                   <Link
                     href={`/destinations/${dest.slug}`}

@@ -8,6 +8,14 @@
 }
 
 /* Card */
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
 .destination-card {
   display: flex;
   flex-direction: column;
@@ -88,7 +96,7 @@
 /* CTA Link styled as button */
 .viewbutton {
   display: inline-block;
-  margin: 12px auto 0 auto;
+  margin: 16px auto 0 auto;
   background-color: #3eaf6f;
   color: white;
   text-decoration: none;
@@ -97,6 +105,7 @@
   font-weight: 600;
   transition: background-color 0.2s ease;
 }
+
 .viewbutton:hover { background-color: #34985f; }
 
 /* Page title */
