@@ -467,6 +467,46 @@ export default function HotelsPage() {
   return (
     <>
       <Navbar />
+      <section className={styles.confidenceExplainer}>
+        <h2 className={styles.confidenceTitle}>Understanding Accessibility Confidence</h2>
+        <p className={styles.confidenceIntro}>
+          Accessibility Confidence helps you understand how each hotel’s accessibility information was sourced.
+        </p>
+
+        <div className={styles.confidenceGrid}>
+          <div className={styles.confidenceItem}>
+            <span className={`${styles.confidencePill} ${styles.verifiedPill}`}>Verified by Hotel</span>
+            <p className={styles.confidenceText}>
+               Accessibility details confirmed directly with the hotel.
+            </p>
+          </div>
+
+          <div className={styles.confidenceItem}>
+            <span className={`${styles.confidencePill} ${styles.dtPill}`}>Disability Traveler Verified</span>
+            <p className={styles.confidenceText}>
+              Accessibility details informed by firsthand experience from the Disability Traveler Team.
+            </p>
+          </div>
+
+          <div className={styles.confidenceItem}>
+            <span className={`${styles.confidencePill} ${styles.detailedPill}`}>Detailed Accessibility Info</span>
+            <p className={styles.confidenceText}>
+              Accessibility details based on publicly available information, but not verified directly with the hotel.
+            </p>
+          </div>
+
+          <div className={styles.confidenceItem}>
+            <span className={`${styles.confidencePill} ${styles.limitedPill}`}>Limited Accessibility Info</span>
+            <p className={styles.confidenceText}>
+              The hotel states it has accessible features, but detailed room-level information is not shared publicly. Contacting the hotel directly is required.
+            </p>
+          </div>
+        </div>
+
+        <p className={styles.confidenceNote}>
+          We still recommend contacting the hotel directly to confirm details for your specific needs.
+        </p>
+      </section>
       <main className="page-content">
        <div className={styles.container}>
         <h1 className={styles.pageTitle}>Browse Accessible Hotels</h1>

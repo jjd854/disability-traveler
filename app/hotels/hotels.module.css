@@ -4,6 +4,131 @@
   margin: 0 auto;
   padding: 1rem 1rem;
 }
+
+.confidenceExplainer {
+  max-width: 980px;
+  margin: 28px auto 36px;
+  padding: 28px 24px;
+  background: #f8faf9;
+  border: 1px solid #e3e8e6;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.confidenceTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.confidenceIntro {
+  max-width: 720px;
+  margin: 0 auto 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+.confidenceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.confidenceItem {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px 20px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.confidencePill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.verifiedPill {
+  background: #e6f6ef;
+  color: #2f855a;
+  border: 1px solid #b7e4c7;
+}
+
+.dtPill {
+  background: #e6f0ff;
+  color: #2b6cb0;
+  border: 1px solid #c3dafe;
+}
+
+.detailedPill {
+  background: #f0f4f8;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+}
+
+.limitedPill {
+  background: #fff8e1;
+  color: #975a16;
+  border: 1px solid #f6e05e;
+}
+
+.confidenceText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.confidenceNote {
+  max-width: 720px;
+  margin: 20px auto 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .confidenceExplainer {
+    margin: 20px 16px 28px;
+    padding: 20px 16px;
+  }
+
+  .confidenceTitle {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  .confidenceGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .confidenceItem {
+    padding: 16px;
+  }
+
+  .confidenceIntro,
+  .confidenceNote {
+    font-size: 14px;
+  }
+
+  .confidenceText {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+}
+
 .pageTitle {
   font-size: 2rem;
   font-weight: bold;
