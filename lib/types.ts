@@ -10,6 +10,8 @@ export type Hotel = {
   accessibility_summary?: string;
   destinations_id: number;
   price_level?: number | string | null;
+  dt_verified_room_notes?: string | null;
+  dt_verified_property_notes?: string | null;
 
   has_pool_lift?: boolean;
   has_beach_wheelchair?: boolean;

@@ -568,12 +568,30 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
             <section>
               <h2 className={styles.sectionTitle}>Accessibility Notes & Considerations</h2>
               <ul className={styles.bulletList}>
+
+                {/* DT VERIFIED - ROOM */}
+                {hotel.dt_verified_room_notes && (
+                  <li className={styles.dtVerified}>
+                    <strong>DT Verified (Room):</strong> {hotel.dt_verified_room_notes}
+                  </li>
+                )}
+
+                {/* DT VERIFIED - PROPERTY */}
+                {hotel.dt_verified_property_notes && (
+                  <li className={styles.dtVerified}>
+                    <strong>DT Verified (Property):</strong> {hotel.dt_verified_property_notes}
+                  </li>
+                )}
+
+                {/* EXISTING NOTES */}
                 {hotel.accessibility_features
                   .split('\n')
                   .filter((line: string) => line.trim() !== '')
                   .map((line: string, idx: number) => (
                     <li key={idx}>{line.trim()}</li>
-                  ))}
+                  ))
+                }
+
               </ul>
             </section>
           )}
