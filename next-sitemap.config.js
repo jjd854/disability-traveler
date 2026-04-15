@@ -4,6 +4,7 @@ module.exports = {
   generateRobotsTxt: true,
 
   additionalPaths: async (config) => {
+    const axios = require("axios");
     const paths = [];
 
     const staticRoutes = [
@@ -29,12 +30,15 @@ module.exports = {
 
     try {
       const [destinationsRes, hotelsRes] = await Promise.all([
-        fetch("https://x8ki-letl-twmt.n7.xano.io/api:3jVxSIOz/destinations"),
-        fetch("https://x8ki-letl-twmt.n7.xano.io/api:3jVxSIOz/hotels"),
+        axios.get("https://x8ki-letl-twmt.n7.xano.io/api:3jvXSl0z/destinations"),
+        axios.get("https://x8ki-letl-twmt.n7.xano.io/api:3jvXSl0z/hotels"),
       ]);
 
-      const destinationsJson = await destinationsRes.json();
-      const hotelsJson = await hotelsRes.json();
+      const destinationsJson = destinationsRes.data;
+      const hotelsJson = hotelsRes.data;
+
+      console.log("DESTINATIONS JSON:", destinationsJson);
+      console.log("HOTELS JSON:", hotelsJson);
 
       const destinations = Array.isArray(destinationsJson)
         ? destinationsJson
@@ -48,26 +52,26 @@ module.exports = {
         if (d?.slug) {
           paths.push({
             loc: `/destinations/${d.slug}`,
-            changefreq: 'weekly',
+            changefreq: "weekly",
             priority: 0.9,
             lastmod: new Date().toISOString(),
           });
         }
       }
 
-      for (const h of hotels) {
-        if (h?.slug) {
-          paths.push({
-            loc: `/hotels/${h.slug}`,
-            changefreq: 'weekly',
-            priority: 0.9,
-            lastmod: new Date().toISOString(),
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error generating sitemap paths:', error);
+  for (const h of hotels) {
+    if (h?.slug) {
+      paths.push({
+        loc: `/hotels/${h.slug}`,
+        changefreq: "weekly",
+        priority: 0.9,
+        lastmod: new Date().toISOString(),
+      });
     }
+  }
+} catch (error) {
+  console.error("Error generating sitemap paths:", error);
+}
 
     return paths;
   },
