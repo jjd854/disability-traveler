@@ -5,6 +5,31 @@ module.exports = {
   siteUrl: 'https://disabilitytraveler.com',
   generateRobotsTxt: true,
 
+  transform: async (config, path) => {
+  // Exclude non-page assets
+    const excludedExtensions = ['.png', '.jpg', '.jpeg', '.svg', '.webp', '.ico'];
+
+    if (excludedExtensions.some(ext => path.endsWith(ext))) {
+      return null;
+    }
+
+    // Exclude specific system/static paths if needed
+    if (
+      path.includes('/favicon') ||
+      path.includes('/icon') ||
+      path.includes('/manifest')
+    ) {
+      return null;
+    }
+
+    return {
+      loc: path,
+      changefreq: 'weekly',
+      priority: path === '/' ? 1.0 : 0.7,
+      lastmod: new Date().toISOString(),
+    };
+  },
+
   additionalPaths: async (config) => {
     const paths = [];
 
