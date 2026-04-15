@@ -1,10 +1,11 @@
+const axios = require("axios");
+
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: 'https://disabilitytraveler.com',
   generateRobotsTxt: true,
 
   additionalPaths: async (config) => {
-    const axios = require("axios");
     const paths = [];
 
     const staticRoutes = [
@@ -30,8 +31,8 @@ module.exports = {
 
     try {
       const [destinationsRes, hotelsRes] = await Promise.all([
-        axios.get("https://x8ki-letl-twmt.n7.xano.io/api:3jvXSl0z/destinations"),
-        axios.get("https://x8ki-letl-twmt.n7.xano.io/api:3jvXSl0z/hotels"),
+        axios.get("https://x8ki-letl-twmt.n7.xano.io/api:3jVxSIOz/destinations_sitemap"),
+        axios.get("https://x8ki-letl-twmt.n7.xano.io/api:3jVxSIOz/hotels_sitemap"),
       ]);
 
       const destinationsJson = destinationsRes.data;
