@@ -561,7 +561,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
 
             {/* Renders filters + the grid in one place (no duplicates) */}
             {roomCategories && roomCategories.length > 0 ? (
-             <RoomAmenitiesSection roomCategories={roomCategories} />
+             <RoomAmenitiesSection roomCategories={roomCategories} hotelName={hotel.name} />
            ) : (
              <div className={styles.noRoomsMessage}>
                The hotel reports that accessible rooms are available; however, it does not

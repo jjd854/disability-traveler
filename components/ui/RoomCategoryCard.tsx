@@ -9,6 +9,7 @@ import AccessibilityConfidenceBadge from './AccessibilityConfidenceBadge';
 
 interface Props {
   category: RoomCategory;
+  hotelName?: string;
 }
 
 type RoomCategoryAddon = {
@@ -21,6 +22,8 @@ type RoomCategoryPhotoLike = {
   url?: string;
   photo_url?: string;
   alt_text?: string | null;
+  hotel_name?: { name: string } | null;
+  is_placeholder_image?: boolean;
 };
 
 type RoomCategoryLike = RoomCategory & {
@@ -54,7 +57,7 @@ function isTruthyFlag(value: unknown): boolean {
   return value === true || value === 1 || value === '1' || value === 'true';
 }
 
-export default function RoomCategoryCard({ category }: Props) {
+export default function RoomCategoryCard({ category, hotelName }: Props) {
   const cat = category as RoomCategoryLike;
 
   // --- pull avg + count from either flat or nested add-on shapes ---
@@ -89,9 +92,11 @@ export default function RoomCategoryCard({ category }: Props) {
           (typeof cat.name === 'string'
             ? `${cat.name} – photo ${i + 1}`
             : `Room photo ${i + 1}`),
+        is_placeholder_image: isTruthyFlag(p.is_placeholder_image),    
       }))
       .filter((p) => typeof p.url === 'string' && p.url.trim() !== '');
 
+    console.log('normalized room photos:', normalized);
     const seen = new Set<string>();
     const unique: RoomCategoryPhoto[] = [];
 
@@ -153,6 +158,10 @@ export default function RoomCategoryCard({ category }: Props) {
     if (!hasPhotos) return;
     setActiveIndex((i) => (i - 1 + photos.length) % photos.length);
   };
+
+  const showAttribution = photos.some(
+    (photo) => photo.is_placeholder_image !== true
+  );
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -307,7 +316,11 @@ export default function RoomCategoryCard({ category }: Props) {
            <div className={styles.modalCaption}>
              {category.name} — {activeIndex + 1} / {photos.length}
            </div>
-
+            {showAttribution && (
+              <p className={styles.photoAttribution}>
+                Photos courtesy of {hotelName}
+              </p>
+            )}
           </div>
         </div>,
         document.body

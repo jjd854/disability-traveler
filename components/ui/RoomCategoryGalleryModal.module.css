@@ -88,3 +88,10 @@
   object-fit: cover;
 }
 .active { border-color: #3eaf6f; }
+
+.photoAttribution {
+  margin: 6px 0 20px;;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #777;
+}

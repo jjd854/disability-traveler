@@ -212,6 +212,13 @@
   font-size: 15px;
 }
 
+.photoAttribution {
+  margin: 6px 0 20px;;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #777;
+}
+
 /* Controls float above content and don't affect the grid */
 .modalClose {
   position: absolute;

@@ -143,6 +143,9 @@ export type RoomCategoryPhoto = {
   width?: number;
   height?: number;
   sort_order?: number;
+  hotel_name?: {
+    name: string;
+  };
 };
 
 export type RoomCategory = {

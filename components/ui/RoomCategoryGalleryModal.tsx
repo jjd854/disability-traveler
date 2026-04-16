@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import styles from './RoomCategoryGalleryModal.module.css';
 
-export type RoomCategoryPhoto = { url: string; alt_text?: string | null };
+export type RoomCategoryPhoto = { url: string; alt_text?: string | null; is_placeholder_image?: boolean; hotel_name?: { name: string } }; 
 
 interface Props {
   photos: RoomCategoryPhoto[];
@@ -20,6 +20,9 @@ export default function RoomCategoryGalleryModal({
   onClose,
   onChangeIndex,
 }: Props) {
+
+  console.log('photos:', photos);
+  console.log('hotelName:', photos[0]?.hotel_name);
   const idxRef = useRef(startIndex);
 
   useEffect(() => {
@@ -55,6 +58,11 @@ export default function RoomCategoryGalleryModal({
     onChangeIndex?.(idxRef.current);
   }
 
+  const showAttribution = photos.some(
+    (photo) => photo.is_placeholder_image !== true
+  );
+  const hotelName = photos[0]?.hotel_name?.name;
+
   return (
     <div className={styles.backdrop} role="dialog" aria-modal="true" aria-label="Room photos">
       <button className={styles.close} onClick={onClose} aria-label="Close gallery">✕</button>
@@ -70,6 +78,11 @@ export default function RoomCategoryGalleryModal({
             <button className={styles.navLeft} onClick={prev} aria-label="Previous photo">‹</button>
             <button className={styles.navRight} onClick={next} aria-label="Next photo">›</button>
           </>
+        )}
+        {showAttribution && (
+          <p className={styles.photoAttribution}>
+            Photos courtesy of {hotelName || 'the hotel'}
+          </p>
         )}
       </div>
 
