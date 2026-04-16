@@ -390,11 +390,19 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
       <main className={styles.hotelPageRoot}>
       <div className={styles.hotelPage}>
         {hotel.featured_image_url && (
-          <img
-            src={hotel.featured_image_url}
-            alt={hotel.alt_text || hotel.name || 'Hotel image'}
-            className={styles.heroImage}
-          />
+          <>
+            <img
+              src={hotel.featured_image_url}
+              alt={hotel.alt_text || hotel.name || 'Hotel image'}
+              className={styles.heroImage}
+            />
+
+            {hotel.is_placeholder_image === false && (
+              <p className={styles.photoAttribution}>
+                Photo courtesy of {hotel.name}
+              </p>
+            )}
+          </>
         )}
 
         <HotelPhotoGallery

@@ -7,6 +7,7 @@ export type Hotel = {
   name: string;
   slug: string;
   featured_image_url: string;
+  is_placeholder_image?: boolean;
   accessibility_summary?: string;
   destinations_id: number;
   price_level?: number | string | null;
@@ -137,6 +138,7 @@ export type ReviewCardProps = {
 
 export type RoomCategoryPhoto = {
   url: string;
+  is_placeholder_image?: boolean;
   alt_text: string;
   width?: number;
   height?: number;
