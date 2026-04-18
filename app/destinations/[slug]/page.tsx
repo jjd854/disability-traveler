@@ -137,7 +137,7 @@ export default async function DestinationPage({ params }: Props) {
                 Accessible Hotels in {destination.Name}
               </h2>
               <p className={styles.sectionBodyPreLine}>
-                Disability Traveler helps travelers with disabilities find accessible hotels in {destinationName} including properties that offer features such as roll-in showers, step-free pathways, elevators, pool lifts, and other accessibility amenities designed for wheelchair users, travelers with limited mobility, and those with sensory impairments.
+                Travelers looking for wheelchair accessible hotels in {destinationName} will find detailed accessibility information here, including properties with roll-in showers, accessible pathways, elevators, and beach access.
               </p>
               {/* Client-side filters + cards */}
               <DestinationHotels
