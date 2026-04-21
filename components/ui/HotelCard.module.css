@@ -23,9 +23,16 @@
   width: 100%;
 }
 
-.thumbnail {
+.thumbnailWrapper {
+  position: relative;
   width: 100%;
-  height: 200px;
+  height: 200px; /* adjust to match your current card image height */
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.thumbnail {
   object-fit: cover;
   border-radius: 0.5rem;
   background: #f3f3f3;

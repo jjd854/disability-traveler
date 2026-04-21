@@ -138,12 +138,17 @@
   border-radius: 10px;
 }
 
+.thumbnailWrapper {
+  position: relative;
+  width: 100px;   /* match your current size */
+  height: 100px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
 .thumbnail {
   display: block;
-  width: 100px;
-  height: 100px;
   object-fit: cover;
-  border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s ease;
   scroll-snap-align: start;
@@ -178,7 +183,7 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: 84vh;
+  max-height: 80vh;
   object-fit: contain;
   border-radius: 10px;
   background: #000;

@@ -9,6 +9,7 @@ import Footer from '../../components/ui/Footer';
 import type { Review } from '@/lib/types';
 import { getDestAvg, getDestCount } from '@/lib/utils';
 import RatingBadge from '../../components/ui/RatingBadge';
+import Image from "next/image";
 
 interface Destination {
   id: number;
@@ -110,12 +111,15 @@ export default function DestinationsPage() {
               return (
                 <article key={dest.id} className={styles['destination-card']}>
                   <div className={styles.cardContent}>
-                    <img
-                      src={dest.featured_image_url || '/placeholder.jpg'}
-                      alt={dest.alt_text || `${dest.Name} cover image`}
-                      className={styles['destination-image']}
-                      loading="lazy"
-                    />
+                    <div className={styles.imageWrapper}>
+                      <Image
+                         src={dest.featured_image_url || "/placeholder.jpg"}
+                         alt={dest.alt_text || `${dest.Name} cover image`}
+                         fill
+                         className={styles["destination-image"]}
+                         sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </div>
 
                     <h2 className={styles.cardTitle}>
                       <Link href={`/destinations/${dest.slug}`} className={styles.titleLink}>

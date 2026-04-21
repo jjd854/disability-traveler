@@ -9,6 +9,7 @@ import { init, PickerInstance } from 'filestack-js';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ReviewTipsModal from '../../components/ui/ReviewTipsModal';
 import { gaEvent } from '@/lib/ga';
+import Image from "next/image";
 
 
 
@@ -820,32 +821,37 @@ const canSubmit = useMemo(() => {
             {photoGroupUrls.length > 0 && (
               <div className={styles.previewContainer}>
                 {photoGroupUrls.map(({ url, alt }, index) => (
-                  <div key={url} className={styles.previewImageWrapper}>
-                    <img
-                      src={url}
-                      alt={alt || `Uploaded image ${index + 1}`}
-                      className={styles.previewImage}
-                   />
-                   <button
-                     type="button"
-                     onClick={() => handleRemoveImage(url)}
-                     className={styles.removeButton}
-                   >
-                     Remove
-                   </button>
-                   <input
-                     type="text"
-                     value={alt || ''}
-                     placeholder="Alt text for accessibility"
-                     onChange={(e) => {
-                       const nextAlt = e.target.value;
-                       setPhotoGroupUrls((prev) =>
-                         prev.map((p) => (p.url === url ? { ...p, alt: nextAlt } : p))
-                        );
+                  <div key={url} className={styles.previewItem}>
+                    <div className={styles.previewImageWrapper}>
+                      <Image
+                        src={url}
+                        alt={alt || `Uploaded image ${index + 1}`}
+                        fill
+                        className={styles.previewImage}
+                        sizes="120px"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(url)}
+                        className={styles.removeButton}
+                      >
+                        Remove
+                      </button>
+                    </div>
+
+                    <input
+                      type="text"
+                      value={alt || ""}
+                      placeholder="Alt text for accessibility"
+                      onChange={(e) => {
+                        const nextAlt = e.target.value;
+                          setPhotoGroupUrls((prev) =>
+                            prev.map((p) => (p.url === url ? { ...p, alt: nextAlt } : p))
+                         );
                       }}
-                     className={styles.altTextInput}
-                   />
-                 </div>
+                        className={styles.altTextInput}
+                    />
+                  </div>
                ))}
               </div>
             )}

@@ -106,7 +106,8 @@
   max-height: 68vh;
   max-width: 100%;
   height: auto;
-  width: auto;
+  width: 100%;
+  object-fit: contain;
   display: block;
   margin: 0 auto;
 }

@@ -5,6 +5,7 @@ import Footer from '../../components/ui/Footer';
 import Link from "next/link"; 
 import { Suspense } from 'react';
 import Navbar from '../../components/ui/Navbar';
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -24,11 +25,13 @@ export default function AboutPage() {
         <h2>My Story</h2>
         <div className={styles.myStoryContent}>
           <div className={styles.imageWrapper}>
-            <img
-              src="https://cdn.filestackcontent.com/TqPx5wMRTCGBmE6avNlQ?nocache=9f575mkn"
+            <Image
+              src="https://cdn.filestackcontent.com/TqPx5wMRTCGBmE6avNlQ?nocache=422opxum"
               alt="My wife and I on vacation"
+              width={600}
+              height={800}
               className={styles.storyImage}
-           />
+            />
             <p className={styles.caption}>My wife and I on vacation</p>
           </div>
           

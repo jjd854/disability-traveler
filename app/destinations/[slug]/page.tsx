@@ -9,6 +9,7 @@ import Link from 'next/link';
 import styles from './page.module.css';
 import DestinationHotels from './DestinationHotels'; // <-- default import of client child
 import OutboundLink from '@/components/ui/analytics/OutboundLink';
+import Image from "next/image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -78,10 +79,12 @@ export default async function DestinationPage({ params }: Props) {
         <div className={styles.container}>
           {destination.featured_image_url && (
             <div className={styles.heroWrapper}>
-              <img
+              <Image
                 src={destination.featured_image_url}
-                alt={destination.alt_text || 'Destination image'}
+                alt={destination.alt_text || "Destination image"}
+                fill
                 className={styles.heroImage}
+                priority
               />
             </div>
           )}

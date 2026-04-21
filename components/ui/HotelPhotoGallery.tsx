@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import styles from './HotelPhotoGallery.module.css';
+import Image from "next/image";
 
 type PhotoItem = {
   id?: number;
@@ -139,11 +140,13 @@ export default function HotelPhotoGallery({
             >
               {selectedPhotos.map((photo, idx) => (
                 <SwiperSlide key={photo.photo_url + idx}>
-                  <img
+                  <Image
                     src={photo.photo_url}
-                    alt={photo.alt_text || 'Photo'}
+                    alt={photo.alt_text || "Photo"}
+                    width={1600}
+                    height={900}
                     className={styles.photo}
-                    loading="lazy"
+                    sizes="100vw"
                   />
                 </SwiperSlide>
               ))}

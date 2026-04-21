@@ -11,6 +11,7 @@ import { getHotelAvg, getHotelCount } from '@/lib/utils';
 import RoomAmenitiesSection from '@/components/ui/RoomAmenitiesSection';
 import OutboundLink from '@/components/ui/analytics/OutboundLink';
 import AccessibilityConfidenceBadge from '@/components/ui/AccessibilityConfidenceBadge';
+import Image from "next/image";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -391,11 +392,15 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
       <div className={styles.hotelPage}>
         {hotel.featured_image_url && (
           <>
-            <img
-              src={hotel.featured_image_url}
-              alt={hotel.alt_text || hotel.name || 'Hotel image'}
-              className={styles.heroImage}
-            />
+            <div className={styles.heroImageWrapper}>
+              <Image
+                src={hotel.featured_image_url}
+                alt={hotel.alt_text || hotel.name || "Hotel image"}
+                fill
+                className={styles.heroImage}
+                priority
+              />
+            </div>
 
             {hotel.is_placeholder_image === false && (
               <p className={styles.photoAttribution}>

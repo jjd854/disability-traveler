@@ -6,6 +6,7 @@ import styles from './RoomCategoryCard.module.css';
 import type { RoomCategory, RoomCategoryPhoto } from '@/lib/types';
 import RatingBadge from '../ui/RatingBadge';
 import AccessibilityConfidenceBadge from './AccessibilityConfidenceBadge';
+import Image from "next/image";
 
 interface Props {
   category: RoomCategory;
@@ -192,11 +193,15 @@ export default function RoomCategoryCard({ category, hotelName }: Props) {
         >
           {hasPhotos ? (
             <>
-              <img
-                className={styles.thumbnail}
-                src={active!.url}
-                alt={active!.alt_text || `${category.name} room photo`}
-              />
+              <div className={styles.thumbnailWrapper}>
+                <Image
+                  src={active!.url}
+                  alt={active!.alt_text || `${category.name} room photo`}
+                  fill
+                  className={styles.thumbnail}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              </div>
               {photos.length > 1 && (
                 <>
                   <button
@@ -303,13 +308,16 @@ export default function RoomCategoryCard({ category, hotelName }: Props) {
             )}
 
             <div className={styles.modalStage}>
-              <img
+              <Image
                 className={styles.modalImage}
                 src={photos[activeIndex].url}
                 alt={
                   photos[activeIndex].alt_text ||
-                  `${category.name} – photo ${activeIndex + 1}`
+                  `${category.name} photo ${activeIndex + 1}`
                 }
+                width={1600}
+                height={900}
+                sizes="100vw"
               />
            </div>
 

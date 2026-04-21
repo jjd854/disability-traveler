@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import styles from './ReviewCard.module.css';
 import { ReviewCardProps } from '@/lib/types';
 import Link from 'next/link';
+import Image from "next/image";
 
 type ReviewPhotoLike = {
   id?: number | string | null;
@@ -235,12 +236,15 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                 onClick={() => setModalIndex(idx)}
                 aria-label={`Open review photo ${idx + 1} of ${photos.length}`}
              >
-                <img
-                  src={p.url}
-                  alt={p.alt || `Review photo ${idx + 1}`}
-                  className={styles.thumbnail}
-                  loading="lazy"
-                />
+                <div className={styles.thumbnailWrapper}>
+                  <Image
+                    src={p.url}
+                    alt={p.alt || `Review photo ${idx + 1}`}
+                    fill
+                    className={styles.thumbnail}
+                    sizes="100px"
+                  />
+                </div>
              </button>
            ))}
          </div>
@@ -263,12 +267,14 @@ export default function ReviewCard({ review }: ReviewCardProps) {
             aria-roledescription="carousel"
             aria-label="Review photos"
           >
-            <img
+            <Image
               src={currentPhoto.url}
-              alt={currentPhoto.alt || 'Full size review photo'}
+              alt={currentPhoto.alt || "Full size review photo"}
+              width={1600}
+              height={900}
               className={styles.modalImage}
+              sizes="100vw"
             />
-
             <button
               className={`${styles.navBtn} ${styles.leftArrow}`}
               onClick={() => setModalIndex(Math.max(0, modalIndex - 1))}

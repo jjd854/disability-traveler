@@ -6,14 +6,27 @@
   font-family: Arial, sans-serif;
 }
 
-.heroImage {
-  display: block;
+.heroImageWrapper {
+  position: relative;
   width: 100%;
-  height: 450px;
+  height: 450px; /* adjust if your current hero is taller/shorter */
+  overflow: hidden;
+  border-radius: 12px;
+  margin-top: 0px;
+  margin-bottom: 8px;
+
+}
+
+.heroImage {
   object-fit: cover;
   object-position: center;
-  border-radius: 12px;
-  margin: 0 auto;
+}
+
+.photoAttribution {
+  margin: 6px 0 20px;;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #777;
 }
 
 .content {
@@ -29,13 +42,6 @@
   font-weight: 800;
   margin-top: 8px;
   padding-top: 10px;
-}
-
-.photoAttribution {
-  margin: 6px 0 20px;;
-  text-align: center;
-  font-size: 0.7rem;
-  color: #777;
 }
 
 .sectionTitle {

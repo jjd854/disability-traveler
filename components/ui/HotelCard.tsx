@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styles from './HotelCard.module.css';
 import RatingBadge from '../ui/RatingBadge';
 import AccessibilityConfidenceBadge from './AccessibilityConfidenceBadge';
+import Image from "next/image";
 
 type MaybeNum = number | string | null | undefined;
 type MaybeBool = boolean | number | string | null | undefined;
@@ -128,12 +129,15 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
   return (
     <div className={styles.card}>
       <div className={styles.cardContent}>
-       <img
-         src={featured_image_url}
-         alt={alt_text || `${name} feature image`}
-         className={styles.thumbnail}
-         loading="lazy"
-        />
+       <div className={styles.thumbnailWrapper}>
+         <Image
+            src={featured_image_url}
+            alt={alt_text || `${name} feature image`}
+            fill
+            className={styles.thumbnail}
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
 
        <h3 className={styles.name}>
          {slug ? (
