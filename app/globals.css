@@ -38,29 +38,42 @@ body {
   flex-wrap: wrap;
 }
 
-.hero-buttons button {
+.heroButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
   background: white;
   color: #147d94;
-  padding: 0.75rem 1.5rem;
-  border: none;
+  padding: 0.85rem 1.5rem;
+  border-radius: 8px;
   font-weight: 600;
-  border-radius: 8px; /* was 6px */
-  cursor: pointer;
-  min-width: 180px;
-  flex-grow: 1;
   text-align: center;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 0.2s ease,
+    transform 0.12s ease,
+    box-shadow 0.2s ease;
+}
+
+.heroButton:hover {
+  background: #f7f7f7;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.heroButton:active {
+  transform: translateY(0) scale(0.98);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.hero-buttons button:hover {
-  background-color: #147d94;
-  color: white;
+.heroButton:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.65);
+  outline-offset: 3px;
 }
 
-.hero-buttons button:active {
-  transform: scale(0.98);
-}
 
 /* ---------- How it works ---------- */
 .how-it-works {
@@ -302,7 +315,7 @@ body {
 
 
 /* ---------- Responsive tweaks ---------- */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .hero {
     min-height: 65vh;
     padding-top: 1rem;
@@ -310,12 +323,16 @@ body {
   }
 
   .hero-buttons {
+    margin-top: 1.75rem;
     flex-direction: column;
     align-items: center;
+    gap: 0.9rem;
   }
 
-  .hero-buttons button {
-    width: 80%; /* or 100% for full width */
+  .heroButton {
+    width: min(100%, 300px);
+    padding: 0.9rem 1.25rem;
+    font-size: 1.05rem;
   }
 }
 
