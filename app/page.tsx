@@ -3,8 +3,7 @@
 import Link from 'next/link';
 import Navbar from '../components/ui/Navbar';
 import Footer from '../components/ui/Footer';
-import './globals.css';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { gaEvent } from '@/lib/ga';
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string;
@@ -88,100 +87,90 @@ export default function HomePage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const primed = useRef(false);
-
-  // Prime the script on page load so execute is snappy on click
-  useEffect(() => {
-    if (primed.current || !SITE_KEY) return;
-    primed.current = true;
-    ensureGrecaptcha(SITE_KEY).catch(() => {
-      // ignore: we’ll retry in handleSubmit
-    });
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-  // Human timing check — minimum 2.5 seconds from form render
-  const elapsed = Date.now() - formRenderAt;
-  if (elapsed < 2500) {
-    setMessage('Please Try Again');
-    return;
-  }
-
-  // Honeypot check
-  const formData = new FormData(e.currentTarget);
-  const hp = (formData.get('website') || '').toString().trim();
-  if (hp.length > 0) {
-    // Bot detected — pretend success and stop
-    setMessage('Thanks for subscribing!');
-    return;
-  }
-
-  const cleanedEmail = email.trim();
-  if (!cleanedEmail) return;
-
-  setLoading(true);
-  setMessage('');
-
-  try {
-    if (!SITE_KEY) throw new Error('Missing site key.');
-
-    // 1) Get v3 token
-    const token = await getRecaptchaToken('subscribe', SITE_KEY);
-    if (!token) {
-      setMessage("Spam protection didn't load. Please refresh and try again.");
+    // Human timing check — minimum 2.5 seconds from form render
+    const elapsed = Date.now() - formRenderAt;
+    if (elapsed < 2500) {
+      setMessage('Please Try Again');
       return;
     }
 
-    console.log("Submitting:", { email: cleanedEmail, token: token?.slice(0, 12) });
-    
-    gaEvent('newsletter_subscribe_attempt', {
-      location: 'homepage',
-    });
-
-
-    // 2) Send to your API for server-side verification + Brevo
-    const res = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: cleanedEmail, token }),
-    });
-
-    const contentType = res.headers.get('content-type') || '';
-    const data = contentType.includes('application/json') ? await res.json() : null;
-
-    if (!res.ok) throw new Error(data?.error || 'Subscribe failed.');
-
-    setEmail('');
-    setMessage('Thanks for subscribing!');
-    gaEvent('newsletter_subscribe_success', {
-      location: 'homepage',
-    });
-  } catch (err: unknown) {
-
-    gaEvent('newsletter_subscribe_failed', {
-      location: 'homepage',
-    });
-    
-    const msg =
-      err instanceof Error ? err.message.toLowerCase() : String(err || '').toLowerCase();
-
-    if (
-      msg.includes('failed to fetch') ||
-      msg.includes('network') ||
-      msg.includes('recaptcha') ||
-      msg.includes('could not connect')
-    ) {
-      setMessage("Couldn't connect right now. Please check your internet connection and try again.");
-    } else {
-      setMessage('Something went wrong. Please try again.');
+    // Honeypot check
+    const formData = new FormData(e.currentTarget);
+    const hp = (formData.get('website') || '').toString().trim();
+    if (hp.length > 0) {
+      // Bot detected — pretend success and stop
+      setMessage('Thanks for subscribing!');
+      return;
     }
-  }
-    finally {
-    setLoading(false);
-  }
-};
+
+    const cleanedEmail = email.trim();
+    if (!cleanedEmail) return;
+
+    setLoading(true);
+    setMessage('');
+
+    try {
+      if (!SITE_KEY) throw new Error('Missing site key.');
+
+      // Load reCAPTCHA only when user submits
+      await ensureGrecaptcha(SITE_KEY);
+
+      // Get v3 token
+      const token = await getRecaptchaToken('subscribe', SITE_KEY);
+      if (!token) {
+        setMessage("Spam protection didn't load. Please refresh and try again.");
+        return;
+      }
+
+      console.log("Submitting:", { email: cleanedEmail, token: token?.slice(0, 12) });
+
+      gaEvent('newsletter_subscribe_attempt', {
+        location: 'homepage',
+      });
+
+      // Send to your API for server-side verification + Brevo
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanedEmail, token }),
+      });
+
+      const contentType = res.headers.get('content-type') || '';
+      const data = contentType.includes('application/json') ? await res.json() : null;
+
+      if (!res.ok) throw new Error(data?.error || 'Subscribe failed.');
+
+      setEmail('');
+      setMessage('Thanks for subscribing!');
+      gaEvent('newsletter_subscribe_success', {
+        location: 'homepage',
+      });
+    } catch (err: unknown) {
+      gaEvent('newsletter_subscribe_failed', {
+        location: 'homepage',
+      });
+
+      const msg =
+        err instanceof Error ? err.message.toLowerCase() : String(err || '').toLowerCase();
+
+      if (
+        msg.includes('failed to fetch') ||
+        msg.includes('network') ||
+        msg.includes('recaptcha') ||
+        msg.includes('could not connect')
+      ) {
+        setMessage("Couldn't connect right now. Please check your internet connection and try again.");
+      } else {
+        setMessage('Something went wrong. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (

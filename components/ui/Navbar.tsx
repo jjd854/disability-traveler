@@ -14,8 +14,8 @@ const Navbar = () => {
         <Image
           src="/brand/disability_traveler_logo_navbar.png.png"  // or /brand/disability_traveler_logo_primary.svg
           alt="Disability Traveler — accessible travel reviews"
-          width={200}
-          height={68}
+          width={120}
+          height={120}
           priority
           className={styles.logoImg}
         />
