@@ -60,8 +60,15 @@ export default function HotelPhotoGallery({
 }: HotelPhotoGalleryProps) {
   const hotelNorm = useMemo(() => normalize(photos), [photos]);
   const reviewerNorm = useMemo(() => normalize(reviewerPhotos), [reviewerPhotos]);
+  
+  const hasPhotos = hotelNorm.length > 0 || reviewerNorm.length > 0;
 
+  if (!hasPhotos) {
+    return null;
+  }
+  
   const hasReviewer = reviewerNorm.length > 0;
+  const hasHotelPhotos = hotelNorm.length > 0;
 
   const [isOpen, setIsOpen] = useState(false);
   const [showReviewerPhotos, setShowReviewerPhotos] = useState(false);
@@ -88,7 +95,8 @@ export default function HotelPhotoGallery({
     <>
       <button
         className={styles.openButton}
-        onClick={() => { setIsOpen(true); setCurrentIndex(0); }}
+        onClick={() => { setShowReviewerPhotos(!hasHotelPhotos && hasReviewer); 
+          setIsOpen(true); setCurrentIndex(0); }}
       >
         📷 View All Photos
       </button>
