@@ -114,24 +114,27 @@ export default function HotelPhotoGallery({
 
             {/* Toggle buttons */}
             <div className={styles.toggleRow}>
-              <button
-                className={!showReviewerPhotos ? styles.activeToggle : ''}
-                onClick={() => { setShowReviewerPhotos(false); setCurrentIndex(0); }}
-                type="button"
-              >
-                Hotel Photos ({hotelNorm.length})
-              </button>
 
-              <button
-                className={showReviewerPhotos ? styles.activeToggle : ''}
-                onClick={() => { setShowReviewerPhotos(true); setCurrentIndex(0); }}
-                type="button"
-                disabled={!hasReviewer}
-                aria-disabled={!hasReviewer}
-                title={!hasReviewer ? 'No reviewer photos yet' : 'Show reviewer photos'}
-              >
-                Reviewer Photos ({reviewerNorm.length})
-              </button>
+              {hasHotelPhotos && (
+                <button
+                  className={!showReviewerPhotos ? styles.activeToggle : ''}
+                  onClick={() => { setShowReviewerPhotos(false); setCurrentIndex(0); }}
+                  type="button"
+                >
+                  Hotel Photos ({hotelNorm.length})
+                </button>
+              )}
+
+              {hasReviewer && (
+                <button
+                  className={showReviewerPhotos ? styles.activeToggle : ''}
+                  onClick={() => { setShowReviewerPhotos(true); setCurrentIndex(0); }}
+                  type="button"
+                >
+                  Reviewer Photos ({reviewerNorm.length})
+                </button>
+              )}
+
             </div>
 
             {/* Swiper */}
