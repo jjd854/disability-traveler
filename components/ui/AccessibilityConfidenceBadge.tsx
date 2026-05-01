@@ -36,7 +36,7 @@ export default function AccessibilityConfidenceBadge({
 
     case 'limited':
       label = 'Limited Accessibility Info';
-      description = 'The hotel states it has accessible features, but detailed room-level information is not shared publicly. Contacting the hotel directly is required.';
+      description = 'The hotel states it has accessible features, but detailed property and/or room level information is not shared publicly. Contacting the hotel directly is required.';
       className = 'limited';
       break;
 
