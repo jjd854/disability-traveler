@@ -240,8 +240,16 @@
 }
 
 @media (max-width: 768px) {
+  .heroWrapper {
+    height: auto;
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    border-radius: 12px;
+  }
+
   .heroImage {
-    height: 260px;
+    object-fit: cover;
+    object-position: center;
   }
 
   .title {
