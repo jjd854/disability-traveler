@@ -22,6 +22,20 @@
   object-position: center;
 }
 
+@media (max-width: 640px) {
+  .heroImageWrapper {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    border-radius: 12px;
+  }
+
+  .heroImage {
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
 .photoAttribution {
   margin: 6px 0 20px;;
   text-align: center;
@@ -286,9 +300,6 @@
     max-width: 540px;
   }
 
-  .heroImage {
-    height: 250px;
-  }
 }
 
 /* ===== Hotel features bullets ===== */
