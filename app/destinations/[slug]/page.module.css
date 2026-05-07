@@ -242,7 +242,7 @@
 @media (max-width: 768px) {
   .heroWrapper {
     height: auto;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 9;
     width: 100%;
     border-radius: 12px;
   }
