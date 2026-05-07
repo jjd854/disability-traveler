@@ -315,6 +315,8 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
     })),
   };
 
+  console.log(hotel)
+
   const roomFeatures = Array.from(
     new Set(
       roomCategories.flatMap((room) =>
@@ -482,6 +484,11 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
               }}
             >
               <button className={styles.reviewButton}>Submit a Review</button>
+            </Link>
+            <Link href={`/destinations/${hotel.Destinations.slug}`}>
+              <button className={styles.secondaryButton}>
+                View {hotel.Destinations.Name} Accessibility Guide
+              </button>
             </Link>
           </div>
 
