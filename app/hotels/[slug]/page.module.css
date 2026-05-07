@@ -166,6 +166,20 @@
   line-height: 1;
 }
 
+@media (max-width: 640px) {
+  .reviewButtonContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .reviewButton,
+  .secondaryButton {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+}
+
 .secondaryButton:hover {
   background: rgba(62, 175, 111, 0.08);
 }
