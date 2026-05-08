@@ -164,7 +164,9 @@ export default function ForHotelsPage() {
           </div>
         </section>
 
+        {/* Built for Trust section temporarily hidden until real testimonials are added */}
         {/* SOCIAL PROOF */}
+        {/*
         <section className={styles.section} aria-labelledby="proofTitle">
           <h2 id="proofTitle" className={styles.h2}>Built for Trust</h2>
           <div className={styles.proofGrid}>
@@ -184,7 +186,8 @@ export default function ForHotelsPage() {
             </div>
           </div>
         </section>
-
+        */}
+        
         {/* CTA */}
         <section className={styles.ctaSection} aria-labelledby="ctaTitle">
           <h2 id="ctaTitle" className={styles.h2}>Ready to Get Listed?</h2>
