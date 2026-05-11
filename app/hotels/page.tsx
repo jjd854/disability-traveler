@@ -498,7 +498,7 @@ export default function HotelsPage() {
           <div className={styles.confidenceItem}>
             <span className={`${styles.confidencePill} ${styles.limitedPill}`}>Limited Accessibility Info</span>
             <p className={styles.confidenceText}>
-              The hotel states it has accessible features, but detailed room-level information is not shared publicly. Contacting the hotel directly is required.
+              The hotel states it has accessible features, but detailed room and/or property level information is not shared publicly. Contacting the hotel directly is required.
             </p>
           </div>
         </div>
