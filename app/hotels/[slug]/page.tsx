@@ -223,6 +223,18 @@ export default async function HotelDetailPage({ params }: Props) {
 
   const propertyFeatureSentence = formatFeatureList(propertySentenceFeatureList);
 
+  const handleHotelWebsiteClick = () => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "hotel_website_click", {
+        hotel_name: hotel.name,
+        hotel_slug: hotel.slug,
+        hotel_id: hotel.id,
+        outbound_url: hotel.website_url,
+        page_path: `/hotels/${hotel.slug}`,
+      });
+    }
+  };
+
 type RoomCategoryAddon = {
   avg_room_category_rating?: number | string | null;
   room_category_rating_count?: number | string | null;
@@ -504,11 +516,13 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
               target="_blank"
               rel="noopener noreferrer"
               className={styles.websiteLink}
-              event="outbound_click"
+              event="hotel_website_click"
               params={{
-                type: 'hotel_website',
+                hotel_name: hotel.name,
                 hotel_slug: hotel.slug,
                 hotel_id: hotel.id,
+                outbound_url: hotel.website_url,
+                page_path: `/hotels/${hotel.slug}`,
               }}
             >
               Visit Hotel Website
