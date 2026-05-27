@@ -174,18 +174,25 @@
   align-items: center;
   padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
 }
+
 .modalContent {
   position: relative;
   width: min(92vw, 900px);
   max-height: 84vh;
+  padding: 34px;
+  border-radius: 16px;
+  background: #111;
+  box-sizing: border-box;
+  overflow: hidden;
 }
+
 .modalImage {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 80vh;
+  max-height: calc(84vh - 120px);
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #000;
 }
 
