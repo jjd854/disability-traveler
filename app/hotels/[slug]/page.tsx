@@ -622,9 +622,11 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
                   .split('\n')
                   .filter((line: string) => line.trim() !== '')
                   .map((line: string, idx: number) => (
-                    <li key={idx}>{line.trim()}</li>
-                  ))
-                }
+                   <li
+                    key={idx}
+                    dangerouslySetInnerHTML={{ __html: line.trim() }}
+                   />
+                ))}
 
               </ul>
             </section>
