@@ -287,6 +287,11 @@
   width: auto;
   max-width: 540px;
   display: flex;
+  align-items: stretch;
+}
+
+.roomCategoriesGrid > * > * {
+  height: 100%;
 }
 
 /* One column on small screens */
