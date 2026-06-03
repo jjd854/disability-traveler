@@ -71,6 +71,13 @@
   min-height: 44px; /* keeps cards aligned */
 }
 
+.location {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  color: #5f6b7a;
+  font-weight: 500;
+}
+
 .badge {
   margin-left: 8px;
   padding: 2px 8px;

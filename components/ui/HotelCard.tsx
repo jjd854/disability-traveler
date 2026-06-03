@@ -20,6 +20,11 @@ interface HotelCardProps {
   alt_text?: string;
   price_level?: number | string | null;
   accessibility_confidence?: string | null;
+  city?: string | null;
+  region?: string | null;
+  country?: string | null;
+  destination_name?: string | null;
+  showLocation?: boolean;
 
   has_pool_lift?: MaybeBool;
   has_beach_wheelchair?: MaybeBool;
@@ -71,7 +76,7 @@ const PRICE_LABELS: Record<number, string> = {
 };
 
 const HotelCard: React.FC<HotelCardProps> = (p) => {
-  const { name, slug, featured_image_url, alt_text } = p;
+  const { name, slug, featured_image_url, alt_text, showLocation } = p;
 
   const avgRaw =
     p.avg_hotel_rating ??
@@ -156,7 +161,13 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
          )}
          {isAllInc && <span className={styles.badge}>All-Inclusive</span>}
        </h3>
-
+        
+        {showLocation && (
+          <p className={styles.location}>
+            {[p.city, p.country].filter(Boolean).join(', ')}
+         </p>
+        )}
+        
        <AccessibilityConfidenceBadge
          confidence={p.accessibility_confidence}
          size="small"
