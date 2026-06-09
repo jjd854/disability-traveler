@@ -104,12 +104,29 @@ export default async function DestinationPage({ params }: Props) {
               )}
             </p>
 
-            <hr className={styles.divider} />
-            <p className={styles.textBlock}><strong>Region:</strong> {destination.Region}</p>
-            <p className={styles.textBlock}><strong>Country:</strong> {destination.Country}</p>
-            <p className={styles.textBlock}><strong>State/Provence:</strong> {destination.state_or_provence || 'N/A'}</p>
-            <p className={styles.textBlock}><strong>City:</strong> {destination.City || 'N/A'}</p>
-            <hr className={styles.divider} />
+           <hr className={styles.divider} />
+
+           <p className={styles.textBlock}>
+             <strong>Region:</strong> {destination.Region}
+           </p>
+
+           <p className={styles.textBlock}>
+             <strong>Country:</strong> {destination.Country}
+           </p>
+
+           {destination.state_or_provence && (
+             <p className={styles.textBlock}>
+               <strong>State/Province:</strong> {destination.state_or_provence}
+             </p>
+           )}
+
+           {destination.City && (
+             <p className={styles.textBlock}>
+               <strong>City:</strong> {destination.City}
+             </p>
+           )}
+
+           <hr className={styles.divider} /> 
             <p className={styles.textBlock}>{destination.Description || 'No description yet.'}</p>
           </div>
 
