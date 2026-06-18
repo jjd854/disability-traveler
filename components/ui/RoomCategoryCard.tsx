@@ -254,16 +254,20 @@ export default function RoomCategoryCard({ category, hotelName }: Props) {
             className={styles.ratingText}
           />
           <div className={styles.divider} />
-          {chips.length > 0 && (
             <div className={styles.chips}>
-              {chips.map((label, i) => (
-                <span key={i} className={styles.chip}>
-                  <span className={styles.chipIcon} aria-hidden="true">•</span>
-                  {label}
+              {chips.length > 0 ? (
+                chips.map((label, i) => (
+                  <span key={i} className={styles.chip}>
+                    <span className={styles.chipIcon} aria-hidden="true">•</span>
+                    {label}
+                  </span>
+                ))
+              ) : (
+                <span className={styles.noFeatures}>
+                  Accessibility details not provided by hotel
                 </span>
-              ))}
+              )}
             </div>
-          )}
         </div>
       </div>
 
