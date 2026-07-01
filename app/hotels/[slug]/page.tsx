@@ -126,6 +126,14 @@ const ROOM_FEATURE_SENTENCE_LABELS: Record<string, string> = {
   hearing_kit_available: "hearing accessibile rooms or kits",
 };
 
+const RESOURCE_ICONS: Record<string, string> = {
+  video: "📹",
+  pdf: "📄",
+  matterport: "🏠",
+  map: "🗺️",
+  website: "🔗",
+};
+
 function collectReviewerPhotos(reviews: Review[]): PhotoItem[] {
   const rows: PhotoItem[] = [];
 
@@ -188,7 +196,7 @@ function collectReviewerPhotos(reviews: Review[]): PhotoItem[] {
 
 export default async function HotelDetailPage({ params }: Props) {
   const { slug } = await params;
-  const { result1: hotel, hotel_photos1: photos } = await fetchHotelBySlug(slug);
+  const { result1: hotel, hotel_photos1: photos, accessibility_videos: accessibilityVideos = [], } = await fetchHotelBySlug(slug);
   if (!hotel) notFound();
 
   const reviews: Review[] =
@@ -596,6 +604,34 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
              </div>
            )}
           </section>
+          
+          {accessibilityVideos.length > 0 && (
+            <section className={styles.accessibilityVideos}>
+              <h2 className={styles.sectionTitle}>  📚 Accessibility Resources</h2>
+              
+              <div className={styles.resourceList}>
+                {accessibilityVideos.map((video: any) => (
+                  <a
+                    key={video.id}
+                    href={video.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.videoCard}
+                  >
+                    <span className={styles.videoTitle}>
+                      {RESOURCE_ICONS[video.resource_type] ?? "🔗"}{" "}
+                      {video.title}
+                    </span>
+
+                    <div className={styles.videoMeta}>
+                      <span>by {video.creator_name}</span>
+                      <span className={styles.videoArrow}>↗</span>
+                    </div>
+                  </a>
+                ))}
+              </div>  
+            </section>
+          )}
 
           {/* ===== Hotel features (bullets) ===== */}
           {hotel.accessibility_features && (
@@ -631,6 +667,8 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
               </ul>
             </section>
           )}
+          
+          
 
           {/* ==== Reviews ==== */}
           {Array.isArray(reviews) && reviews.length > 0 ? (
