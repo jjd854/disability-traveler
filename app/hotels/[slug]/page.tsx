@@ -95,7 +95,7 @@ const ROOM_FEATURE_ORDER = [
 const ROOM_FEATURE_CHIP_LABELS: Record<string, string> = {
   door_32_in: '32" Door',
   roll_in_shower: "Roll-In Shower",
-  tub_with_bench: "Tub with Bench",
+  tub_with_bench: "Accessible Tub",
   bathroom_grab_bars: "Bathroom Grab Bars",
   shower_seat_fixed: "Fixed Shower Seat",
   handheld_shower: "Handheld Shower",
@@ -112,7 +112,7 @@ const ROOM_FEATURE_CHIP_LABELS: Record<string, string> = {
 const ROOM_FEATURE_SENTENCE_LABELS: Record<string, string> = {
   door_32_in: '32-inch doorways',
   roll_in_shower: "roll-in showers",
-  tub_with_bench: "bathtubs with benches",
+  tub_with_bench: "accessible tub",
   bathroom_grab_bars: "bathroom grab bars",
   shower_seat_fixed: "fixed shower seats",
   handheld_shower: "handheld shower heads",

@@ -57,7 +57,7 @@ const ROOM_AMENITIES: { key: RoomAmenKey; label: string }[] = [
   { key: 'roll_under_vanity', label: 'Roll Under Vanity' },
   { key: 'roll_in_shower', label: 'Roll-In Shower' },
   { key: 'shower_seat_fixed', label: 'Fixed Shower Seat' },
-  { key: 'tub_with_bench', label: 'Tub with Bench' },
+  { key: 'tub_with_bench', label: 'Accessible Tub' },
   { key: 'handheld_shower', label: 'Handheld Shower' },
   { key: 'bathroom_grab_bars', label: 'Bathroom Grab Bars' },
   { key: 'turning_radius_60_in', label: '60" Turning Radius' },

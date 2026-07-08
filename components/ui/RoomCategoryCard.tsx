@@ -118,7 +118,7 @@ export default function RoomCategoryCard({ category, hotelName }: Props) {
   if (isTruthyFlag(cat.bathroom_grab_bars)) chips.push('Bathroom grab bars');
   if (isTruthyFlag(cat.roll_under_vanity)) chips.push('Roll-under vanity');
   if (isTruthyFlag(cat.shower_seat_fixed)) chips.push('Shower seat (fixed)');
-  if (isTruthyFlag(cat.tub_with_bench)) chips.push('Tub with bench');
+  if (isTruthyFlag(cat.tub_with_bench)) chips.push('Accessible tub');
   if (isTruthyFlag(cat.handheld_shower)) chips.push('Handheld shower');
   if (isTruthyFlag(cat.lowered_bed)) chips.push('Lowered bed');
   if (isTruthyFlag(cat.turning_radius_60_in)) chips.push('60" turning radius');
