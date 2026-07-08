@@ -112,7 +112,7 @@ const ROOM_FEATURE_CHIP_LABELS: Record<string, string> = {
 const ROOM_FEATURE_SENTENCE_LABELS: Record<string, string> = {
   door_32_in: '32-inch doorways',
   roll_in_shower: "roll-in showers",
-  tub_with_bench: "accessible tub",
+  tub_with_bench: "accessible tubs",
   bathroom_grab_bars: "bathroom grab bars",
   shower_seat_fixed: "fixed shower seats",
   handheld_shower: "handheld shower heads",
