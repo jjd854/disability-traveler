@@ -31,6 +31,7 @@ type RoomCategoryLike = RoomCategory & {
   avg_room_category_rating?: number | string | null | RoomCategoryAddon;
   room_category_rating_count?: number | string | null;
   accessibility_confidence?: string | null;
+  verified_date?: string | null;
 
   photos_example?: RoomCategoryPhotoLike[] | null;
 
@@ -245,6 +246,7 @@ export default function RoomCategoryCard({ category, hotelName }: Props) {
           <h4 className={styles.title}>{category.name}</h4>
           <AccessibilityConfidenceBadge
             confidence={category.accessibility_confidence}
+            verifiedDate={category.verified_date}
             size="small"
           />
           <RatingBadge

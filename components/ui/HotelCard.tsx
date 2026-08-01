@@ -20,6 +20,7 @@ interface HotelCardProps {
   alt_text?: string;
   price_level?: number | string | null;
   accessibility_confidence?: string | null;
+  verified_date?: string | null;
   city?: string | null;
   region?: string | null;
   country?: string | null;
@@ -170,6 +171,7 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
         
        <AccessibilityConfidenceBadge
          confidence={p.accessibility_confidence}
+         verifiedDate={p.verified_date}
          size="small"
        />
 

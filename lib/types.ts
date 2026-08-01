@@ -154,6 +154,7 @@ export type RoomCategory = {
   slug: string;
   is_accessible?: boolean;
   accessibility_confidence?: string | null;
+  verified_date?: string | null;
 
   // If you map the add-on like in your payload:
   avg_room_category_rating?: number | null;
