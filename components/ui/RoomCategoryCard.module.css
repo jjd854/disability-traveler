@@ -195,7 +195,7 @@
 .modalImage {
   max-width: 100%;
   max-height: calc(86vh - 110px);
-  width: auto;
+  width: 100%;
   height: auto;
   object-fit: contain;
   display: block;
