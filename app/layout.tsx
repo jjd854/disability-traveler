@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     apple: '/apple-icon.png',
   },
   manifest: '/site.webmanifest',
+  other: {
+  verification: 'd327bdeb562a085638934dc47ac27175',
+  },
 };
 
 export const viewport: Viewport = {
