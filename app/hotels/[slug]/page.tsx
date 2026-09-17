@@ -46,6 +46,8 @@ const PROPERTY_FEATURE_ORDER = [
   'has_accessible_pathways',
   'has_elevator',
   'has_pool_lift',
+  'has_zero_entry_pool',
+  'has_aquatic_wheelchair',
   'has_beach_wheelchair',
   'has_accessible_restaurant',
   'has_accessible_fitness_center',
@@ -57,6 +59,8 @@ const PROPERTY_FEATURE_CHIP_LABELS: Record<string, string> = {
   has_accessible_pathways: 'Accessible Pathways',
   has_accessible_restaurant: 'Accessible Restaurant',
   has_pool_lift: 'Pool Lift',
+  has_zero_entry_pool: 'Zero/Sloped Entry Pool',
+  has_aquatic_wheelchair: 'Aquatic Wheelchair',
   has_beach_wheelchair: 'Beach Wheelchair',
   has_elevator: 'Elevator',
   has_accessible_fitness_center: 'Accessible Fitness Center',
@@ -68,6 +72,8 @@ const PROPERTY_FEATURE_SENTENCE_LABELS: Record<string, string> = {
   has_accessible_pathways: 'accessible pathways',
   has_accessible_restaurant: 'accessible restaurants',
   has_pool_lift: 'pool lifts',
+  has_zero_entry_pool: 'zero/sloped entry pools',
+  has_aquatic_wheelchair: 'aquatic wheelchairs',
   has_beach_wheelchair: 'beach wheelchairs',
   has_elevator: 'elevators',
   has_accessible_fitness_center: 'accessible fitness center',
@@ -480,6 +486,8 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
             {hotel.has_accessible_pathways && <span className={styles.feature}>🛣️ Accessible Pathways</span>}
             {hotel.has_accessible_restaurant && <span className={styles.feature}>🍽️ Accessible Restaurant</span>}
             {hotel.has_pool_lift && <span className={styles.feature}>🏊 Pool Lift</span>}
+            {hotel.has_zero_entry_pool && <span className={styles.feature}>↘️ Zero/Sloped Entry Pool</span>}
+            {hotel.has_aquatic_wheelchair && <span className={styles.feature}>♿ Aquatic Wheelchair</span>}
             {hotel.has_beach_wheelchair && <span className={styles.feature}>🏖️ Beach Wheelchair</span>}
             {hotel.has_elevator && <span className={styles.feature}>🛗 Elevator</span>}
             {hotel.has_accessible_fitness_center && <span className={styles.feature}> 🏋️ Accessible Fitness Center</span>}

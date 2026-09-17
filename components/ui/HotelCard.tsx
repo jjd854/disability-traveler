@@ -28,6 +28,8 @@ interface HotelCardProps {
   showLocation?: boolean;
 
   has_pool_lift?: MaybeBool;
+  has_zero_entry_pool?: MaybeBool;
+  has_aquatic_wheelchair?: MaybeBool;
   has_beach_wheelchair?: MaybeBool;
   has_elevator?: MaybeBool;
   has_accessible_pathways?: MaybeBool;
@@ -114,6 +116,8 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
   const f_pathways = B(p.has_accessible_pathways);
   const f_restaurant = B(p.has_accessible_restaurant);
   const f_poolLift = B(p.has_pool_lift);
+  const f_zeroEntryPool = B(p.has_zero_entry_pool);
+  const f_aquaticWc = B(p.has_aquatic_wheelchair);
   const f_beachWc = B(p.has_beach_wheelchair);
   const f_elevator = B(p.has_elevator);
   const f_fitness = B(p.has_accessible_fitness_center);
@@ -127,6 +131,8 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
     { ok: f_fitness, label: 'Accessible Fitness Center', emoji: '🏋️' },
     { ok: f_meeting, label: 'Accessible Meeting & Event Spaces', emoji: '🏢' },
     { ok: f_poolLift, label: 'Pool Lift', emoji: '🏊' },
+    { ok: f_zeroEntryPool, label: 'Zero/Sloped Entry Pool', emoji: '↘️' },
+    { ok: f_aquaticWc, label: 'Aquatic Wheelchair', emoji: '♿' },
     { ok: f_beachWc, label: 'Beach Wheelchair', emoji: '🏖️' },
     { ok: f_elevator, label: 'Elevator', emoji: '🛗' },
     { ok: f_serviceDog, label: 'Service dog Welcome', emoji: '🦮' },

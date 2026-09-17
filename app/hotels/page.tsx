@@ -72,6 +72,8 @@ type RawHotel = {
   has_beach_wheelchair?: boolean | string | number | null;
   is_all_inclusive?: boolean | string | number | null;
   has_service_dog_policy?: boolean | string | number | null;
+  has_zero_entry_pool?: boolean | string | number | null;
+  has_aquatic_wheelchair?: boolean | string | number | null;
 
   room_categories?: RawRoomCategory[] | null;
   _room_categories?: RawRoomCategory[] | null;
@@ -107,6 +109,8 @@ type NormalizedHotel = {
   has_accessible_fitness_center?: boolean;
   has_pool_lift?: boolean;
   has_beach_wheelchair?: boolean;
+  has_zero_entry_pool?: boolean;
+  has_aquatic_wheelchair?: boolean;
   has_accessible_meeting_spaces?: boolean;
   is_all_inclusive?: boolean;
   has_service_dog_policy?: boolean;
@@ -133,6 +137,8 @@ const INITIAL_PROP_FILTERS = {
   has_accessible_restaurant: false,
   has_pool_lift: false,
   has_beach_wheelchair: false,
+  has_zero_entry_pool: false,
+  has_aquatic_wheelchair: false,
   has_service_dog_policy: false,
   is_all_inclusive: false,
 } as const;
@@ -142,6 +148,7 @@ type PropFilters = typeof INITIAL_PROP_FILTERS;
 const PROP_FILTER_LABEL_OVERRIDES: Partial<Record<keyof PropFilters, string>> = {
   has_accessible_meeting_spaces: 'Accessible Meeting & Event Spaces',
   has_service_dog_policy: 'Service Dogs Welcome',
+  has_zero_entry_pool: 'Zero/Sloped Entry Pool',
 };
 
 // -------- Room amenities --------
@@ -420,6 +427,8 @@ export default function HotelsPage() {
             has_accessible_meeting_spaces: boolLike(h.has_accessible_meeting_spaces),
             has_accessible_restaurant: boolLike(h.has_accessible_restaurant),
             has_pool_lift: boolLike(h.has_pool_lift),
+            has_aquatic_wheelchair: boolLike(h.has_aquatic_wheelchair),
+            has_zero_entry_pool: boolLike(h.has_zero_entry_pool),
             has_beach_wheelchair: boolLike(h.has_beach_wheelchair),
             has_service_dog_policy: boolLike(h.has_service_dog_policy),
             is_all_inclusive: boolLike(h.is_all_inclusive),
@@ -676,6 +685,8 @@ export default function HotelsPage() {
                     has_accessible_pathways={hotel.has_accessible_pathways}
                     has_accessible_restaurant={hotel.has_accessible_restaurant}
                     has_pool_lift={hotel.has_pool_lift}
+                    has_zero_entry_pool={hotel.has_zero_entry_pool}
+                    has_aquatic_wheelchair={hotel.has_aquatic_wheelchair}
                     has_beach_wheelchair={hotel.has_beach_wheelchair}
                     has_elevator={hotel.has_elevator}
                     has_accessible_fitness_center={hotel.has_accessible_fitness_center}
