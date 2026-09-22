@@ -38,6 +38,7 @@ interface HotelCardProps {
   has_service_dog_policy?: MaybeBool;
   has_accessible_meeting_spaces?: MaybeBool;
   is_all_inclusive?: MaybeBool;
+  is_adults_only?: MaybeBool;
 
   avg_hotel_rating?: MaybeNum;
   hotel_review_count?: MaybeNum;
@@ -123,6 +124,7 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
   const f_fitness = B(p.has_accessible_fitness_center);
   const f_meeting = B(p.has_accessible_meeting_spaces);
   const isAllInc = B(p.is_all_inclusive);
+  const isAdultsOnly = B(p.is_adults_only);
   const f_serviceDog = B(p.has_service_dog_policy);
 
   const features = [
@@ -139,10 +141,11 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
   ].filter((f) => f.ok);
 
   return (
+  <>
     <div className={styles.card}>
       <div className={styles.cardContent}>
-       <div className={styles.thumbnailWrapper}>
-         <Image
+        <div className={styles.thumbnailWrapper}>
+          <Image
             src={featured_image_url}
             alt={alt_text || `${name} feature image`}
             fill
@@ -151,81 +154,101 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
           />
         </div>
 
-       <h3 className={styles.name}>
-         {slug ? (
-           <Link
-             href={`/hotels/${slug}`}
-             className={styles.nameLink}
-             aria-label={`View ${name}`}
-             title={name}
-           >
-             {name}
-           </Link>
-         ) : (
-           <span className={styles.nameText} title={name}>
-             {name}
-           </span>
-         )}
-         {isAllInc && <span className={styles.badge}>All-Inclusive</span>}
-       </h3>
-        
+        <h3 className={styles.name}>
+          {slug ? (
+            <Link
+              href={`/hotels/${slug}`}
+              className={styles.nameLink}
+              aria-label={`View ${name}`}
+              title={name}
+            >
+              {name}
+            </Link>
+          ) : (
+            <span className={styles.nameText} title={name}>
+              {name}
+            </span>
+          )}
+        </h3>
+
+        <div className={styles.hotelBadges}>
+          {isAllInc && (
+            <span className={styles.badge}>
+              All-Inclusive
+            </span>
+          )}
+
+          {isAdultsOnly && (
+            <span className={`${styles.badge} ${styles.adultsOnlyBadge}`}>
+              Adults Only
+            </span>
+          )}
+        </div>
+
         {showLocation && (
           <p className={styles.location}>
             {[p.city, p.country].filter(Boolean).join(', ')}
-         </p>
+          </p>
         )}
-        
-       <AccessibilityConfidenceBadge
-         confidence={p.accessibility_confidence}
-         verifiedDate={p.verified_date}
-         size="small"
-       />
 
-       {priceLevel > 0 && (
-         <p className={styles.priceRow} title="Price level is relative to this destination">
-           <span
-             className={styles.dollars}
-             aria-label={`Price level ${priceLevel} of 5`}
-           >
-             {'$'.repeat(priceLevel)}
-             <span className={styles.dollarsEmpty}>
-               {'$'.repeat(Math.max(0, 5 - priceLevel))}
-             </span>
-           </span>
-           <span className={styles.priceLabel}>
-             {PRICE_LABELS[priceLevel] ?? ''}
-           </span>
-         </p>
-       )}
+        <AccessibilityConfidenceBadge
+          confidence={p.accessibility_confidence}
+          verifiedDate={p.verified_date}
+          size="small"
+        />
 
-       <RatingBadge
-         avg={avg}         // your existing computed avg
-         count={count}     // your existing count
-         className={styles.ratingText}
-       />
-       <div className={styles.divider} />
+        {priceLevel > 0 && (
+          <p
+            className={styles.priceRow}
+            title="Price level is relative to this destination"
+          >
+            <span
+              className={styles.dollars}
+              aria-label={`Price level ${priceLevel} of 5`}
+            >
+              {'$'.repeat(priceLevel)}
+              <span className={styles.dollarsEmpty}>
+                {'$'.repeat(Math.max(0, 5 - priceLevel))}
+              </span>
+            </span>
 
-       {!!features.length && (
-         <div className={styles.features}>
-           {features.map((f, i) => (
-             <span key={i} className={styles.feature}>
-               <span aria-hidden="true" className={styles.featureEmoji}>{f.emoji}</span>
-               {f.label}
-             </span>
-           ))}
-         </div>
-       )}
+            <span className={styles.priceLabel}>
+              {PRICE_LABELS[priceLevel] ?? ''}
+            </span>
+          </p>
+        )}
+
+        <RatingBadge
+          avg={avg}
+          count={count}
+          className={styles.ratingText}
+        />
+
+        <div className={styles.divider} />
+
+        {!!features.length && (
+          <div className={styles.features}>
+            {features.map((f, i) => (
+              <span key={i} className={styles.feature}>
+                <span
+                  aria-hidden="true"
+                  className={styles.featureEmoji}
+                >
+                  {f.emoji}
+                </span>
+                {f.label}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
+
       <Link href={`/hotels/${slug}`} className={styles.button}>
         View Hotel
       </Link>
     </div>
-  );
+  </>
+);
 };
 
 export default HotelCard;
-
-
-
-
-

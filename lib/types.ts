@@ -18,6 +18,7 @@ export type Hotel = {
   has_beach_wheelchair?: boolean;
   has_elevator?: boolean;
   is_all_inclusive?: boolean;
+  is_adult_only?: boolean;
   has_accessible_pathways?: boolean;
   has_accessible_restaurant?: boolean;
   has_accessible_fitness_center?: boolean;

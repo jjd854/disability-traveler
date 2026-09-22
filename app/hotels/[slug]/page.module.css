@@ -134,6 +134,14 @@
   letter-spacing: 1.25px;
 }
 
+.adultsOnly {
+  margin-left: 1px;
+  font-size: 16px;
+  color: #147d94; /* your brand blue */
+  font-weight: 700;
+  letter-spacing: 1.25px;
+}
+
 .feature {
   display: inline-flex;
   align-items: center;

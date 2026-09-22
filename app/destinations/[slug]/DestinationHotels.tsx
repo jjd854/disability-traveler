@@ -27,8 +27,10 @@ const INITIAL_PROP_FILTERS = {
   has_zero_entry_pool: false,
   has_aquatic_wheelchair: false,
   has_beach_wheelchair: false,
-  is_all_inclusive: false,
   has_service_dog_policy: false,
+  is_all_inclusive: false,
+  is_adults_only: false,
+  
 } as const;
 type PropFilters = typeof INITIAL_PROP_FILTERS;
 
@@ -37,6 +39,7 @@ const PROP_FILTER_LABEL_OVERRIDES: Record<string, string> = {
   has_service_dog_policy: 'Service Dogs Welcome',
   has_zero_entry_pool: 'Zero/Sloped Entry Pool',
   has_aquatic_wheelchair: 'Aquatic Wheelchair',
+  is_adulats_only: 'Adults Only',
 };
 
 /** ---------- Room amenities (JSON on room_categories.features_json) ---------- */
@@ -192,6 +195,7 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
   has_accessible_fitness_center?: boolean | null;
   has_accessible_meeting_spaces?: boolean | null;
   is_all_inclusive?: boolean | null;
+  is_adults_only?: boolean | null;
   has_service_dog_policy?: boolean | null;
 
   // Room-related filters you had earlier
@@ -381,6 +385,7 @@ const hotelsList = useMemo<HotelLike[]>(
             has_accessible_fitness_center={hotel.has_accessible_fitness_center}
             has_accessible_meeting_spaces={hotel.has_accessible_meeting_spaces}
             is_all_inclusive={hotel.is_all_inclusive}
+            is_adults_only={hotel.is_adults_only}
             has_service_dog_policy={hotel.has_service_dog_policy}
           />
         </div>

@@ -71,6 +71,7 @@ type RawHotel = {
   has_pool_lift?: boolean | string | number | null;
   has_beach_wheelchair?: boolean | string | number | null;
   is_all_inclusive?: boolean | string | number | null;
+  is_adults_only?: boolean | string | number | null;
   has_service_dog_policy?: boolean | string | number | null;
   has_zero_entry_pool?: boolean | string | number | null;
   has_aquatic_wheelchair?: boolean | string | number | null;
@@ -113,6 +114,7 @@ type NormalizedHotel = {
   has_aquatic_wheelchair?: boolean;
   has_accessible_meeting_spaces?: boolean;
   is_all_inclusive?: boolean;
+  is_adults_only?: boolean;
   has_service_dog_policy?: boolean;
 
   room_categories?: RawRoomCategory[];
@@ -141,6 +143,7 @@ const INITIAL_PROP_FILTERS = {
   has_aquatic_wheelchair: false,
   has_service_dog_policy: false,
   is_all_inclusive: false,
+  is_adults_only: false,
 } as const;
 
 type PropFilters = typeof INITIAL_PROP_FILTERS;
@@ -432,6 +435,7 @@ export default function HotelsPage() {
             has_beach_wheelchair: boolLike(h.has_beach_wheelchair),
             has_service_dog_policy: boolLike(h.has_service_dog_policy),
             is_all_inclusive: boolLike(h.is_all_inclusive),
+            is_adults_only: boolLike(h.is_adults_only),
 
             room_categories: Array.isArray(h.room_categories)
               ? h.room_categories
@@ -693,6 +697,7 @@ export default function HotelsPage() {
                     has_accessible_meeting_spaces={hotel.has_accessible_meeting_spaces}
                     has_service_dog_policy={hotel.has_service_dog_policy}
                     is_all_inclusive={hotel.is_all_inclusive}
+                    is_adults_only={hotel.is_adults_only}
                   />
                 </div>
               ))}
