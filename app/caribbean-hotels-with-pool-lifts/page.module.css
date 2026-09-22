@@ -50,13 +50,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 24px;
+  gap: 20px;
   align-items: stretch;
 }
 
 .grid > * {
   width: 100%;
   max-width: 350px;
-  min-height: 740px;
+  height: 820px;
   display: flex;
 }
