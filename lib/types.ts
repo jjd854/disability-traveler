@@ -8,6 +8,7 @@ export type Hotel = {
   slug: string;
   featured_image_url: string;
   is_placeholder_image?: boolean;
+  photo_credit?: string | null;
   accessibility_summary?: string;
   destinations_id: number;
   price_level?: number | string | null;

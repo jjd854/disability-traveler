@@ -32,6 +32,7 @@ interface HotelPhotoGalleryProps {
   reviewerPhotos?: PhotoItem[];     // flattened reviewer photos
   hotelId?: number;
   hotelName?: string;
+  photoCredit?: string | null;
 }
 
 function normalize(items: PhotoItem[]): NormalizedPhoto[] {
@@ -57,6 +58,7 @@ export default function HotelPhotoGallery({
   photos,
   reviewerPhotos = [],
   hotelName,
+  photoCredit,
 }: HotelPhotoGalleryProps) {
   const hotelNorm = useMemo(() => normalize(photos), [photos]);
   const reviewerNorm = useMemo(() => normalize(reviewerPhotos), [reviewerPhotos]);
@@ -165,7 +167,7 @@ export default function HotelPhotoGallery({
             
             {!showReviewerPhotos && hotelNorm.length > 0 && (
               <div className={styles.photoCredit}>
-                Photos courtesy of {hotelName}
+                Photos courtesy of {photoCredit || hotelName}
               </div>
             )}
 

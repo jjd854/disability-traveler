@@ -432,7 +432,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
 
             {hotel.is_placeholder_image === false && (
               <p className={styles.photoAttribution}>
-                Photo courtesy of {hotel.name}
+                Photo courtesy of {hotel.photo_credit || hotel.name}
               </p>
             )}
           </>
@@ -443,6 +443,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
           hotelId={hotel.id}
           reviewerPhotos={reviewerPhotoBlobs}
           hotelName={hotel.name}
+          photoCredit={hotel.photo_credit}
         />
 
         <div className={styles.content}>
@@ -608,7 +609,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
 
             {/* Renders filters + the grid in one place (no duplicates) */}
             {roomCategories && roomCategories.length > 0 ? (
-             <RoomAmenitiesSection roomCategories={roomCategories} hotelName={hotel.name} />
+             <RoomAmenitiesSection roomCategories={roomCategories} hotelName={hotel.name} photoCredit={hotel.photo_credit}  />
            ) : (
              <div className={styles.noRoomsMessage}>
                The hotel reports that accessible rooms are available; however, it does not

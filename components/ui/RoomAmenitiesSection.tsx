@@ -9,6 +9,7 @@ import filterStyles from '@/components/ui/RoomAmenityFilters.module.css';
 type Props = {
   roomCategories: RoomCategory[];
   hotelName: string;
+  photoCredit?: string | null;
 };
 
 type FeatureKey =
@@ -55,6 +56,7 @@ function asBool(v: unknown): boolean {
 export default function RoomAmenitiesSection({
   roomCategories,
   hotelName,
+  photoCredit,
 }: Props) {
   
   const [open, setOpen] = useState(false);
@@ -141,7 +143,7 @@ export default function RoomAmenitiesSection({
 
       <div className={pageStyles.roomCategoriesGrid}>
         {filtered.map((rc) => (
-          <RoomCategoryCard key={rc.id} category={rc} hotelName={hotelName} />
+          <RoomCategoryCard key={rc.id} category={rc} hotelName={hotelName} photoCredit={photoCredit}/>
         ))}
       </div>
     </section>

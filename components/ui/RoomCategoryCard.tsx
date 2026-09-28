@@ -11,6 +11,7 @@ import Image from "next/image";
 interface Props {
   category: RoomCategory;
   hotelName?: string;
+  photoCredit?: string | null;
 }
 
 type RoomCategoryAddon = {
@@ -25,6 +26,7 @@ type RoomCategoryPhotoLike = {
   alt_text?: string | null;
   hotel_name?: { name: string } | null;
   is_placeholder_image?: boolean;
+  photo_credit?: string | null;
 };
 
 type RoomCategoryLike = RoomCategory & {
@@ -59,7 +61,7 @@ function isTruthyFlag(value: unknown): boolean {
   return value === true || value === 1 || value === '1' || value === 'true';
 }
 
-export default function RoomCategoryCard({ category, hotelName }: Props) {
+export default function RoomCategoryCard({ category, hotelName, photoCredit }: Props) {
   const cat = category as RoomCategoryLike;
 
   // --- pull avg + count from either flat or nested add-on shapes ---
@@ -332,7 +334,7 @@ export default function RoomCategoryCard({ category, hotelName }: Props) {
            </div>
             {showAttribution && (
               <p className={styles.photoAttribution}>
-                Photos courtesy of {hotelName}
+                Photos courtesy of {photoCredit || hotelName}
               </p>
             )}
           </div>
