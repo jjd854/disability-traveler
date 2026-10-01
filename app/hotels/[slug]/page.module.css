@@ -220,6 +220,13 @@
 .websiteLink:hover { text-decoration: underline; }
 .dot { color: #999; }
 
+.affiliateDisclosure {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  color: #4b5563;
+  text-align: center;
+}
+
 .divider {
   margin: 12px auto;
   border: none;

@@ -551,6 +551,13 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
             </OutboundLink>
           </div>
 
+          {hotel.is_affiliate_link && (
+            <p className={styles.affiliateDisclosure}>
+              Affiliate disclosure: Disability Traveler may earn a commission if you
+              book through this link, at no additional cost to you.
+            </p>
+         )}
+
           <div className={styles.infoRow}>
             <span>
               <strong>Address:</strong> {hotel.address}

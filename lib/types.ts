@@ -14,6 +14,7 @@ export type Hotel = {
   price_level?: number | string | null;
   dt_verified_room_notes?: string | null;
   dt_verified_property_notes?: string | null;
+  is_affiliate_link?: boolean;
 
   has_pool_lift?: boolean;
   has_beach_wheelchair?: boolean;
