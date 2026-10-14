@@ -97,6 +97,7 @@ module.exports = {
   }
 } catch (error) {
   console.error("Error generating sitemap paths:", error);
+  throw error;
 }
 
     return paths;
