@@ -2,6 +2,27 @@ import Link from 'next/link';
 import Navbar from '../components/ui/Navbar';
 import Footer from '../components/ui/Footer';
 import HomeSignupForm from '../components/ui/HomeSignupForm';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Disability Traveler | Find Wheelchair Accessible Hotels & Resorts',
+
+  description:
+    'Discover wheelchair-accessible hotels and resorts with detailed accessibility information. Explore accessible rooms, bathrooms, pools, beaches, and amenities to plan your next vacation.',
+
+  alternates: {
+    canonical: 'https://disabilitytraveler.com',
+  },
+
+  openGraph: {
+    title: 'Disability Traveler | Find Wheelchair Accessible Hotels & Resorts',
+    description:
+      'Discover wheelchair-accessible hotels and resorts with detailed accessibility information. Explore accessible rooms, bathrooms, pools, beaches, and amenities to plan your next vacation.',
+    url: 'https://disabilitytraveler.com',
+    siteName: 'Disability Traveler',
+    type: 'website',
+  },
+};
 
 export default function HomePage() {
 
