@@ -12,9 +12,45 @@ import RoomAmenitiesSection from '@/components/ui/RoomAmenitiesSection';
 import OutboundLink from '@/components/ui/analytics/OutboundLink';
 import AccessibilityConfidenceBadge from '@/components/ui/AccessibilityConfidenceBadge';
 import Image from "next/image";
+import type { Metadata } from 'next';
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+
+  const { result1: hotel } = await fetchHotelBySlug(slug);
+
+  if (!hotel) {
+    return {
+      title: 'Hotel Not Found | Disability Traveler',
+    };
+  }
+
+  const title = `${hotel.name} Accessibility Guide | Disability Traveler`;
+
+  const description = `Explore accessibility information for ${hotel.name}, including accessible rooms, bathrooms, property amenities, and wheelchair accessibility.`;
+
+  const canonicalUrl = `https://disabilitytraveler.com/hotels/${slug}`;
+
+  return {
+    title,
+    description,
+
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'Disability Traveler',
+      type: 'website',
+    },
+  };
 }
 
 type PhotoItem = {
