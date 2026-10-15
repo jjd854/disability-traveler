@@ -158,6 +158,7 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
           {slug ? (
             <Link
               href={`/hotels/${slug}`}
+              prefetch={false}
               className={styles.nameLink}
               aria-label={`View ${name}`}
               title={name}
@@ -243,7 +244,7 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
         )}
       </div>
 
-      <Link href={`/hotels/${slug}`} className={styles.button}>
+      <Link href={`/hotels/${slug}`} prefetch={false} className={styles.button}>
         View Hotel
       </Link>
     </div>
