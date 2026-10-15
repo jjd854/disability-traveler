@@ -18,15 +18,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://disabilitytraveler.com'),
+
   title: 'Disability Traveler',
   description: 'Accessible travel reviews and destinations',
+
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-icon.png',
   },
+
   manifest: '/site.webmanifest',
+
   other: {
-  verification: 'd327bdeb562a085638934dc47ac27175',
+    verification: 'd327bdeb562a085638934dc47ac27175',
   },
 };
 
