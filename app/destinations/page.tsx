@@ -122,7 +122,7 @@ export default function DestinationsPage() {
                     </div>
 
                     <h2 className={styles.cardTitle}>
-                      <Link href={`/destinations/${dest.slug}`} className={styles.titleLink}>
+                      <Link href={`/destinations/${dest.slug}`} prefetch={false} className={styles.titleLink}>
                         {dest.Name}
                       </Link>
                     </h2>
@@ -136,6 +136,7 @@ export default function DestinationsPage() {
 
                   <Link
                     href={`/destinations/${dest.slug}`}
+                    prefetch={false}
                     className={styles.viewbutton}
                   >
                     View Destination
