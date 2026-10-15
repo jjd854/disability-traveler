@@ -10,9 +10,47 @@ import styles from './page.module.css';
 import DestinationHotels from './DestinationHotels'; // <-- default import of client child
 import OutboundLink from '@/components/ui/analytics/OutboundLink';
 import Image from "next/image";
+import type { Metadata } from 'next';
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+
+  const destination = await fetchDestinationById(slug);
+
+  if (!destination) {
+    return {
+      title: 'Destination Not Found | Disability Traveler',
+    };
+  }
+
+  const destinationName = destination.Name || 'Destination';
+
+  const title = `${destinationName} Accessible Travel Guide | Disability Traveler`;
+
+  const description = `Explore accessible travel in ${destinationName}. Discover wheelchair-accessible hotels, resort amenities, and accessibility information to help plan your trip.`;
+
+  const canonicalUrl = `https://disabilitytraveler.com/destinations/${slug}`;
+
+  return {
+    title,
+    description,
+
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'Disability Traveler',
+      type: 'website',
+    },
+  };
 }
 
 export default async function DestinationPage({ params }: Props) {
