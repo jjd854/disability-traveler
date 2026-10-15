@@ -14,6 +14,7 @@ import AccessibilityConfidenceBadge from '@/components/ui/AccessibilityConfidenc
 import Image from "next/image";
 import type { Metadata } from 'next';
 
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -21,7 +22,8 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  const { result1: hotel } = await fetchHotelBySlug(slug);
+  const response = await fetchHotelBySlug(slug);
+  const hotel = response?.result1;
 
   if (!hotel) {
     return {
@@ -60,6 +62,20 @@ type PhotoItem = {
   sort_order?: number | null;
   review_id?: number | null;
 };
+
+type AccessibilityResource = {
+  id: number | string;
+  url: string;
+  resource_type?: string | null;
+  title?: string | null;
+  creator_name?: string | null;
+};
+
+function isAccessibilityResource(value: unknown): value is AccessibilityResource {
+  if (typeof value !== "object" || value === null) return false;
+  const item = value as Record<string, unknown>;
+  return (typeof item.id === "number" || typeof item.id === "string") && typeof item.url === "string";
+}
 
 type ReviewPhotoChild = {
   id?: number;
@@ -238,7 +254,10 @@ function collectReviewerPhotos(reviews: Review[]): PhotoItem[] {
 
 export default async function HotelDetailPage({ params }: Props) {
   const { slug } = await params;
-  const { result1: hotel, hotel_photos1: photos, accessibility_videos: accessibilityVideos = [], } = await fetchHotelBySlug(slug);
+  const response = await fetchHotelBySlug(slug);
+  const hotel = response?.result1;
+  const photos: PhotoItem[] = (response?.hotel_photos1 ?? []) as PhotoItem[];
+  const accessibilityVideos: AccessibilityResource[] = (response?.accessibility_videos ?? []).filter(isAccessibilityResource);
   if (!hotel) notFound();
 
   const reviews: Review[] =
@@ -272,18 +291,6 @@ export default async function HotelDetailPage({ params }: Props) {
     .filter(Boolean);
 
   const propertyFeatureSentence = formatFeatureList(propertySentenceFeatureList);
-
-  const handleHotelWebsiteClick = () => {
-    if (typeof window !== "undefined" && window.gtag) {
-      window.gtag("event", "hotel_website_click", {
-        hotel_name: hotel.name,
-        hotel_slug: hotel.slug,
-        hotel_id: hotel.id,
-        outbound_url: hotel.website_url,
-        page_path: `/hotels/${hotel.slug}`,
-      });
-    }
-  };
 
 type RoomCategoryAddon = {
   avg_room_category_rating?: number | string | null;
@@ -555,11 +562,13 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
             >
               <button className={styles.reviewButton}>Submit a Review</button>
             </Link>
-            <Link href={`/destinations/${hotel.Destinations.slug}`}>
-              <button className={styles.secondaryButton}>
-                View {hotel.Destinations.Name} Accessibility Guide
-              </button>
-            </Link>
+            {hotel.Destinations?.slug && (
+              <Link href={`/destinations/${hotel.Destinations.slug}`}>
+                <button className={styles.secondaryButton}>
+                  View {hotel.Destinations.Name ?? hotel.Destinations.name ?? 'Destination'} Accessibility Guide
+               </button>
+             </Link>
+           )}
           </div>
 
           <hr className={styles.divider} />
@@ -569,22 +578,24 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
               <strong>Phone:</strong> {hotel.phone_number}
             </span>
             <span className={styles.dot}>•</span>
-            <OutboundLink
-              href={hotel.website_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.websiteLink}
-              event="hotel_website_click"
-              params={{
-                hotel_name: hotel.name,
-                hotel_slug: hotel.slug,
-                hotel_id: hotel.id,
-                outbound_url: hotel.website_url,
-                page_path: `/hotels/${hotel.slug}`,
-              }}
-            >
-              Visit Hotel Website
-            </OutboundLink>
+            {hotel.website_url && (
+              <OutboundLink
+                href={hotel.website_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.websiteLink}
+                event="hotel_website_click"
+                params={{
+                  hotel_name: hotel.name,
+                  hotel_slug: hotel.slug,
+                  hotel_id: hotel.id,
+                  outbound_url: hotel.website_url,
+                  page_path: `/hotels/${hotel.slug}`,
+               }}
+             >
+               Visit Hotel Website
+             </OutboundLink>
+           )}
           </div>
 
           {hotel.is_affiliate_link && (
@@ -667,7 +678,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
               <h2 className={styles.sectionTitle}>  📚 Accessibility Resources</h2>
               
               <div className={styles.resourceList}>
-                {accessibilityVideos.map((video: any) => (
+                {accessibilityVideos.map((video) => (
                   <a
                     key={video.id}
                     href={video.url}
@@ -676,7 +687,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
                     className={styles.videoCard}
                   >
                     <span className={styles.videoTitle}>
-                      {RESOURCE_ICONS[video.resource_type] ?? "🔗"}{" "}
+                      {RESOURCE_ICONS[video.resource_type ?? ""] ?? "🔗"}{" "}
                       {video.title}
                     </span>
 

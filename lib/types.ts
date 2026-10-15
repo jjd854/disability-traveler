@@ -5,22 +5,34 @@
 export type Hotel = {
   id: number;
   name: string;
+  Name?: string;                // matches Xano payload
   slug: string;
+  address?: string | null;
+  street_address?: string | null;
+  city?: string | null;
+  state_or_province?: string | null;
+  phone?: string | null;
+  phone_number?: string | null;
+  region?: string | null;
+  country?: string | null;
+  description?: string | null;
   featured_image_url: string;
   is_placeholder_image?: boolean;
   photo_credit?: string | null;
   accessibility_summary?: string;
+  accessibility_features?: string | null;
   destinations_id: number;
   price_level?: number | string | null;
   dt_verified_room_notes?: string | null;
   dt_verified_property_notes?: string | null;
   is_affiliate_link?: boolean;
+  website_url?: string | null;
 
   has_pool_lift?: boolean;
   has_beach_wheelchair?: boolean;
   has_elevator?: boolean;
   is_all_inclusive?: boolean;
-  is_adult_only?: boolean;
+  is_adults_only?: boolean;
   has_accessible_pathways?: boolean;
   has_accessible_restaurant?: boolean;
   has_accessible_fitness_center?: boolean;
@@ -37,6 +49,22 @@ export type Hotel = {
   };
 
   _reviews?: Review[];
+
+   room_categories?: RoomCategory[];
+
+  // Destination relationship returned by Xano
+  Destinations?: {
+    id?: number;
+    Name?: string;
+    name?: string;
+    slug: string;
+  };
+
+  // Hotel verification
+  verified_date?: string | null;
+
+  // Destination slug
+  destination_slug?: string;
 };
 
 export type Destination = {
@@ -192,4 +220,12 @@ export interface FileInfo {
   width: number;
   height: number;
 }
+
+export type PhotoItem = {
+  id: number;
+  photo_url: string;
+  alt_text?: string | null;
+  sort_order?: number | null;
+  review_id?: number | null;
+};
 
