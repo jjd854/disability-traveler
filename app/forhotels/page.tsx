@@ -57,7 +57,7 @@ export default function ForHotelsPage() {
     },
     {
       title: "Build trust with real reviews",
-      text: "Fair, structured reviews with traveler photos, designed to inform, not outrage.",
+      text: "Fair, structured reviews with traveler photos, designed to inform.",
     },
   ];
 
@@ -98,13 +98,16 @@ export default function ForHotelsPage() {
           <h1 id="pageTitle" className={styles.h1}>Showcase Your Accessible Stays</h1>
           <p className={styles.tagline}>
             Reach travelers who actively need accessibility details. Build trust with
-            transparent features, room-level clarity, and real reviews.
+            transparent property features, room-level clarity, and real accessibility focused reviews.
           </p>
           <div className={styles.ctaRow}>
-            <Link className={styles.ctaPrimary} href="/forhotels/intake">Get Listed</Link>
-            <a className={styles.ctaSecondary} href="mailto:help@disabilitytraveler.com">Email Us</a>
+            <Link className={styles.ctaPrimary} href="/forhotels/intake" prefetch={false}>
+              Get Listed
+            </Link>
+            <a className={styles.ctaSecondary} href="mailto:help@disabilitytraveler.com">
+              Email Us
+            </a>
           </div>
-          <p className={styles.micro}>Independent, accessibility‑focused reviews since 2025 - free for hotels to list</p>
         </section>
 
         {/* BENEFITS */}
