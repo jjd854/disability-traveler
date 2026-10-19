@@ -100,19 +100,19 @@ export default function RoomCategoryCard({ category, hotelName, photoCredit }: P
       }))
       .filter((p) => typeof p.url === 'string' && p.url.trim() !== '');
 
-    console.log('normalized room photos:', normalized);
     const seen = new Set<string>();
     const unique: RoomCategoryPhoto[] = [];
 
-    for (const p of normalized) {
-      if (!seen.has(p.url)) {
-        seen.add(p.url);
-        unique.push(p);
-      }
-    }
+       for (const p of normalized) {
+         if (!seen.has(p.url)) {
+           seen.add(p.url);
+           unique.push(p);
+         }
+       }
 
-    return unique;
-  }, [cat.photos_example, cat.name]);
+       // Exclude placeholder images from the photo gallery
+       return unique.filter((p) => !p.is_placeholder_image);
+     }, [cat.photos_example, cat.name]);
 
   // Features / chips
   const chips: string[] = [];
@@ -187,59 +187,80 @@ export default function RoomCategoryCard({ category, hotelName, photoCredit }: P
         <div
           className={styles.thumbnailContainer}
           onClick={() => hasPhotos && setModalOpen(true)}
-          role="button"
-          aria-label="Open room photos"
-          tabIndex={0}
+          role={hasPhotos ? "button" : undefined}
+          aria-label={hasPhotos ? "Open room photos" : undefined}
+          tabIndex={hasPhotos ? 0 : undefined}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') setModalOpen(true);
+            if (hasPhotos && (e.key === 'Enter' || e.key === ' ')) {
+              e.preventDefault();
+              setModalOpen(true);
+            }
           }}
         >
-          {hasPhotos ? (
-            <>
-              <div className={styles.thumbnailWrapper}>
-                <Image
-                  src={active!.url}
-                  alt={active!.alt_text || `${category.name} room photo`}
-                  fill
-                  className={styles.thumbnail}
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
+          <div className={styles.thumbnailWrapper}>
+            {!active || active.is_placeholder_image ? (
+              <div className={styles.thumbnailPlaceholder}>
+                <svg
+                  width="42"
+                  height="42"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="10" width="18" height="9" rx="1" />
+                  <path d="M3 15h18M5 10V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3" />
+                  <path d="M6 19v2M18 19v2" />
+                </svg>
+
+                <span className={styles.placeholderTitle}>
+                  Room Photography Unavailable
+                </span>
               </div>
-              {photos.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    className={`${styles.chevron} ${styles.left}`}
-                    onClick={prev}
-                    aria-label="Previous photo"
-                  >
-                    ‹
-                  </button>
-                  <button
-                    type="button"
-                    className={`${styles.chevron} ${styles.right}`}
-                    onClick={next}
-                    aria-label="Next photo"
-                  >
-                    ›
-                  </button>
-                  <div className={styles.dots} aria-hidden="true">
-                    {photos.map((_, i) => (
-                      <span
-                        key={i}
-                        className={
-                          i === activeIndex
-                            ? `${styles.dot} ${styles.dotActive}`  // base + active
-                            : styles.dot                           // base only
-                          }
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
+            ) : (
+              <Image
+                src={active!.url}
+                alt={active!.alt_text || `${category.name} room photo`}
+                fill
+                className={styles.thumbnail}
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            )}
+          </div>
+          {photos.length > 1 && (
+            <>
+              <button
+                type="button"
+                className={`${styles.chevron} ${styles.left}`}
+                onClick={prev}
+                aria-label="Previous photo"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className={`${styles.chevron} ${styles.right}`}
+                onClick={next}
+                aria-label="Next photo"
+              >
+                ›
+              </button>
+              <div className={styles.dots} aria-hidden="true">
+                {photos.map((_, i) => (
+                  <span
+                    key={i}
+                    className={
+                      i === activeIndex
+                        ? `${styles.dot} ${styles.dotActive}`
+                        : styles.dot
+                    }
+                  />
+                ))}
+              </div>
             </>
-          ) : (
-            <div className={styles.noPhoto}>No photos available</div>
           )}
         </div>
 

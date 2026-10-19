@@ -115,6 +115,8 @@ interface Props {
 }
 
 export default function DestinationHotels({ destinationName, hotels }: Props) {
+
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(false);
 
@@ -172,6 +174,7 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
   slug?: string | null;
 
   featured_image_url?: string | null;
+  is_placeholder_image?: boolean | null;
   alt_text?: string | null;
 
   price_level?: number | string | null;
@@ -369,6 +372,7 @@ const hotelsList = useMemo<HotelLike[]>(
             name={hotel.name ?? ''}
             slug={hotel.slug ?? ''}
             featured_image_url={hotel.featured_image_url ?? '/placeholder.jpg'}
+            is_placeholder_image={hotel.is_placeholder_image ?? undefined}
             alt_text={hotel.alt_text ?? undefined}
             accessibility_confidence={hotel.accessibility_confidence}
             verified_date={hotel.verified_date}

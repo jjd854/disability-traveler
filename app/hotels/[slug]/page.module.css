@@ -36,6 +36,43 @@
   }
 }
 
+.heroPlaceholder {
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+  padding: 32px;
+  box-sizing: border-box;
+
+  background: linear-gradient(
+    135deg,
+    #eef7f1 0%,
+    #dceee3 100%
+  );
+
+  color: #2f6b4f;
+  text-align: center;
+}
+
+.heroPlaceholder h2 {
+  margin: 8px 0 0;
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-weight: 600;
+}
+
+.heroPlaceholder p {
+  margin: 0;
+  font-size: 1rem;
+  color: #526b5b;
+  line-height: 1.5;
+}
+
 .photoAttribution {
   margin: 6px 0 20px;;
   text-align: center;

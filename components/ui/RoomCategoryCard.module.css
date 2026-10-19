@@ -46,6 +46,35 @@
   background: #f3f3f3;
 }
 
+.thumbnailPlaceholder {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+  padding: 16px;
+
+  background: linear-gradient(
+    135deg,
+    #eef7f1 0%,
+    #dceee3 100%
+  );
+
+  color: #2f6b4f;
+  text-align: center;
+}
+
+.placeholderTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .noPhoto {
   height: 220px;
   display: flex;

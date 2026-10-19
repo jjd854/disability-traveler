@@ -461,25 +461,48 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
       />
       <main className={styles.hotelPageRoot}>
       <div className={styles.hotelPage}>
-        {hotel.featured_image_url && (
-          <>
-            <div className={styles.heroImageWrapper}>
-              <Image
-                src={hotel.featured_image_url}
-                alt={hotel.alt_text || hotel.name || "Hotel image"}
-                fill
-                className={styles.heroImage}
-                priority
-              />
-            </div>
+        {(hotel.featured_image_url || hotel.is_placeholder_image) && (
+  <>
+    <div className={styles.heroImageWrapper}>
+      {hotel.is_placeholder_image ? (
+        <div className={styles.heroPlaceholder}>
+          <svg
+            width="72"
+            height="72"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="4" y="3" width="16" height="18" rx="2" />
+            <path d="M9 21v-4h6v4" />
+            <path d="M8 7h2M14 7h2M8 11h2M14 11h2" />
+          </svg>
 
-            {hotel.is_placeholder_image === false && (
-              <p className={styles.photoAttribution}>
-                Photo courtesy of {hotel.photo_credit || hotel.name}
-              </p>
-            )}
-          </>
-        )}
+          <h2>Hotel Photography Unavailable</h2>
+          <p>Official property photos have not yet been provided.</p>
+        </div>
+      ) : (
+        <Image
+          src={hotel.featured_image_url}
+          alt={hotel.alt_text || hotel.name || "Hotel image"}
+          fill
+          className={styles.heroImage}
+          priority
+        />
+      )}
+    </div>
+
+    {hotel.is_placeholder_image === false && (
+      <p className={styles.photoAttribution}>
+        Photo courtesy of {hotel.photo_credit || hotel.name}
+      </p>
+    )}
+  </>
+)}
 
         <HotelPhotoGallery
           photos={photos ?? []}

@@ -17,6 +17,7 @@ interface HotelCardProps {
   name: string;
   slug: string;
   featured_image_url: string;
+  is_placeholder_image?: boolean;
   alt_text?: string;
   price_level?: number | string | null;
   accessibility_confidence?: string | null;
@@ -80,7 +81,7 @@ const PRICE_LABELS: Record<number, string> = {
 };
 
 const HotelCard: React.FC<HotelCardProps> = (p) => {
-  const { name, slug, featured_image_url, alt_text, showLocation } = p;
+  const { name, slug, featured_image_url, is_placeholder_image, alt_text, showLocation } = p;
 
   const avgRaw =
     p.avg_hotel_rating ??
@@ -145,13 +146,37 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
     <div className={styles.card}>
       <div className={styles.cardContent}>
         <div className={styles.thumbnailWrapper}>
-          <Image
-            src={featured_image_url}
-            alt={alt_text || `${name} feature image`}
-            fill
-            className={styles.thumbnail}
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
+          {is_placeholder_image ? (
+            <div className={styles.thumbnailPlaceholder}>
+              <svg
+                width="42"
+                height="42"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="4" y="3" width="16" height="18" rx="2" />
+                <path d="M9 21v-4h6v4" />
+                <path d="M8 7h2M14 7h2M8 11h2M14 11h2" />
+              </svg>
+
+              <span className={styles.placeholderTitle}>
+                Hotel Photography Unavailable
+              </span>
+            </div>
+          ) : (
+            <Image
+              src={featured_image_url}
+              alt={alt_text || `${name} feature image`}
+              fill
+              className={styles.thumbnail}
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          )}
         </div>
 
         <h3 className={styles.name}>
