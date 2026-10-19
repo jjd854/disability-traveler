@@ -505,9 +505,9 @@ export default function HotelsPage() {
           </div>
 
           <div className={styles.confidenceItem}>
-            <span className={`${styles.confidencePill} ${styles.detailedPill}`}>Detailed Accessibility Info</span>
+            <span className={`${styles.confidencePill} ${styles.detailedPill}`}>Online Accessibility Info</span>
             <p className={styles.confidenceText}>
-              Accessibility details based on publicly available information, but not verified directly with the hotel.
+              Accessibility information sourced from the hotel's website or other official online materials. Details have not been verified directly with the hotel.
             </p>
           </div>
 

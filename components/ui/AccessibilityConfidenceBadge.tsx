@@ -35,9 +35,9 @@ export default function AccessibilityConfidenceBadge({
       break;
 
     case 'detailed':
-      label = 'Detailed Accessibility Info';
+      label = 'Online Accessibility Info';
       description =
-        'Accessibility details based on publicly available information, but not verified directly with the hotel.';
+        "Accessibility information sourced from the hotel's website or other official online materials. Details have not been verified directly with the hotel.";
       className = 'detailed';
       break;
 
