@@ -195,6 +195,15 @@
   line-height: 1;
 }
 
+.noFeaturesMessage {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-style: italic;
+  text-align: center;
+  line-height: 1.5;
+  margin: 12px 8px;
+}
+
 .button {
   display: inline-block;
   margin: 12px auto 0 auto;

@@ -252,7 +252,7 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
 
         <div className={styles.divider} />
 
-        {!!features.length && (
+        {features.length > 0 ? (
           <div className={styles.features}>
             {features.map((f, i) => (
               <span key={i} className={styles.feature}>
@@ -266,6 +266,10 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
               </span>
             ))}
           </div>
+        ) : (
+          <p className={styles.noFeaturesMessage}>
+            Property-level accessibility features have not been confirmed.
+          </p>
         )}
       </div>
 

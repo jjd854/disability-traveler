@@ -278,6 +278,19 @@ export default async function HotelDetailPage({ params }: Props) {
     )
     .map(([key]) => key);
 
+  const hasPropertyFeatures = Boolean(
+    hotel.has_accessible_pathways ||
+    hotel.has_accessible_restaurant ||
+    hotel.has_pool_lift ||
+    hotel.has_zero_entry_pool ||
+    hotel.has_aquatic_wheelchair ||
+    hotel.has_beach_wheelchair ||
+    hotel.has_elevator ||
+    hotel.has_accessible_fitness_center ||
+    hotel.has_accessible_meeting_spaces ||
+    hotel.has_service_dog_policy
+  ); 
+
   const orderedPropertyFeatures = PROPERTY_FEATURE_ORDER.filter((feature) =>
     propertyFeatures.includes(feature)
   );
@@ -553,19 +566,29 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
               'No reviews yet'
             )}
           </p>
-          <h2 className={styles.propertyaccessibilityText}>Accessible Features at This Hotel</h2>
-          <div className={styles.features}>
-            {hotel.has_accessible_pathways && <span className={styles.feature}>🛣️ Accessible Pathways</span>}
-            {hotel.has_accessible_restaurant && <span className={styles.feature}>🍽️ Accessible Restaurant</span>}
-            {hotel.has_pool_lift && <span className={styles.feature}>🏊 Pool Lift</span>}
-            {hotel.has_zero_entry_pool && <span className={styles.feature}>↘️ Zero/Sloped Entry Pool</span>}
-            {hotel.has_aquatic_wheelchair && <span className={styles.feature}>♿ Aquatic Wheelchair</span>}
-            {hotel.has_beach_wheelchair && <span className={styles.feature}>🏖️ Beach Wheelchair</span>}
-            {hotel.has_elevator && <span className={styles.feature}>🛗 Elevator</span>}
-            {hotel.has_accessible_fitness_center && <span className={styles.feature}> 🏋️ Accessible Fitness Center</span>}
-            {hotel.has_accessible_meeting_spaces && <span className={styles.feature}>🏢 Accessible Meeting & Event Spaces</span>}
-            {hotel.has_service_dog_policy && <span className={styles.feature}>🦮 Service Dogs Welcome</span>}
-          </div>
+          <h2 className={styles.propertyaccessibilityText}>Accessible Property Features at This Hotel</h2>
+          {hasPropertyFeatures && (
+            <div className={styles.features}>
+              {hotel.has_accessible_pathways && <span className={styles.feature}>🛣️ Accessible Pathways</span>}
+              {hotel.has_accessible_restaurant && <span className={styles.feature}>🍽️ Accessible Restaurant</span>}
+              {hotel.has_pool_lift && <span className={styles.feature}>🏊 Pool Lift</span>}
+              {hotel.has_zero_entry_pool && <span className={styles.feature}>↘️ Zero/Sloped Entry Pool</span>}
+              {hotel.has_aquatic_wheelchair && <span className={styles.feature}>♿ Aquatic Wheelchair</span>}
+              {hotel.has_beach_wheelchair && <span className={styles.feature}>🏖️ Beach Wheelchair</span>}
+              {hotel.has_elevator && <span className={styles.feature}>🛗 Elevator</span>}
+              {hotel.has_accessible_fitness_center && <span className={styles.feature}> 🏋️ Accessible Fitness Center</span>}
+              {hotel.has_accessible_meeting_spaces && <span className={styles.feature}>🏢 Accessible Meeting & Event Spaces</span>}
+              {hotel.has_service_dog_policy && <span className={styles.feature}>🦮 Service Dogs Welcome</span>}
+            </div>
+         )}   
+          {!hasPropertyFeatures && (
+            <p className={styles.featureSummary}>
+              Property-level accessibility features have not been confirmed.
+              Contact the hotel directly for details about accessible facilities
+              and amenities.
+            </p>
+          )}
+
           {propertyFeatureSentence && (
             <p className={styles.featureSummary}>
               The {hotel.name} offers several property accessibility features including {propertyFeatureSentence}.
@@ -659,22 +682,39 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
               ))}
           </div>
 
-          <h2 className={styles.roomaccessibilityText}>Accessible Room Features Available at This Hotel</h2>
-          <div className={styles.chipContainer}>
-            {featureList.map((feature) => (
-              <span key={feature} className={styles.chip}>
-                {feature}
-              </span>
-            ))}
-          </div>
-          <p className={styles.featureSummary}>
-            Travelers looking for wheelchair accessible hotels in {hotel.city || hotel.Destinations?.name} will find that the {hotel.name} offers accessible guest rooms and multiple accessibility features.
-          </p>
-          {featureSentence && (
-             <p className={styles.featureSummary}>
-                Accessible rooms at the {hotel.name} include features such as {featureSentence}.
-             </p>
-           )}
+          <h2 className={styles.roomaccessibilityText}>
+            Accessible Room Features Available at This Hotel
+          </h2>
+
+          {featureList.length > 0 ? (
+           <>
+             <div className={styles.chipContainer}>
+                {featureList.map((feature) => (
+                  <span key={feature} className={styles.chip}>
+                    {feature}
+                  </span>
+                ))}
+              </div>
+
+              <p className={styles.featureSummary}>
+                Travelers looking for wheelchair accessible hotels in{' '}
+                {hotel.city || hotel.Destinations?.name} will find that the{' '}
+                {hotel.name} offers accessible room features.
+              </p>
+
+              {featureSentence && (
+                <p className={styles.featureSummary}>
+                  Accessible rooms at the {hotel.name} include features such as{' '}
+                  {featureSentence}.
+                </p>
+              )}
+            </>
+          ) : (
+            <p className={styles.featureSummary}>
+              Accessible room features have not been confirmed. Contact the hotel
+              directly for details about accessible room accommodations and amenities.
+            </p>
+          )}
 
           {/* ==== Room categories (filters + cards) ==== */}
           <section className={styles.roomCategoriesSection}>
