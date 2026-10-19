@@ -24,8 +24,8 @@
 
 @media (max-width: 640px) {
   .heroImageWrapper {
-    height: auto;
-    aspect-ratio: 16 / 9;
+    height: 230px;
+    aspect-ratio: auto;
     width: 100%;
     border-radius: 12px;
   }
