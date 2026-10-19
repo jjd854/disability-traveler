@@ -289,7 +289,7 @@ export default function RoomCategoryCard({ category, hotelName, photoCredit }: P
                 ))
               ) : (
                 <span className={styles.noFeatures}>
-                  Accessibility features for this room category have not been confirmed.
+                  Accessibility features for this room category have not been documented.
                 </span>
               )}
             </div>

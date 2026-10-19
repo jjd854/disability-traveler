@@ -268,7 +268,7 @@ const HotelCard: React.FC<HotelCardProps> = (p) => {
           </div>
         ) : (
           <p className={styles.noFeaturesMessage}>
-            Property-level accessibility features have not been confirmed.
+            Property-level accessibility features have not been documented.
           </p>
         )}
       </div>

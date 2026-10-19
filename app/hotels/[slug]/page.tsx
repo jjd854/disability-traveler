@@ -583,7 +583,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
          )}   
           {!hasPropertyFeatures && (
             <p className={styles.featureSummary}>
-              Property-level accessibility features have not been confirmed.
+              Property-level accessibility features have not been documented.
               Contact the hotel directly for details about accessible facilities
               and amenities.
             </p>
@@ -711,7 +711,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
             </>
           ) : (
             <p className={styles.featureSummary}>
-              Accessible room features have not been confirmed. Contact the hotel
+              Accessible room features have not been documented. Contact the hotel
               directly for details about accessible room accommodations and amenities.
             </p>
           )}
