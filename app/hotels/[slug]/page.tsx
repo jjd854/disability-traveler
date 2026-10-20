@@ -526,7 +526,7 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
         />
 
         <div className={styles.content}>
-          <h1 className={styles.hotelName}>🏨 {hotel.name}</h1>
+          <h1 className={styles.hotelName}> {hotel.name}</h1>
           <AccessibilityConfidenceBadge confidence={hotel.accessibility_confidence} verifiedDate={hotel.verified_date} />
           {priceLevel > 0 && (
             <div
