@@ -346,6 +346,14 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
   const roomCategories: RoomCategory[] = Array.isArray(hotel.room_categories)
     ? hotel.room_categories.map(normalizeRoomCategory)
     : [];
+
+  const hasRealRoomPhotos = roomCategories.some((room) =>
+    room.photos_example?.some(
+      (photo) =>
+        photo.url &&
+        photo.is_placeholder_image !== true
+    )
+  );  
   
   const hotelSchema = {
     '@context': 'https://schema.org',
@@ -719,10 +727,12 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
           {/* ==== Room categories (filters + cards) ==== */}
           <section className={styles.roomCategoriesSection}>
             <h3 className={styles.sectionTitle}>Accessible Room Categories</h3>
-            <p className={styles.disclaimer}>
-              We only list room categories that have accessible versions. Displayed photos are
-              examples and may not reflect the features of an accessible room.
-            </p>
+            {hasRealRoomPhotos && (
+              <p className={styles.disclaimer}>
+                We only list room categories that have accessible versions. Displayed photos are
+                examples and may not reflect the features of an accessible room.
+              </p>
+           )}
 
             {/* Renders filters + the grid in one place (no duplicates) */}
             {roomCategories && roomCategories.length > 0 ? (
