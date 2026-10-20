@@ -811,24 +811,21 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
           
           
 
-          {/* ==== Reviews ==== */}
-          {Array.isArray(reviews) && reviews.length > 0 ? (
-            <section>
-              <h2 className={styles.sectionTitle}>Traveler Reviews</h2>
-
-              {reviews.map((review: Review) => (
-                <article
-                  key={review.id}
-                  id={`review-${review.id}`}           // <- anchor used by scrollToReview()
-                  className={styles.reviewCardWrapper} // optional wrapper class
-               >
-                  <ReviewCard review={review} />
-               </article>
-             ))}
-           </section>
-          ) : (
-            <p className={styles.noReviews}>No reviews yet for this hotel.</p>
-         )}
+        {/* === Reviews === */}
+{Array.isArray(reviews) && reviews.length > 0 && (
+  <section>
+    <h2 className={styles.sectionTitle}>Traveler Reviews</h2>
+    {reviews.map((review: Review) => (
+      <article
+        key={review.id}
+        id={`review-${review.id}`}
+        className={styles.reviewCardWrapper}
+      >
+        <ReviewCard review={review} />
+      </article>
+    ))}
+  </section>
+)}  
         </div>
       </div>
       </main>
