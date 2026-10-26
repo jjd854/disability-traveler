@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  async redirects() {
+    return [
+      {
+        source: "/hotels/grand-cayman-marriott-resort",
+        destination: "/hotels/grand-cayman-marriott-beach-resort",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
