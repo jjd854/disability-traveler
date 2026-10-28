@@ -484,7 +484,11 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
       <div className={styles.hotelPage}>
         {(hotel.featured_image_url || hotel.is_placeholder_image) && (
   <>
-    <div className={styles.heroImageWrapper}>
+    <div
+      className={`${styles.heroImageWrapper} ${
+        hotel.slug === "st-regis-aruba" ? styles.stRegisHero : ""
+      }`}
+    >
       {hotel.is_placeholder_image ? (
         <div className={styles.heroPlaceholder}>
           <svg

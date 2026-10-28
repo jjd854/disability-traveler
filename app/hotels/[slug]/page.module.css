@@ -17,6 +17,10 @@
 
 }
 
+.stRegisHero {
+  height: 625px;
+}
+
 .heroImage {
   object-fit: cover;
   object-position: center;
