@@ -604,6 +604,17 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
           )}
 
           <div className={styles.reviewButtonContainer}>
+            {hotel.booking_url && (
+              <a
+                href={hotel.booking_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.bookingButton}
+              >
+                Check Rates & Availability
+              </a>            
+            )}
+            
             <Link
               href={{
                 pathname: '/submit-review',
@@ -613,24 +624,44 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
                   redirect: `/hotels/${hotel.slug}`,
                 },
               }}
+              className={styles.reviewButton}
             >
-              <button className={styles.reviewButton}>Submit a Review</button>
+              Submit a Review
             </Link>
+
             {hotel.Destinations?.slug && (
-              <Link href={`/destinations/${hotel.Destinations.slug}`}>
-                <button className={styles.secondaryButton}>
-                  View {hotel.Destinations.Name ?? hotel.Destinations.name ?? 'Destination'} Accessibility Guide
-               </button>
-             </Link>
+              <Link
+                href={`/destinations/${hotel.Destinations.slug}`}
+                className={styles.secondaryButton}
+              >
+                View {hotel.Destinations.Name ?? hotel.Destinations.name ?? 'Destination'} Accessibility Guide
+              </Link>
+            )}
+
+            {hotel.is_affiliate_link && (
+             <p className={styles.affiliateDisclosure}>
+               Disability Traveler may earn a commission if you book through links on this page, at no additional cost to you.
+             </p>
            )}
+
+            {hotel.accessible_booking_note && (
+              <p className={styles.accessibleBookingNote}>
+                {hotel.accessible_booking_note}
+              </p>
+            )}
           </div>
 
           <hr className={styles.divider} />
 
           <div className={styles.infoRow}>
-            <span>
-              <strong>Phone:</strong> {hotel.phone_number}
-            </span>
+            {hotel.phone_number && (
+              <span>
+                <strong>Phone:</strong>{' '}
+                <a href={`tel:${hotel.phone_number.replace(/[^\d+]/g, '')}`}>
+                  {hotel.phone_number}
+                </a>
+              </span>
+            )}
             <span className={styles.dot}>•</span>
             {hotel.website_url && (
               <OutboundLink
@@ -651,13 +682,6 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
              </OutboundLink>
            )}
           </div>
-
-          {hotel.is_affiliate_link && (
-            <p className={styles.affiliateDisclosure}>
-              Affiliate disclosure: Disability Traveler may earn a commission if you
-              book through this link, at no additional cost to you.
-            </p>
-         )}
 
           <div className={styles.infoRow}>
             <span>
@@ -745,6 +769,32 @@ function normalizeRoomCategory(rc: RoomCategoryLike): RoomCategory {
              </div>
            )}
           </section>
+
+          {/* Booking CTA after accessible room categories */}
+          {hotel.booking_url && (
+            <div className={styles.bottomBookingContainer}>
+              <a
+                href={hotel.booking_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.bookingButton}
+              >
+                Check Rates & Availability
+              </a>
+
+              {hotel.is_affiliate_link && (
+                <p className={styles.affiliateDisclosure}>
+                  Disability Traveler may earn a commission if you book through links on this page, at no additional cost to you.
+                </p>
+              )}
+  
+              {hotel.accessible_booking_note && (
+                <p className={styles.accessibleBookingNote}>
+                  {hotel.accessible_booking_note}
+                </p>
+              )}
+            </div>
+          )}
           
           {accessibilityVideos.length > 0 && (
             <section className={styles.accessibilityVideos}>

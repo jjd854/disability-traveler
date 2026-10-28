@@ -223,6 +223,48 @@
   min-height: 44px;
   cursor: pointer;
   line-height: 1;
+  text-decoration: none;
+}
+
+/* Booking CTA button */
+.bookingButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #147d94;
+  border: 2px solid #147d94;
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 14px;
+  min-height: 44px;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.bookingButton:hover {
+  background: #147d94;
+  color: #fff;
+}
+
+.affiliateDisclosure {
+  margin: 6px 0 -6px;
+  font-size: 0.85rem;
+  color: #4b5563;
+  text-align: center;
+  flex-basis: 100%;
+}
+
+.accessibleBookingNote {
+  color: #147d94;
+  font-size: .85rem;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0;
+  flex-basis: 100%;
 }
 
 @media (max-width: 640px) {
@@ -231,11 +273,29 @@
     align-items: center;
   }
 
-  .reviewButton,
-  .secondaryButton {
+  .reviewButtonContainer > a {
     width: 100%;
     max-width: 320px;
+    box-sizing: border-box;
+  }
+
+  .reviewButton,
+  .secondaryButton,
+  .bookingButton {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .reviewButtonContainer > a {
+    text-decoration: none;
   }
 }
 
@@ -253,16 +313,20 @@
   text-align: center;
 }
 
+.infoRow a[href^="tel:"] {
+  color: inherit;
+  text-decoration: none;
+}
+
+.infoRow a[href^="tel:"]:hover {
+  text-decoration: underline;
+}
+
 .websiteLink { color: #3eaf6f; text-decoration: none; font-weight: 600; }
 .websiteLink:hover { text-decoration: underline; }
 .dot { color: #999; }
 
-.affiliateDisclosure {
-  margin: 6px 0 0;
-  font-size: 0.85rem;
-  color: #4b5563;
-  text-align: center;
-}
+
 
 .divider {
   margin: 12px auto;
@@ -358,6 +422,28 @@
     max-width: 540px;
   }
 
+}
+
+.bottomBookingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 36px auto 6px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .bottomBookingContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bottomBookingContainer > a {
+    width: 100%;
+    max-width: 320px;
+    box-sizing: border-box;
+  }
 }
 
 /* ===== Hotel features bullets ===== */

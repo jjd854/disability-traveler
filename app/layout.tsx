@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   title: 'Disability Traveler',
   description: 'Accessible travel reviews and destinations',
 
+  formatDetection: {
+    telephone: false,
+  },
+
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-icon.png',

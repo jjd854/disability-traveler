@@ -27,6 +27,8 @@ export type Hotel = {
   dt_verified_property_notes?: string | null;
   is_affiliate_link?: boolean;
   website_url?: string | null;
+  booking_url?: string | null;
+  accessible_booking_note?: string | null;
 
   has_pool_lift?: boolean;
   has_beach_wheelchair?: boolean;
