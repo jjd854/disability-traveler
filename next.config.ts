@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         destination: "/hotels/grand-cayman-marriott-beach-resort",
         permanent: true,
       },
+      {
+        source: "/hotels/courtyard-by-marriott-isla-verde-beach-resort",
+        destination: "/hotels/marriott-isla-verde-beach-resort",
+        permanent: true,
+     },
     ];
   },
 };
