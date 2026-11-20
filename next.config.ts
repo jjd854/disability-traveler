@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "hotels/zemi-miches-punta-cana- all-iInclusive-resort-curio-collection-by-hilton",
+        source: "/hotels/zemi-miches-punta-cana- all-iInclusive-resort-curio-collection-by-hilton",
         destination: "/hotels/zemi-miches-punta-cana-all-inclusive-resort-curio-collection-by-hilton",
         permanent: true,
       },
