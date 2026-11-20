@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "hotels/zemi-miches-punta-cana-%20all-iInclusive-resort-curio-collection-by-hilton",
+        destination: "/hotels/zemi-miches-punta-cana-all-inclusive-resort-curio-collection-by-hilton",
+        permanent: true,
+      },
+      {
         source: "/hotels/courtyard-by-marriott-isla-verde-beach-resort",
         destination: "/hotels/marriott-isla-verde-beach-resort",
         permanent: true,
