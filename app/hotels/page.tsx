@@ -24,6 +24,7 @@ type RawReview = {
 type RawRoomCategory = {
   door_32_in?: boolean | string | number | null;
   lowered_bed?: boolean | string | number | null;
+  bed_clearance_underframe?: boolean | string | number | null;
   roll_under_vanity?: boolean | string | number | null;
   roll_in_shower?: boolean | string | number | null;
   shower_seat_fixed?: boolean | string | number | null;
@@ -160,6 +161,7 @@ const PROP_FILTER_LABEL_OVERRIDES: Partial<Record<keyof PropFilters, string>> = 
 type RoomAmenKey =
   | 'door_32_in'
   | 'lowered_bed'
+  | 'bed_clearance_underframe'
   | 'roll_under_vanity'
   | 'roll_in_shower'
   | 'shower_seat_fixed'
@@ -175,6 +177,7 @@ type RoomAmenKey =
 const ROOM_AMENITIES: Array<{ key: RoomAmenKey; label: string }> = [
   { key: 'door_32_in', label: '32" Door' },
   { key: 'lowered_bed', label: 'Lowered Bed' },
+  { key: 'bed_clearance_underframe', label: 'Bed Clearance Underframe' },
   { key: 'roll_under_vanity', label: 'Roll Under Vanity' },
   { key: 'roll_in_shower', label: 'Roll-In Shower' },
   { key: 'shower_seat_fixed', label: 'Fixed Shower Seat' },

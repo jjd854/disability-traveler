@@ -160,7 +160,7 @@ const ROOM_FEATURE_CHIP_LABELS: Record<string, string> = {
   roll_under_vanity: "Roll-Under Vanity",
   turning_radius_60_in: "60-inch Turning Radius",
   lowered_bed: "Lowered Bed",
-  bed_clearance_underframe: "Bed Clearance Under Bed",
+  bed_clearance_underframe: "Bed Clearance Underframe",
   accessible_balcony: "Accessible Balcony",
   rollout_patio: "Ground Floor Patio",
   visual_alarm: "Visual Alarm",

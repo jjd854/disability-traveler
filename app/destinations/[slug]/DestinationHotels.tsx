@@ -46,6 +46,7 @@ const PROP_FILTER_LABEL_OVERRIDES: Record<string, string> = {
 type RoomAmenKey =
   | 'door_32_in'
   | 'lowered_bed'
+  | 'bed_clearance_underframe'
   | 'roll_under_vanity'
   | 'roll_in_shower'
   | 'shower_seat_fixed'
@@ -61,6 +62,7 @@ type RoomAmenKey =
 const ROOM_AMENITIES: { key: RoomAmenKey; label: string }[] = [
   { key: 'door_32_in', label: '32" Door' },
   { key: 'lowered_bed', label: 'Lowered Bed' },
+  { key: 'bed_clearance_underframe', label: 'Bed Clearance Underframe' },
   { key: 'roll_under_vanity', label: 'Roll Under Vanity' },
   { key: 'roll_in_shower', label: 'Roll-In Shower' },
   { key: 'shower_seat_fixed', label: 'Fixed Shower Seat' },
@@ -204,6 +206,9 @@ export default function DestinationHotels({ destinationName, hotels }: Props) {
   // Room-related filters you had earlier
   has_roll_in_shower?: boolean | null;
   has_lowered_bed?: boolean | null;
+  bed_clearance_underframe?: boolean | null;
+  has_roll_under_vanity?: boolean | null;
+  has_fixed_shower_seat?: boolean | null;
   has_32_doorway?: boolean | null;
   has_tub_with_bench?: boolean | null;
 };

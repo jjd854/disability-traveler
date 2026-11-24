@@ -50,7 +50,7 @@ type RoomCategoryLike = RoomCategory & {
   rollout_patio?: boolean | number | string | null;
   visual_alarm?: boolean | number | string | null;
   hearing_kit_available?: boolean | number | string | null;
-  bed_clearance_underframe?: number | string | null;
+  bed_clearance_underframe?: boolean | number | string | null;
 };
 
 function isAddon(value: unknown): value is RoomCategoryAddon {
@@ -124,15 +124,14 @@ export default function RoomCategoryCard({ category, hotelName, photoCredit }: P
   if (isTruthyFlag(cat.tub_with_bench)) chips.push('Accessible tub');
   if (isTruthyFlag(cat.handheld_shower)) chips.push('Handheld shower');
   if (isTruthyFlag(cat.lowered_bed)) chips.push('Lowered bed');
+  if (isTruthyFlag(cat.bed_clearance_underframe)) chips.push('Bed clearance underframe');
   if (isTruthyFlag(cat.turning_radius_60_in)) chips.push('60" turning radius');
   if (isTruthyFlag(cat.accessible_balcony)) chips.push('Accessible balcony');
   if (isTruthyFlag(cat.rollout_patio)) chips.push('Ground floor patio');
   if (isTruthyFlag(cat.visual_alarm)) chips.push('Visual alarm');
   if (isTruthyFlag(cat.hearing_kit_available)) chips.push('Hearing accessible or kit');
 
-  if (cat.bed_clearance_underframe !== undefined && cat.bed_clearance_underframe !== null) {
-    chips.push(`Bed clearance: ${cat.bed_clearance_underframe}"`);
-  }
+  
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
