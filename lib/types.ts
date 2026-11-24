@@ -209,7 +209,7 @@ export type RoomCategory = {
     hearing_kit_available?: boolean;
     accessible_balcony?: boolean;
     rollout_patio?: boolean;
-    bed_clearance_underframe?: number | null;
+    bed_clearance_underframe?: boolean;
   };
 
   photos_example?: RoomCategoryPhoto[];
